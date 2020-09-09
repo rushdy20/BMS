@@ -1,9 +1,0 @@
-C:\Learning\BMS\BMS.Libraray.BusinessLayer\bin\Debug\netstandard2.0\BMS.Libraray.BusinessLayer.deps.json
-C:\Learning\BMS\BMS.Libraray.BusinessLayer\bin\Debug\netstandard2.0\BMS.Libraray.BusinessLayer.dll
-C:\Learning\BMS\BMS.Libraray.BusinessLayer\obj\Debug\netstandard2.0\BMS.Libraray.BusinessLayer.csprojAssemblyReference.cache
-C:\Learning\BMS\BMS.Libraray.BusinessLayer\obj\Debug\netstandard2.0\BMS.Libraray.BusinessLayer.AssemblyInfoInputs.cache
-C:\Learning\BMS\BMS.Libraray.BusinessLayer\obj\Debug\netstandard2.0\BMS.Libraray.BusinessLayer.AssemblyInfo.cs
-C:\Learning\BMS\BMS.Libraray.BusinessLayer\bin\Debug\netstandard2.0\BMS.Libraray.BusinessLayer.pdb
-C:\Learning\BMS\BMS.Libraray.BusinessLayer\obj\Debug\netstandard2.0\BMS.Libraray.BusinessLayer.csproj.CoreCompileInputs.cache
-C:\Learning\BMS\BMS.Libraray.BusinessLayer\obj\Debug\netstandard2.0\BMS.Libraray.BusinessLayer.dll
-C:\Learning\BMS\BMS.Libraray.BusinessLayer\obj\Debug\netstandard2.0\BMS.Libraray.BusinessLayer.pdb

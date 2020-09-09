@@ -1,0 +1,156 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Learning\\BMS\\BMS.BooksLibrary.BusinessLayer\\BMS.BooksLibrary.BusinessLayer.csproj": {}
+  },
+  "projects": {
+    "C:\\Learning\\BMS\\BMS.AWS\\BMS.AWS.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Learning\\BMS\\BMS.AWS\\BMS.AWS.csproj",
+        "projectName": "BMS.AWS",
+        "projectPath": "C:\\Learning\\BMS\\BMS.AWS\\BMS.AWS.csproj",
+        "packagesPath": "C:\\Users\\C62738A\\.nuget\\packages\\",
+        "outputPath": "C:\\Learning\\BMS\\BMS.AWS\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\C62738A\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Learning\\Amazon.AspNetCore.Identity.Cognito.1.0.3.nupkg": {},
+          "C:\\Learning\\WebAdvertApi\\AdvertApi.Models\\bin\\Debug": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://ecs.jfrog.io/ecs/api/nuget/corvetteuk-dotnet-nuget-virtual": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "dependencies": {
+            "AWSSDK.S3": {
+              "target": "Package",
+              "version": "[3.5.0.9, )"
+            },
+            "Microsoft.Extensions.Configuration": {
+              "target": "Package",
+              "version": "[3.1.7, )"
+            },
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[3.1.7, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Learning\\BMS\\BMS.BooksLibrary.BusinessLayer\\BMS.BooksLibrary.BusinessLayer.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Learning\\BMS\\BMS.BooksLibrary.BusinessLayer\\BMS.BooksLibrary.BusinessLayer.csproj",
+        "projectName": "BMS.BooksLibrary.BusinessLayer",
+        "projectPath": "C:\\Learning\\BMS\\BMS.BooksLibrary.BusinessLayer\\BMS.BooksLibrary.BusinessLayer.csproj",
+        "packagesPath": "C:\\Users\\C62738A\\.nuget\\packages\\",
+        "outputPath": "C:\\Learning\\BMS\\BMS.BooksLibrary.BusinessLayer\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\C62738A\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Learning\\Amazon.AspNetCore.Identity.Cognito.1.0.3.nupkg": {},
+          "C:\\Learning\\WebAdvertApi\\AdvertApi.Models\\bin\\Debug": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://ecs.jfrog.io/ecs/api/nuget/corvetteuk-dotnet-nuget-virtual": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {
+              "C:\\Learning\\BMS\\BMS.AWS\\BMS.AWS.csproj": {
+                "projectPath": "C:\\Learning\\BMS\\BMS.AWS\\BMS.AWS.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "dependencies": {
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[3.1.7, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

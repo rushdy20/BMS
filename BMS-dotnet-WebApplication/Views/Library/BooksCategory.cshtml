@@ -1,25 +1,25 @@
 ﻿@model BMS_dotnet_WebApplication.Models.LibraryVM.AdminBooksCategoryVM
 
 @{
-    ViewData["Title"] = "BooksCategory";
+    ViewData["Title"] = "Books Category";
 }
 
-<h1>BooksCategory</h1>
+<h1>Books Category</h1>
 
 @using (Html.BeginForm("AddCategory", "Library", FormMethod.Post, new { @id = "partialform" }))
 {
-    <div class="form-group row container custom-box">
-        <div class="col-sm-8">
+    
+        <div class="form-group">
             @Html.LabelFor(m => m.BooksCategory.Name)
             @Html.TextBoxFor(m => m.BooksCategory.Name, new { @class = "form-control" })
             @Html.ValidationMessageFor(m => m.BooksCategory.Name)
         </div>
-        <div class="col-sm-8">
+        <div class="form-group">
             @Html.LabelFor(m => m.BooksCategory.Comment)
             @Html.TextBoxFor(m => m.BooksCategory.Comment, new { @class = "form-control" })
             
         </div>
-        <div class="col-sm-4 marginT32">
+        <div class="form-group ">
             <button type="submit" class="btn btn-primary">Add</button>
         </div>
 
@@ -40,11 +40,9 @@
                 </li>
             </ul>
         </div>
-        <div class="col-sm-4 marginT32">
+        <div class="form-group">
             @Html.ActionLink("Save", "Save", "Library", null, new { @class = "btn btn-success" })
         </div>
-    </div>
-    
 }
 
 @section Scripts

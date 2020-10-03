@@ -1,0 +1,53 @@
+﻿@model BMS_dotnet_WebApplication.Models.UserVM.UserProfileVM
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="form-group row container custom-box">
+    @if (!Model.IsApproved)
+    {
+        <div class="alert alert-info" role="alert">
+            <strong>Heads up!</strong> Your application is in the process of being approved. Once its approved you will have able to enjoy the full access.
+        </div>
+    }
+    
+    <div class="panel panel-default">
+        <div class="panel-heading">Library</div>
+        <div class="panel-body">
+            <span>@Model.Name</span>
+            <span>@Model.Email</span>
+        </div>
+    </div>
+
+    
+    @if (Model.IsApproved)
+    {
+<div class="panel-group">
+    <div class="panel panel-default">
+        <div class="panel-heading">Library</div>
+        <div class="panel-body">
+            <a class="navbar-brand" asp-area="" asp-controller="Library" asp-action="SearchBook">Search For Book</a>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">Messages</div>
+        <div class="panel-body">Panel Content</div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">Actions</div>
+        <div class="panel-body">Panel Content</div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">User Management</div>
+        <div class="panel-body">
+            <a href="#">Applications Waiting to be approve <span class="badge">5</span></a><br>
+        </div>
+    </div>
+
+</div>
+
+       
+    }
+   
+</div>

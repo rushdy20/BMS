@@ -38,8 +38,8 @@
               "C:\\Learning\\BMS\\BMS.AWS\\BMS.AWS.csproj": {
                 "projectPath": "C:\\Learning\\BMS\\BMS.AWS\\BMS.AWS.csproj"
               },
-              "C:\\Learning\\BMS\\BMS.BooksLibrary.BusinessLayer\\BMS.BooksLibrary.BusinessLayer.csproj": {
-                "projectPath": "C:\\Learning\\BMS\\BMS.BooksLibrary.BusinessLayer\\BMS.BooksLibrary.BusinessLayer.csproj"
+              "C:\\Learning\\BMS\\BMS.BooksLibrary.BusinessLayer\\BMS.BusinessLayer.csproj": {
+                "projectPath": "C:\\Learning\\BMS\\BMS.BooksLibrary.BusinessLayer\\BMS.BusinessLayer.csproj"
               }
             }
           }
@@ -55,7 +55,11 @@
           "dependencies": {
             "AutoMapper": {
               "target": "Package",
-              "version": "[7.0.1, )"
+              "version": "[10.0.0, )"
+            },
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[8.0.1, )"
             },
             "FluentValidation": {
               "target": "Package",
@@ -72,6 +76,10 @@
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[3.1.4, )"
+            },
+            "jQuery.UI.Combined": {
+              "target": "Package",
+              "version": "[1.12.1, )"
             }
           },
           "imports": [
@@ -170,12 +178,12 @@
         }
       }
     },
-    "C:\\Learning\\BMS\\BMS.BooksLibrary.BusinessLayer\\BMS.BooksLibrary.BusinessLayer.csproj": {
+    "C:\\Learning\\BMS\\BMS.BooksLibrary.BusinessLayer\\BMS.BusinessLayer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Learning\\BMS\\BMS.BooksLibrary.BusinessLayer\\BMS.BooksLibrary.BusinessLayer.csproj",
-        "projectName": "BMS.BooksLibrary.BusinessLayer",
-        "projectPath": "C:\\Learning\\BMS\\BMS.BooksLibrary.BusinessLayer\\BMS.BooksLibrary.BusinessLayer.csproj",
+        "projectUniqueName": "C:\\Learning\\BMS\\BMS.BooksLibrary.BusinessLayer\\BMS.BusinessLayer.csproj",
+        "projectName": "BMS.BusinessLayer",
+        "projectPath": "C:\\Learning\\BMS\\BMS.BooksLibrary.BusinessLayer\\BMS.BusinessLayer.csproj",
         "packagesPath": "C:\\Users\\C62738A\\.nuget\\packages\\",
         "outputPath": "C:\\Learning\\BMS\\BMS.BooksLibrary.BusinessLayer\\obj\\",
         "projectStyle": "PackageReference",
@@ -216,6 +224,10 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
+            "Microsoft.Extensions.Caching.Memory": {
+              "target": "Package",
+              "version": "[3.1.8, )"
+            },
             "Microsoft.Extensions.DependencyInjection": {
               "target": "Package",
               "version": "[3.1.7, )"

@@ -5,13 +5,13 @@ VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BMS-dotnet-WebApplication", "BMS-dotnet-WebApplication.csproj", "{8F2B9910-4323-44C2-A66E-E5C3B9A5165A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{607D7516-CC06-40C7-ACF8-021D32FE7332}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BusinessLayer", "BusinessLayer", "{607D7516-CC06-40C7-ACF8-021D32FE7332}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BMS.BooksLibrary.BusinessLayer", "..\BMS.BooksLibrary.BusinessLayer\BMS.BooksLibrary.BusinessLayer.csproj", "{EB8E2BBA-841D-40FD-B898-BD549FC43C34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BMS.BusinessLayer", "..\BMS.BooksLibrary.BusinessLayer\BMS.BusinessLayer.csproj", "{EB8E2BBA-841D-40FD-B898-BD549FC43C34}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AWS", "AWS", "{D33180D9-F695-431A-875C-04FDCE935AD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BMS.AWS", "..\BMS.AWS\BMS.AWS.csproj", "{3BDED2DA-517C-4337-A1C8-46E131057EFF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BMS.AWS", "..\BMS.AWS\BMS.AWS.csproj", "{3BDED2DA-517C-4337-A1C8-46E131057EFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

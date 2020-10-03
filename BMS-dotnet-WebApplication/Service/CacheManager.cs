@@ -3,7 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace BMS_dotnet_WebApplication.Service
 {
-    public class CacheManager : ICacheManager
+    public class CacheManager : _ICacheManager
     {
         private readonly IMemoryCache _cache;
 

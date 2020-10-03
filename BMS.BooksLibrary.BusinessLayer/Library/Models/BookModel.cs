@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BMS.BooksLibrary.BusinessLayer.Models
+﻿namespace BMS.BooksLibrary.BusinessLayer.Models
 {
- public  class BooksModel
+    public class BookModel
     {
+        public BooksCategoryModel BookCategory { get; set; }
         public string Barcode { get; set; }
         public string Title { get; set; }
         public string Publisher { get; set; }

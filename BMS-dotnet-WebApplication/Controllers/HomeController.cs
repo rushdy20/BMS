@@ -9,7 +9,7 @@ using BMS_dotnet_WebApplication.Models;
 
 namespace BMS_dotnet_WebApplication.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
 

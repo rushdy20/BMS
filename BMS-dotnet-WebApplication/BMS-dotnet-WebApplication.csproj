@@ -9,8 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <PackageReference Include="AutoMapper" Version="10.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="FluentValidation" Version="7.6.0" />
+    <PackageReference Include="jQuery.UI.Combined" Version="1.12.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.7" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
@@ -18,7 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BMS.AWS\BMS.AWS.csproj" />
-    <ProjectReference Include="..\BMS.BooksLibrary.BusinessLayer\BMS.BooksLibrary.BusinessLayer.csproj" />
+    <ProjectReference Include="..\BMS.BooksLibrary.BusinessLayer\BMS.BusinessLayer.csproj" />
   </ItemGroup>
 
 </Project>

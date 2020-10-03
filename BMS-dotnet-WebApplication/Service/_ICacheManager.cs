@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BMS_dotnet_WebApplication.Service
 {
-    public interface ICacheManager
+    public interface _ICacheManager
     {
         void RemoveCache(string cacheKey);
         void Set<T>(string cacheKey, T getItemCallBack);

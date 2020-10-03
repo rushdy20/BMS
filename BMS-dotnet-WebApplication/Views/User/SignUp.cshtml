@@ -1,0 +1,102 @@
+﻿@model BMS_dotnet_WebApplication.Models.UserVM.SignUpViewModel
+@{
+    ViewData["Title"] = "SignUp";
+}
+
+<h1>Register with us</h1>
+
+@using (Html.BeginForm("SignUp", "User", FormMethod.Post))
+{
+    <div>
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.EmailAddress)
+        @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control", type = "email" })
+       
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Password)
+        @Html.TextBoxFor(m => m.Password, new { @class = "form-control", type = "password" })
+      
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ConfirmPassword)
+        @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "form-control", type = "password" })
+       
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.FirstName)
+        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+       
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Surname)
+        @Html.TextBoxFor(m => m.Surname, new { @class = "form-control" })
+       
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Gender)
+        @Html.DropDownListFor(m => m.Gender, new List<SelectListItem> { new SelectListItem { Text = "Male", Value = "M" }, new SelectListItem { Text = "Female", Value = "F" } }, "Please Select", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Gender)
+       
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.DateOfBirth)
+        @Html.TextBoxFor(m => m.DateOfBirth, new { @class = "form-control", value = DateTime.Now.ToString("dd-MM-yyyy")})
+       
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.AddressLine1)
+        @Html.TextBoxFor(m => m.AddressLine1, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.AddressLine1)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.AddressLine2)
+        @Html.TextBoxFor(m => m.AddressLine2, new { @class = "form-control" })
+       
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.AddressLine3)
+        @Html.TextBoxFor(m => m.AddressLine3, new { @class = "form-control" })
+       
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.PostCode)
+        @Html.TextBoxFor(m => m.PostCode, new { @class = "form-control" })
+       
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.PhoneNumber)
+        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+        
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Register</button>
+}
+
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#DateOfBirth").datepicker({
+                dateFormat: 'dd-M-yy'
+            });
+        });
+    </script>
+}

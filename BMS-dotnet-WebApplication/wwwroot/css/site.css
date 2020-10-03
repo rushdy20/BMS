@@ -99,3 +99,9 @@ input[type="checkbox"].input-validation-error {
 .validation-summary-valid {
     display: none;
 }
+
+.book-card {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+}

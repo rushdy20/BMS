@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using BMS.BooksLibrary.BusinessLayer;
 using BMS.BusinessLayer.Constant;
 using BMS.BusinessLayer.Users;
 using BMS.BusinessLayer.Users.Models;
 using BMS_dotnet_WebApplication.Models.UserVM;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace BMS_dotnet_WebApplication.Controllers
 {
@@ -15,19 +17,23 @@ namespace BMS_dotnet_WebApplication.Controllers
     {
         private readonly IUserManager _userManager;
         private readonly IMapper _mapper;
+        private readonly ICacheManager _cacheManager;
+        private readonly IBooksLibraryManager _booksLibraryManager;
 
-        public UserController(IUserManager userManager, IMapper mapper)
+        public UserController(IUserManager userManager, IMapper mapper, ICacheManager cacheManager, IBooksLibraryManager booksLibraryManager)
         {
             _userManager = userManager;
             _mapper = mapper;
+            _cacheManager = cacheManager;
+            _booksLibraryManager = booksLibraryManager;
         }
         public async Task<IActionResult> Index()
         {
 
-            if (string.IsNullOrEmpty(IsLoggedIn()))
+            if (string.IsNullOrEmpty(LoggedInName()))
                 return RedirectToAction("Login", "User");
 
-            var model = await BuildUserProfile(IsLoggedIn());
+            var model = await BuildUserProfile(LoggedInName());
             return View(model);
         }
 
@@ -61,7 +67,7 @@ namespace BMS_dotnet_WebApplication.Controllers
 
         public async Task<IActionResult> Login()
         {
-            if (!string.IsNullOrEmpty(IsLoggedIn()))
+            if (!string.IsNullOrEmpty(LoggedInName()))
             {
                 return RedirectToAction("Index");
             }
@@ -74,17 +80,20 @@ namespace BMS_dotnet_WebApplication.Controllers
         {
             var user = await IsValidUser(model);
             
-            if (user == UserLevel.RegistrationProcess.WrongPassword)
-                ModelState.AddModelError("Password","Wrong Password Please try again");
-
-            if (user == UserLevel.RegistrationProcess.NotExits)
-                ModelState.AddModelError("name", "Email address not registered Please SignUp ");
+            switch (user)
+            {
+                case UserLevel.RegistrationProcess.WrongPassword:
+                    ModelState.AddModelError("Password","Wrong Password Please try again");
+                    break;
+                case UserLevel.RegistrationProcess.NotExits:
+                    ModelState.AddModelError("name", "Email address not registered Please SignUp ");
+                    break;
+            }
 
             if (!ModelState.IsValid)
                 return View(model);
 
             HttpContext.Session.SetString("Name", model.EmailAddress);
-
 
             return RedirectToAction("Index");
         }
@@ -113,13 +122,28 @@ namespace BMS_dotnet_WebApplication.Controllers
 
         private async Task<UserProfileVM> BuildUserProfile(string email)
         {
+            var getFromSession = GetUserProfile();
+
+            if (!string.IsNullOrEmpty(getFromSession.Name))
+                return getFromSession;
+
             var user = await _userManager.GetUser(email);
             var userProfile = new UserProfileVM
             {
                 Name = $"{user.FirstName} {user.Surname}",
                 Email = user.EmailAddress,
-                AccessArea = new List<string> {UserLevel.AccessArea.LibraryAdmin}
+                PhoneNo = user.PhoneNumber,
+                AccessArea = new List<string> {UserLevel.AccessArea.LibraryAdmin},
+                BooksNotReturned = await _booksLibraryManager.BooksOnLoan(email)
             };
+
+            if (userProfile.AccessArea.Contains(UserLevel.AccessArea.LibraryAdmin))
+            {
+                userProfile.BookLendingRequests = await _booksLibraryManager.GetNewLendingRequests();
+            }
+
+            var str = JsonConvert.SerializeObject(userProfile);
+            HttpContext.Session.SetString("userProfile", str);
             return userProfile;
         }
     }

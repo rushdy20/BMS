@@ -1,0 +1,80 @@
+﻿@model List<BMS.BusinessLayer.Library.Models.LendingRequestModel>
+
+@{
+
+    var Id = 0;
+}
+
+<div id="accordion">
+    @foreach (var bookRequest in Model)
+    {
+        Id = Id + 1;
+
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target=@($"{"#collapse"}{Id}") aria-expanded="true" aria-controls=@($"{"collapse"}{Id}")>
+                        @bookRequest.RequestedBy has requested for @bookRequest.BooksLent.Count Books
+                    </button>
+                </h5>
+            </div>
+
+            <div id=@($"{"collapse"}{Id}") class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body">
+                    @using (Html.BeginForm("LentOut", "Library", FormMethod.Post))
+                    {
+                        <div>
+                            @foreach (var t in bookRequest.BooksLent)
+                            {
+                                
+                            <div class="float-left">
+                                @Html.Partial("_BookCard", t)
+                            </div>
+                               
+                            }
+                        </div>
+
+                        <div class="form-group">
+                            @Html.TextBox("LentOn", GetDate(bookRequest.LentOn), new { @class = "form-control LentOn " })
+                        </div>
+
+                        <div class="form-group">
+                            @Html.TextArea("Note", @bookRequest.Note, new { @class = "form-control" })
+                        </div>
+                        @Html.Hidden("RequestedBy", bookRequest.RequestedBy)
+                        @Html.Hidden("RequestedBy", bookRequest.RequestedBy)
+                        @Html.Hidden("RequestedEmail", bookRequest.RequestedEmail)
+                        @Html.Hidden("LendingRequestId", bookRequest.LendingRequestId)
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $(".LentOn").datepicker({
+                dateFormat: 'dd-MM-yy'
+            });
+        });
+    </script>
+}
+
+@functions{
+    public string GetDate(DateTime? date)
+    {
+        if (date == null)
+            return DateTime.Today.ToString("dd-MM-yy");
+        else
+           
+            return date.Value.ToString("dd-MM-yy");
+    }
+}

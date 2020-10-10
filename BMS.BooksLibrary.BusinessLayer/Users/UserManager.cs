@@ -67,13 +67,21 @@ namespace BMS.BusinessLayer.Users
 
         }
 
+        public async Task<List<RegistrationModel>> RegistrationWaitingToBeApproved()
+        {
+            var allUsers = await GetAllUsers();
+            return allUsers.Where(u => !u.IsApproved).ToList();
+        }
+
         private async Task<List<RegistrationModel>> GetAllUsers()
         {
             var cachedUsers = _cacheManager.Get<List<RegistrationModel>>(UsersCacheKey);
 
             if (cachedUsers != null && cachedUsers.Any()) return cachedUsers;
 
-            var userFileFromS3Json = await _s3Bucket.GetFileFromS3($"{UserFolder}/{UserFileName}");
+            var userFileFromS3Json =
+                "[{\"EmailAddress\":\"rushdy@yahoo.co.uk\",\"Password\":\"Yameena20\",\"FirstName\":\"Rushdy\",\"Surname\":\"Najath\",\"DateOfBirth\":\"2020-10-28T00:00:00\",\"Gender\":\"M\",\"AddressLine1\":\"7 Holly Road\",\"AddressLine2\":\"Hansworth\",\"AddressLine3\":\"Birminghamd\",\"PostCode\":\"B\",\"PhoneNumber\":null,\"IsApproved\":false}]";
+            //await _s3Bucket.GetFileFromS3($"{UserFolder}/{UserFileName}");
 
             if (string.IsNullOrEmpty(userFileFromS3Json))
                 return new List<RegistrationModel>();

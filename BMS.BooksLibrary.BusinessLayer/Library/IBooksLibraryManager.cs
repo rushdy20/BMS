@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using BMS.BooksLibrary.BusinessLayer.Models;
+using BMS.BusinessLayer.Library.Models;
 
 namespace BMS.BooksLibrary.BusinessLayer
 {
@@ -13,7 +14,11 @@ namespace BMS.BooksLibrary.BusinessLayer
         Task<bool> SaveImageFile(Stream contentStream, string folder, string fileName);
 
         Task<List<BookModel>> SearchForBooks(SearchForBookModel searchForBookModel);
+
+        Task<bool> BookLendingRequest(LendingRequestModel requestModel);
+        Task<bool> BookLendingOut(LendingRequestModel requestModel);
+
+        Task<List<LendingRequestModel>> BooksOnLoan(string email);
+        Task<List<LendingRequestModel>> GetNewLendingRequests();
     }
-
-
 }

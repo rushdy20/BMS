@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BMS.BooksLibrary.BusinessLayer;
 using BMS.BooksLibrary.BusinessLayer.Models;
+using BMS.BusinessLayer.Library.Models;
 using BMS_dotnet_WebApplication.Models.LibraryVM;
-using BMS_dotnet_WebApplication.Service;
+using BMS_dotnet_WebApplication.Models.UserVM;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using static Newtonsoft.Json.JsonConvert;
 
 namespace BMS_dotnet_WebApplication.Controllers
 {
@@ -21,28 +23,29 @@ namespace BMS_dotnet_WebApplication.Controllers
         private readonly IBooksLibraryManager _booksLibraryManager;
         private readonly ICacheManager _cacheManager;
         private readonly IMapper _mapper;
+        private readonly Random _rnd;
 
-
-        public LibraryController(IBooksLibraryManager booksLibraryManager, ICacheManager cacheManager, IMapper mapper) 
+        public LibraryController(IBooksLibraryManager booksLibraryManager, ICacheManager cacheManager, IMapper mapper)
         {
             _random = new Random();
             _booksLibraryManager = booksLibraryManager;
             _cacheManager = cacheManager;
             _mapper = mapper;
+            _rnd = new Random();
         }
 
         public IActionResult Index()
         {
-             if (string.IsNullOrEmpty(IsLoggedIn()))     
+            if (string.IsNullOrEmpty(LoggedInName()))
                 return RedirectToAction("Login", "User");
 
-             return View();
+            return View();
         }
 
         public async Task<IActionResult> BooksCategory()
         {
-            //  if (HttpContext.Session.GetString("Name") == null)      ToDo Add login validation can go to base controller
-            //    return RedirectToAction("Create", "News");
+            if (string.IsNullOrEmpty(LoggedInName()))
+                return RedirectToAction("Login", "User");
 
             _booksCategories = await GetBooksCategories();
 
@@ -56,22 +59,22 @@ namespace BMS_dotnet_WebApplication.Controllers
 
         public async Task<IActionResult> RegisterBook()
         {
-            //  if (HttpContext.Session.GetString("Name") == null)      ToDo Add login validation can go to base controller
-            //    return RedirectToAction("Create", "News");
+            if (string.IsNullOrEmpty(LoggedInName()))
+                return RedirectToAction("Login", "User");
 
             _booksCategories = await GetBooksCategories();
-            var model = new RegisterBookVM()
+            var model = new RegisterBookVM
             {
                 Categories = _booksCategories.Select(g => new SelectListItem {Text = g.Name, Value = g.CategoryId}).ToList(),
                 NewsBooks = await GetBooks()
             };
-       
+
             return View(model);
         }
 
         public async Task<ActionResult> AddCategory(IFormCollection collection)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return RedirectToAction("BooksCategory");
 
             var newCategory = new BooksCategoryModel
@@ -104,7 +107,7 @@ namespace BMS_dotnet_WebApplication.Controllers
             cachedBooks.Add(bookModel);
 
             await SaveBookImage(model.MainImageFileName);
-            
+
             _cacheManager.Set("LibraryBooks", cachedBooks);
 
             return RedirectToAction("RegisterBook");
@@ -121,8 +124,10 @@ namespace BMS_dotnet_WebApplication.Controllers
         public ActionResult SaveBook()
         {
             var cachedBooksCategories = _cacheManager.Get<List<BookModel>>("LibraryBooks");
+            foreach (var book in cachedBooksCategories) book.IsAvailable = true;
+
             var s3 = SaveBooksInS3(cachedBooksCategories).Result;
-            if(s3)
+            if (s3)
                 _cacheManager.RemoveCache("LibraryBooks");
             return RedirectToAction("Index");
         }
@@ -135,11 +140,11 @@ namespace BMS_dotnet_WebApplication.Controllers
                 Categories = _booksCategories.Select(g => new SelectListItem {Text = g.Name, Value = g.CategoryId}).ToList()
             };
 
-          return View(model);
+            return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> SearchBook(SearchForBookVM model )
+        public async Task<IActionResult> SearchBook(SearchForBookVM model)
         {
             _booksCategories = await GetBooksCategories();
             model.SearchedResult = await SearchFromBooks(model);
@@ -148,18 +153,100 @@ namespace BMS_dotnet_WebApplication.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> LendingRequest()
+        {
+            if (string.IsNullOrEmpty(LoggedInName()))
+                return RedirectToAction("Login", "User");
+
+            var basket = HttpContext.Session.GetString(LoggedInName());
+
+            if (string.IsNullOrEmpty(basket))
+                return RedirectToAction("SearchBook");
+
+            var books = DeserializeObject<List<BookModel>>(basket);
+
+            await _booksLibraryManager.BookLendingRequest(BuildLendingRequest(books));
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> LentOutRequest(bool isRequest)
+        {
+            if (string.IsNullOrEmpty(LoggedInName()))
+                return RedirectToAction("Login", "User");
+            
+            var model = new List<LendingRequestModel>(); 
+
+            if (GetUserProfile().BookLendingRequests.Any())
+            {
+                model = GetUserProfile().BookLendingRequests;
+            }
+            else
+            {
+                model = await _booksLibraryManager.GetNewLendingRequests();
+            }
+
+            model = isRequest ? model.Where(r => r.LentOn == null).ToList() : model.Where(r => r.LentOn != null).ToList();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LentOut(LendingRequestModel model)
+        {
+            var user = HttpContext.Session.GetString("userProfile");
+            var userPf = DeserializeObject<UserProfileVM>(user);
+
+            var lendingOutRequest = userPf.BookLendingRequests.FirstOrDefault(r => r.LendingRequestId == model.LendingRequestId);
+            lendingOutRequest.LentOn = model.LentOn;
+            lendingOutRequest.LentBy = userPf.Name;
+
+            userPf.BookLendingRequests = userPf.BookLendingRequests.Where(r => r.LendingRequestId != model.LendingRequestId).ToList();
+            userPf.BookLendingRequests.Add(lendingOutRequest);
+
+            await _booksLibraryManager.BookLendingOut(lendingOutRequest);
+
+            var str = SerializeObject(userPf);
+            HttpContext.Session.SetString("userProfile", str);
+
+            return RedirectToAction("Index", "User");
+        }
+
+        private LendingRequestModel BuildLendingRequest(List<BookModel> basket)
+        {
+            var getUserProfile = GetUserProfile();
+            return new LendingRequestModel
+            {
+                LendingRequestId = _rnd.Next(1, 99999),
+                RequestedBy = getUserProfile.Name,
+                RequestedEmail = getUserProfile.Email,
+                PhoneNo = getUserProfile.PhoneNo,
+                RequestedDate = DateTime.Today,
+                BooksLent = basket
+            };
+        }
+
+        public int AddBooksToCart(BookModel model)
+        {
+            if (string.IsNullOrEmpty(LoggedInName()))
+                return 0;
+
+            var loggedInName = LoggedInName();
+
+            var basket = _cacheManager.Get<List<BookModel>>(loggedInName) ?? new List<BookModel>();
+
+            basket.Add(model);
+
+            var str = SerializeObject(basket);
+            HttpContext.Session.SetString(loggedInName, str);
+
+            return basket.Count;
+        }
+
         private async Task<List<BookModel>> SearchFromBooks(SearchForBookVM model)
         {
-            //var searchBookModel = new SearchForBookModel
-            //{
-            //    Barcode = model.Barcode,
-            //    Category = model.CategoryName,
-            //    Title = model.Title
-            //};
-            var searchBookModel =  _mapper.Map<SearchForBookModel>(model);
+            var searchBookModel = _mapper.Map<SearchForBookModel>(model);
 
             var searchBooks = await _booksLibraryManager.SearchForBooks(searchBookModel);
-          
 
             return searchBooks;
         }
@@ -194,7 +281,6 @@ namespace BMS_dotnet_WebApplication.Controllers
         private async Task<bool> SaveBooksInS3(List<BookModel> model)
         {
             return await _booksLibraryManager.SaveBooks(model);
-
         }
 
         private async Task<List<BookModel>> GetBooks()
@@ -230,6 +316,5 @@ namespace BMS_dotnet_WebApplication.Controllers
                 return result;
             }
         }
-        
     }
 }

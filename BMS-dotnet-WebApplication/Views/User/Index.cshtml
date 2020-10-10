@@ -1,53 +1,66 @@
-﻿@model BMS_dotnet_WebApplication.Models.UserVM.UserProfileVM
+﻿@using BMS.BusinessLayer.Constant
+@model BMS_dotnet_WebApplication.Models.UserVM.UserProfileVM
 @{
     ViewData["Title"] = "Index";
 }
 
-<div class="form-group row container custom-box">
+
     @if (!Model.IsApproved)
     {
         <div class="alert alert-info" role="alert">
-            <strong>Heads up!</strong> Your application is in the process of being approved. Once its approved you will have able to enjoy the full access.
+            <strong>Heads up!</strong> Your application is in the process of being approved. Once its approved you will be able to enjoy the full access.
         </div>
     }
-    
-    <div class="panel panel-default">
-        <div class="panel-heading">Library</div>
-        <div class="panel-body">
-            <span>@Model.Name</span>
-            <span>@Model.Email</span>
-        </div>
-    </div>
 
-    
-    @if (Model.IsApproved)
-    {
-<div class="panel-group">
-    <div class="panel panel-default">
-        <div class="panel-heading">Library</div>
-        <div class="panel-body">
-            <a class="navbar-brand" asp-area="" asp-controller="Library" asp-action="SearchBook">Search For Book</a>
-        </div>
-    </div>
-    <div class="panel panel-default">
-        <div class="panel-heading">Messages</div>
-        <div class="panel-body">Panel Content</div>
-    </div>
-    <div class="panel panel-default">
-        <div class="panel-heading">Actions</div>
-        <div class="panel-body">Panel Content</div>
-    </div>
-
-    <div class="panel panel-default">
-        <div class="panel-heading">User Management</div>
-        <div class="panel-body">
-            <a href="#">Applications Waiting to be approve <span class="badge">5</span></a><br>
-        </div>
-    </div>
-
+<div class="alert alert-primary name-box " role="alert">
+    <span>@Model.Name</span><br/>
+    <span>@Model.Email</span>
 </div>
 
-       
-    }
-   
+    
+<div class="clearfix" style="height: 100px"></div>
+
+    @*@if (Model.IsApproved)
+    {*@
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">My Books</h5>
+                    <a class="btn btn-secondary" asp-controller="Library" asp-action="SearchBook">Search For Book</a>
+                    <div class="div-entity">
+                        @foreach (var bookLent in Model.BooksNotReturned)
+                        {
+                            <div class="float-left">
+                                <p> Taken : @bookLent.LentOn</p>
+                                <p> Return Due On : @bookLent.LentOn.GetValueOrDefault().AddDays(15).ToString("dd-MM-yy")</p>
+                                <div>
+                                    @foreach (var book in bookLent.BooksLent)
+                                    {
+                                        <div class="float-left">
+                                            @Html.Partial("_BookCard", book)
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (Model.AccessArea.Contains(UserLevel.AccessArea.LibraryAdmin))
+        {
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Admin and User Management</h5>
+                        <p class="card-text">Approve news yours &....</p>
+                       
+                        <a href="#" class="btn btn-secondary">Applications Waiting to be approve <span class="badge badge-secondary">5</span></a><br><br/>
+                        <a class="btn btn-secondary" asp-controller="Library" asp-action="LentOutRequest" asp-route-isRequest="true">New Book Lending Request <span class="badge badge-secondary">@Model.BookLendingRequests.Count(b => b.LentOn == null)</span></a> <br/><br/>
+                        <a class="btn btn-secondary" asp-controller="Library" asp-action="LentOutRequest" asp-route-isRequest="false">Book Return Due<span class="badge badge-secondary">@Model.BookLendingRequests.Count(b => b.LentOn <= DateTime.Today.AddDays(-14))</span></a>
+                    </div>
+                </div>
+            </div>
+        }
 </div>

@@ -1,0 +1,53 @@
+﻿@model BMS.BooksLibrary.BusinessLayer.Models.BookModel
+
+<div class="card" style="width: 18rem; margin: 20px">
+    <img src="@Url.Action("GetImage", new {filename = "booksimg/" + Model.MainImageFileName})" style="height: 125px;" alt="...">
+    <div class="card-body">
+        <h5 class="card-title"> @Model.Title</h5>
+        @if (Model.BookCategory != null)
+        {
+            <p class="card-text">Category : @Model.BookCategory.Name</p>
+        }
+        <p class="card-text">Barcode : @Model.Barcode</p>
+        @if (!string.IsNullOrEmpty(Model.Description))
+        {
+            <p class="card-text">Description : @Model.Description</p>
+        }
+        @if (!string.IsNullOrEmpty(Model.Comments))
+        {
+            <p class="card-text">Comment : @Model.Comments</p>
+        }
+        @if (!string.IsNullOrEmpty(Model.Publisher))
+        {
+            <p class="card-text">Publisher : @Model.Publisher</p>
+        }
+
+        @if (Model.IsAvailable)
+        {
+            <a href="#" class="btn btn-primary" onclick="addToBucket()">Add to Basket</a>
+
+            <input type="hidden" id="_BookTitle" name="_BookTitle" value="@Model.Title"/>
+            <input type="hidden" id="_BookBarcode" name="_BookBarcode" value="@Model.Barcode"/>
+            <input type="hidden" id="_BookImage" name="_BookImage" value="@Model.MainImageFileName"/>
+        }
+
+    </div>
+</div>
+
+<script>
+    function addToBucket() {
+        $.post("/Library/AddBooksToCart",
+            {
+                Title: $("#_BookTitle").val(),
+                Barcode: $("#_BookBarcode").val(),
+                MainImageFileName: $("#_BookImage").val()
+            },
+            function(data) {
+
+                $(".booksCount").text(data);
+                $("#divBookSelected").css("display", "block");;
+
+            });
+    };
+
+</script>

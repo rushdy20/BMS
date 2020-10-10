@@ -105,3 +105,45 @@ input[type="checkbox"].input-validation-error {
     margin-bottom: 10px;
     padding: 10px;
 }
+.panel {
+    border: 2px solid;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+.panel-heading {
+    padding-left: 10px;
+    background-color: #bee5eb;
+    padding-right: 16px;
+    font-weight: bold;
+}
+.panel-body {
+    margin: 5px;
+    padding: 5px;
+}
+
+.name-box {
+    text-align: right;
+    width: 25%;
+    float: right;
+}
+
+.title-bg {
+    background-color: #cce5ff;
+    padding: 10px;
+}
+.div-entity {
+    border: 1px solid;
+    padding: 5px;
+    height: 450px;
+    overflow: overlay;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    /* position: absolute; */
+}
+p.entity-heading {
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 3px solid gray;
+
+}
+

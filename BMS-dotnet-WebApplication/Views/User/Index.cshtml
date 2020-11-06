@@ -2,6 +2,7 @@
 @model BMS_dotnet_WebApplication.Models.UserVM.UserProfileVM
 @{
     ViewData["Title"] = "Index";
+    var Id = 0;
 }
 
 
@@ -13,54 +14,76 @@
     }
 
 <div class="alert alert-primary name-box " role="alert">
-    <span>@Model.Name</span><br/>
-    <span>@Model.Email</span>
+    <span>@Model.Name</span><br />
+    <span>@Model.Email</span><br/>
+    <a class="btn btn-link" asp-controller="User" asp-action="LogOut">Logout</a>
 </div>
 
     
 <div class="clearfix" style="height: 100px"></div>
 
-    @*@if (Model.IsApproved)
-    {*@
-    <div class="row">
-        <div class="col-sm-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">My Books</h5>
-                    <a class="btn btn-secondary" asp-controller="Library" asp-action="SearchBook">Search For Book</a>
-                    <div class="div-entity">
-                        @foreach (var bookLent in Model.BooksNotReturned)
+    @if (Model.IsApproved)
+    {
+        <div class="row" style=" margin-top: 30px;">
+            <div class="col-sm-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">My Books</h5>
+                        <a class="btn btn-secondary" asp-controller="Library" asp-action="SearchBook">Search For Book</a>
+                        @if (Model.BooksNotReturned.Any(b => b.LentOn !=null))
                         {
-                            <div class="float-left">
-                                <p> Taken : @bookLent.LentOn</p>
-                                <p> Return Due On : @bookLent.LentOn.GetValueOrDefault().AddDays(15).ToString("dd-MM-yy")</p>
-                                <div>
-                                    @foreach (var book in bookLent.BooksLent)
-                                    {
-                                        <div class="float-left">
-                                            @Html.Partial("_BookCard", book)
+                            <div id="accordion" class="div-entity">
+                                @foreach (var bookLent in Model.BooksNotReturned.Where(b => b.LentOn !=null))
+                                {
+                                    Id = Id + 1;
+
+                                    <div class="card">
+                                        <div class="card-header" id="headingOne">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-link" data-toggle="collapse" data-target=@($"{"#collapse"}{Id}") aria-expanded="true" aria-controls=@($"{"collapse"}{Id}")>
+                                                    <b>Return due on  @bookLent.LentOn.GetValueOrDefault().AddDays(15).ToString("dd-MM-yy")</b>
+                                                </button>
+                                            </h5>
                                         </div>
-                                    }
-                                </div>
+                                        <div id=@($"{"collapse"}{Id}") class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                                            <div class="card-body">
+                                                @foreach (var book in bookLent.BooksLent)
+                                                {
+                                                    <div class="float-left">
+                                                        @Html.Partial("_BookCard", book)
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        </div>
+                                }
                             </div>
                         }
                     </div>
                 </div>
             </div>
-        </div>
-        @if (Model.AccessArea.Contains(UserLevel.AccessArea.LibraryAdmin))
-        {
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Admin and User Management</h5>
-                        <p class="card-text">Approve news yours &....</p>
-                       
-                        <a href="#" class="btn btn-secondary">Applications Waiting to be approve <span class="badge badge-secondary">5</span></a><br><br/>
-                        <a class="btn btn-secondary" asp-controller="Library" asp-action="LentOutRequest" asp-route-isRequest="true">New Book Lending Request <span class="badge badge-secondary">@Model.BookLendingRequests.Count(b => b.LentOn == null)</span></a> <br/><br/>
-                        <a class="btn btn-secondary" asp-controller="Library" asp-action="LentOutRequest" asp-route-isRequest="false">Book Return Due<span class="badge badge-secondary">@Model.BookLendingRequests.Count(b => b.LentOn <= DateTime.Today.AddDays(-14))</span></a>
+            @if (Model.AccessArea.Contains(UserLevel.AccessArea.LibraryAdmin))
+            {
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Library and User Management</h5>
+                            <p class="card-text">Approve news yours &....</p>
+
+                            <a class="btn btn-info" asp-controller="User" asp-action="RegistrationWaitingToBeApproved">Applications Waiting to be approve <span class="badge badge-secondary">@Model.RegistrationWaitingToBeApproved.Count</span></a> <br /><br />
+                            <a class="btn btn-info" asp-controller="Library" asp-action="LentOutRequest" asp-route-isRequest="true">New Book Lending Request <span class="badge badge-secondary">@Model.BookLendingRequests.Count(b => b.LentOn == null)</span></a> <br /><br />
+                            <a class="btn btn-info" asp-controller="Library" asp-action="LentOutRequest" asp-route-isRequest="false">Book Return Due<span class="badge badge-secondary">@Model.BookLendingRequests.Count(b => b.LentOn <= DateTime.Today.AddDays(-14))</span></a> <br/> <br/>
+                            
+                            <div class="form-group row container custom-box">
+                                @Html.ActionLink("Book Genre", "BooksCategory", "Library", null, new { @class = "btn btn-secondary" })
+                            </div>
+                            <div class="form-group row container custom-box">
+                                @Html.ActionLink("Register Books", "RegisterBook", "Library", null, new { @class = "btn btn-secondary" })
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
-</div>
+            }
+
+        </div>
+    }

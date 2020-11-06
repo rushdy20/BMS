@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BMS.BooksLibrary.BusinessLayer;
 using BMS.BooksLibrary.BusinessLayer.Models;
+using BMS.BusinessLayer.Constant;
 using BMS.BusinessLayer.Library.Models;
 using BMS_dotnet_WebApplication.Models.LibraryVM;
 using BMS_dotnet_WebApplication.Models.UserVM;
@@ -44,7 +45,7 @@ namespace BMS_dotnet_WebApplication.Controllers
 
         public async Task<IActionResult> BooksCategory()
         {
-            if (string.IsNullOrEmpty(LoggedInName()))
+            if (string.IsNullOrEmpty(LoggedInName())|| !IsAllowed(UserLevel.AccessArea.LibraryAdmin))
                 return RedirectToAction("Login", "User");
 
             _booksCategories = await GetBooksCategories();
@@ -59,7 +60,7 @@ namespace BMS_dotnet_WebApplication.Controllers
 
         public async Task<IActionResult> RegisterBook()
         {
-            if (string.IsNullOrEmpty(LoggedInName()))
+            if (string.IsNullOrEmpty(LoggedInName()) || !IsAllowed(UserLevel.AccessArea.LibraryAdmin))
                 return RedirectToAction("Login", "User");
 
             _booksCategories = await GetBooksCategories();
@@ -102,6 +103,7 @@ namespace BMS_dotnet_WebApplication.Controllers
                 Name = model.SelectedCategoryText,
                 CategoryId = model.SelectedCategory
             };
+            bookModel.MainImageFileName = model.MainImageFileName.FileName;
 
             var cachedBooks = await GetBooks();
             cachedBooks.Add(bookModel);
@@ -118,7 +120,7 @@ namespace BMS_dotnet_WebApplication.Controllers
             var cachedBooksCategories = _cacheManager.Get<List<BooksCategoryModel>>("BooksCategories");
             var s3 = UpdateCategoryInS3(cachedBooksCategories).Result;
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "User");
         }
 
         public ActionResult SaveBook()
@@ -129,7 +131,7 @@ namespace BMS_dotnet_WebApplication.Controllers
             var s3 = SaveBooksInS3(cachedBooksCategories).Result;
             if (s3)
                 _cacheManager.RemoveCache("LibraryBooks");
-            return RedirectToAction("Index");
+            return RedirectToAction("Index","User");
         }
 
         public async Task<IActionResult> SearchBook()
@@ -166,12 +168,12 @@ namespace BMS_dotnet_WebApplication.Controllers
             var books = DeserializeObject<List<BookModel>>(basket);
 
             await _booksLibraryManager.BookLendingRequest(BuildLendingRequest(books));
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "User");
         }
 
         public async Task<IActionResult> LentOutRequest(bool isRequest)
         {
-            if (string.IsNullOrEmpty(LoggedInName()))
+            if (string.IsNullOrEmpty(LoggedInName()) || !IsAllowed(UserLevel.AccessArea.LibraryAdmin))
                 return RedirectToAction("Login", "User");
             
             var model = new List<LendingRequestModel>(); 
@@ -193,15 +195,22 @@ namespace BMS_dotnet_WebApplication.Controllers
         [HttpPost]
         public async Task<IActionResult> LentOut(LendingRequestModel model)
         {
-            var user = HttpContext.Session.GetString("userProfile");
-            var userPf = DeserializeObject<UserProfileVM>(user);
+            if (string.IsNullOrEmpty(LoggedInName()) || !IsAllowed(UserLevel.AccessArea.LibraryAdmin))
+                return RedirectToAction("Login", "User");
+
+            var userPf = GetUserProfile();
 
             var lendingOutRequest = userPf.BookLendingRequests.FirstOrDefault(r => r.LendingRequestId == model.LendingRequestId);
             lendingOutRequest.LentOn = model.LentOn;
             lendingOutRequest.LentBy = userPf.Name;
+            lendingOutRequest.Note = model.Note;
+            lendingOutRequest.ReturnedOn = model.ReturnedOn;
 
             userPf.BookLendingRequests = userPf.BookLendingRequests.Where(r => r.LendingRequestId != model.LendingRequestId).ToList();
-            userPf.BookLendingRequests.Add(lendingOutRequest);
+            if (model.ReturnedOn != null)
+            {
+                userPf.BookLendingRequests.Add(lendingOutRequest);
+            }
 
             await _booksLibraryManager.BookLendingOut(lendingOutRequest);
 

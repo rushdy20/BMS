@@ -1,6 +1,6 @@
 ﻿@model BMS.BooksLibrary.BusinessLayer.Models.BookModel
 
-<div class="card" style="width: 18rem; margin: 20px">
+<div class="card" style="width: 18rem; margin: 20px; height: 375px;">
     <img src="@Url.Action("GetImage", new {filename = "booksimg/" + Model.MainImageFileName})" style="height: 125px;" alt="...">
     <div class="card-body">
         <h5 class="card-title"> @Model.Title</h5>

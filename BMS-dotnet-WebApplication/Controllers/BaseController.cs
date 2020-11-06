@@ -30,5 +30,11 @@ namespace BMS_dotnet_WebApplication.Controllers
             var userProfileVm = DeserializeObject<UserProfileVM>(userCache);
             return userProfileVm;
         }
+
+        internal bool IsAllowed(string accessArea)
+        {
+            var userProfile = GetUserProfile();
+            return userProfile.AccessArea.Contains(accessArea);
+        }
     }
 }

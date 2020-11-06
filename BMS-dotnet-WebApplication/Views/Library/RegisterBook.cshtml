@@ -5,102 +5,79 @@
 
 <h1>Register Book</h1>
 
-@using (Html.BeginForm("AddBooks", "Library", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("AddBooks", "Library", FormMethod.Post, new {enctype = "multipart/form-data"}))
 {
-
     <div class="form-group">
         @Html.LabelFor(m => m.SelectedCategory)
-        @Html.DropDownListFor(m => m.SelectedCategory, Model.Categories, "Select Category", new { @class = "form-control" })
+        @Html.DropDownListFor(m => m.SelectedCategory, Model.Categories, "Select Category", new {@class = "form-control"})
         @Html.ValidationMessageFor(m => m.SelectedCategory)
         @Html.HiddenFor(m => m.SelectedCategoryText)
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.Barcode)
-        @Html.TextBoxFor(m => m.Barcode, new { @class = "form-control" })
+        @Html.TextBoxFor(m => m.Barcode, new {@class = "form-control"})
         @Html.ValidationMessageFor(m => m.Barcode)
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.Title)
-        @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+        @Html.TextBoxFor(m => m.Title, new {@class = "form-control"})
         @Html.ValidationMessageFor(m => m.Title)
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.Description)
-        @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+        @Html.TextBoxFor(m => m.Description, new {@class = "form-control"})
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.NumberOfCopies)
-        @Html.TextBoxFor(m => m.NumberOfCopies, new { @class = "form-control" })
+        @Html.TextBoxFor(m => m.NumberOfCopies, new {@class = "form-control"})
         @Html.ValidationMessageFor(m => m.NumberOfCopies)
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.Publisher)
-        @Html.TextBoxFor(m => m.Publisher, new { @class = "form-control" })
+        @Html.TextBoxFor(m => m.Publisher, new {@class = "form-control"})
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.Comments)
-        @Html.TextBoxFor(m => m.Comments, new { @class = "form-control" })
+        @Html.TextBoxFor(m => m.Comments, new {@class = "form-control"})
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.MainImageFileName)
-        @Html.TextBoxFor(m => m.MainImageFileName, new { Type = "file" })
+        @Html.TextBoxFor(m => m.MainImageFileName, new {Type = "file"})
     </div>
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Register</button>
     </div>
-                                                                                                                                                                         
+
     @if (Model.NewsBooks.Any())
     {
-        <div class="form-group">
-            Books to be saved
-            <table class="table table-responsive">
-                <thead>
-                    <tr>
-                        <th>BarCode</th>
-                        <th>Category</th>
-                        <th>Title</th>
-                        <th>Image</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var book in Model.NewsBooks)
-                    {
-                        <tr>
-                            <td>@book.Barcode</td>
-                            <td>@book.BookCategory.Name</td>
-                            <td>@book.Title</td>
-                            <td>
-                                <img src="@Url.Action("GetImage",new {filename = "booksimg/"  + @book.MainImageFileName })"  style=" width: 75px; height: 125px;" alt="...">
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+        @foreach (var book in Model.NewsBooks)
+        {
+            <div class="float-left">
+                @Html.Partial("_BookCard", book)
+            </div>
+        }
 
-
-
-        </div>
         <div class="form-group marginT32">
-            @Html.ActionLink("Save", "SaveBook", "Library", null, new { @class = "btn btn-success" })
+            @Html.ActionLink("Save", "SaveBook", "Library", null, new {@class = "btn btn-success"})
         </div>
     }
-
 }
 
 @section Scripts
 {
-    <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial"/>
     <script>
-        $("#SelectedCategory").on("change", function () {
-            $("#SelectedCategoryText").val($(this).find("option:selected").text());
-        });
+        $("#SelectedCategory").on("change",
+            function() {
+                $("#SelectedCategoryText").val($(this).find("option:selected").text());
+            });
     </script>
 
 }

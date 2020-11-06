@@ -56,6 +56,9 @@ namespace BMS_dotnet_WebApplication.Models.UserVM
 
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
+
+        public List<string> AllAccessAreas { get; set; }
+        public List<string> AllowedAccessAreas { get; set; }
         
     }
 }

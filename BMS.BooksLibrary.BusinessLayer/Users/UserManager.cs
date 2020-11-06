@@ -79,9 +79,9 @@ namespace BMS.BusinessLayer.Users
 
             if (cachedUsers != null && cachedUsers.Any()) return cachedUsers;
 
-            var userFileFromS3Json =
-                "[{\"EmailAddress\":\"rushdy@yahoo.co.uk\",\"Password\":\"Yameena20\",\"FirstName\":\"Rushdy\",\"Surname\":\"Najath\",\"DateOfBirth\":\"2020-10-28T00:00:00\",\"Gender\":\"M\",\"AddressLine1\":\"7 Holly Road\",\"AddressLine2\":\"Hansworth\",\"AddressLine3\":\"Birminghamd\",\"PostCode\":\"B\",\"PhoneNumber\":null,\"IsApproved\":false}]";
-            //await _s3Bucket.GetFileFromS3($"{UserFolder}/{UserFileName}");
+            var userFileFromS3Json = await _s3Bucket.GetFileFromS3($"{UserFolder}/{UserFileName}");
+            //"[{\"EmailAddress\":\"rushdy@yahoo.co.uk\",\"Password\":\"Yameena20\",\"FirstName\":\"Rushdy\",\"Surname\":\"Najath\",\"DateOfBirth\":\"2020-10-28T00:00:00\",\"Gender\":\"M\",\"AddressLine1\":\"7 Holly Road\",\"AddressLine2\":\"Hansworth\",\"AddressLine3\":\"Birminghamd\",\"PostCode\":\"B\",\"PhoneNumber\":null,\"IsApproved\":false}]";
+            
 
             if (string.IsNullOrEmpty(userFileFromS3Json))
                 return new List<RegistrationModel>();

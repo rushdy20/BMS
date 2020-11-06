@@ -1,0 +1,12 @@
+C:\Learning\BMS\BMS.BooksLibrary.BusinessLayer\bin\Debug\netcoreapp3.1\linux-x64\BMS.BusinessLayer.deps.json
+C:\Learning\BMS\BMS.BooksLibrary.BusinessLayer\bin\Debug\netcoreapp3.1\linux-x64\BMS.BusinessLayer.dll
+C:\Learning\BMS\BMS.BooksLibrary.BusinessLayer\bin\Debug\netcoreapp3.1\linux-x64\BMS.BusinessLayer.pdb
+C:\Learning\BMS\BMS.BooksLibrary.BusinessLayer\bin\Debug\netcoreapp3.1\linux-x64\BMS.AWS.dll
+C:\Learning\BMS\BMS.BooksLibrary.BusinessLayer\bin\Debug\netcoreapp3.1\linux-x64\BMS.AWS.pdb
+C:\Learning\BMS\BMS.BooksLibrary.BusinessLayer\obj\Debug\netcoreapp3.1\linux-x64\BMS.BusinessLayer.csprojAssemblyReference.cache
+C:\Learning\BMS\BMS.BooksLibrary.BusinessLayer\obj\Debug\netcoreapp3.1\linux-x64\BMS.BusinessLayer.AssemblyInfoInputs.cache
+C:\Learning\BMS\BMS.BooksLibrary.BusinessLayer\obj\Debug\netcoreapp3.1\linux-x64\BMS.BusinessLayer.AssemblyInfo.cs
+C:\Learning\BMS\BMS.BooksLibrary.BusinessLayer\obj\Debug\netcoreapp3.1\linux-x64\BMS.BusinessLayer.csproj.CoreCompileInputs.cache
+C:\Learning\BMS\BMS.BooksLibrary.BusinessLayer\obj\Debug\netcoreapp3.1\linux-x64\BMS.BusinessLayer.csproj.CopyComplete
+C:\Learning\BMS\BMS.BooksLibrary.BusinessLayer\obj\Debug\netcoreapp3.1\linux-x64\BMS.BusinessLayer.dll
+C:\Learning\BMS\BMS.BooksLibrary.BusinessLayer\obj\Debug\netcoreapp3.1\linux-x64\BMS.BusinessLayer.pdb

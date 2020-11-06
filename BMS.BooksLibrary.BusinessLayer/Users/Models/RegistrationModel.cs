@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace BMS.BusinessLayer.Users.Models
 {
@@ -16,5 +17,6 @@ namespace BMS.BusinessLayer.Users.Models
         public string PostCode { get; set; }
         public string PhoneNumber { get; set; }
         public bool IsApproved { get; set; }
+        public List<string> AllowedAccessAreas { get; set; }
     }
 }

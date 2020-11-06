@@ -1,0 +1,110 @@
+﻿@model List<BMS_dotnet_WebApplication.Models.UserVM.SignUpViewModel>
+@{
+    ViewData["Title"] = "RegistrationWaitingToBeApproved";
+}
+
+
+<h1>Registration Waiting To Be Approved</h1>
+
+@{
+
+    var Id = 0;
+}
+
+<div id="accordion">
+    @foreach (var registration in Model)
+    {
+        Id = Id + 1;
+
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target=@($"{"#collapse"}{Id}") aria-expanded="true" aria-controls=@($"{"collapse"}{Id}")>
+                        Registration Request of @($"{registration.FirstName} {registration.Surname}") 
+                    </button>
+                </h5>
+            </div>
+
+            <div id=@($"{"collapse"}{Id}") class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body">
+                    @using (Html.BeginForm("ApproveRegistration", "User", FormMethod.Post))
+                    {
+                        <div>
+                            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group row col-md-4">
+                            @Html.LabelFor(m => m[0].EmailAddress)
+                            @Html.Label( registration.EmailAddress)
+                            @Html.Hidden("EmailAddress", registration.EmailAddress)
+                            
+                        </div>
+                        <div class="form-group row col-md-4">
+                            @Html.LabelFor(m => m[0].FirstName)
+                            @Html.TextBox("FirstName", registration.FirstName, new { @class = "form-control"})
+
+                        </div>
+
+                        <div class="form-group row col-md-4">
+                            @Html.LabelFor(m => m[0].Surname)
+                            @Html.TextBox("Surname", registration.Surname, new { @class = "form-control"})
+
+                        </div>
+
+                        <div class="form-group row col-md-4">
+                            @Html.LabelFor(m => m[0].Gender)
+                            @Html.TextBox("Gender", registration.Gender, new { @class = "form-control"})
+
+                        </div>
+
+                        <div class="form-group row col-md-4 ">
+                            @Html.LabelFor(m => m[0].DateOfBirth)
+                            @Html.TextBox("DateOfBirth", registration.DateOfBirth.ToString("D"), new { @class = "form-control" })
+
+                        </div>
+
+                        <div class="form-group row col-md-4">
+                            @Html.LabelFor(m => m[0].AddressLine1)
+                            @Html.TextBox("AddressLine1", registration.AddressLine1, new { @class = "form-control" })
+                        </div>
+
+                        <div class="form-group row col-md-4">
+                            @Html.LabelFor(m => m[0].AddressLine2)
+                            @Html.TextBox("AddressLine2", registration.AddressLine2, new { @class = "form-control" })
+
+                        </div>
+
+                        <div class="form-group row col-md-4">
+                            @Html.LabelFor(m => m[0].AddressLine3)
+                            @Html.TextBox("AddressLine3", registration.AddressLine3, new { @class = "form-control" })
+                            @Html.Hidden("Password", registration.Password, new { @class = "form-control" })
+
+                        </div>
+
+                        <div class="form-group row col-md-4">
+                            @Html.LabelFor(m => m[0].PostCode)
+                            @Html.TextBox("PostCode", registration.PostCode, new { @class = "form-control" })
+
+                        </div>
+
+                        <div class="form-group row col-md-4">
+                            @Html.LabelFor(m => m[0].PhoneNumber)
+                            @Html.TextBox("PhoneNumber", registration.PhoneNumber, new { @class = "form-control" })
+
+                        </div>
+
+                        <div class="form-group row col-md-4">
+                            @Html.LabelFor(m => m[0].AllowedAccessAreas)
+
+                            @Html.DropDownList("AllowedAccessAreas", (List<SelectListItem>)ViewBag.AccessAreas,"Select Access Area", new { multiple = "multiple", @class = "form-control" })
+
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

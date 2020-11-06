@@ -1,0 +1,9 @@
+C:\Learning\BMS\BMS.AWS\bin\Debug\netcoreapp3.1\linux-x64\BMS.AWS.deps.json
+C:\Learning\BMS\BMS.AWS\bin\Debug\netcoreapp3.1\linux-x64\BMS.AWS.dll
+C:\Learning\BMS\BMS.AWS\bin\Debug\netcoreapp3.1\linux-x64\BMS.AWS.pdb
+C:\Learning\BMS\BMS.AWS\obj\Debug\netcoreapp3.1\linux-x64\BMS.AWS.csprojAssemblyReference.cache
+C:\Learning\BMS\BMS.AWS\obj\Debug\netcoreapp3.1\linux-x64\BMS.AWS.AssemblyInfoInputs.cache
+C:\Learning\BMS\BMS.AWS\obj\Debug\netcoreapp3.1\linux-x64\BMS.AWS.AssemblyInfo.cs
+C:\Learning\BMS\BMS.AWS\obj\Debug\netcoreapp3.1\linux-x64\BMS.AWS.csproj.CoreCompileInputs.cache
+C:\Learning\BMS\BMS.AWS\obj\Debug\netcoreapp3.1\linux-x64\BMS.AWS.dll
+C:\Learning\BMS\BMS.AWS\obj\Debug\netcoreapp3.1\linux-x64\BMS.AWS.pdb

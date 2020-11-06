@@ -19,11 +19,11 @@
                 </h5>
             </div>
 
-            <div id=@($"{"collapse"}{Id}") class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+            <div id=@($"{"collapse"}{Id}") class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                 <div class="card-body">
                     @using (Html.BeginForm("LentOut", "Library", FormMethod.Post))
                     {
-                        <div>
+                        <div class="form-group row">
                             @foreach (var t in bookRequest.BooksLent)
                             {
                                 
@@ -34,8 +34,17 @@
                             }
                         </div>
 
-                        <div class="form-group">
-                            @Html.TextBox("LentOn", GetDate(bookRequest.LentOn), new { @class = "form-control LentOn " })
+                        <div class="form-group row">
+                            <div class="col-md-4">
+                                @Html.Label("LendtOn", "Lent On")
+                                @Html.TextBox("LentOn", GetDate(bookRequest.LentOn), new {@class = "form-control LentOn "})
+
+                            </div>
+                            <div class="col-md-4">
+                                @Html.Label("ReturnedOn", "Returned On")
+                                @Html.TextBox("ReturnedOn","", new { @class = "form-control ReturnedOn " })
+
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -62,6 +71,9 @@
     <script>
         $(function () {
             $(".LentOn").datepicker({
+                dateFormat: 'dd-MM-yy'
+            });
+            $(".ReturnedOn").datepicker({
                 dateFormat: 'dd-MM-yy'
             });
         });

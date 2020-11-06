@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Amazon.Runtime.Internal;
 using BMS.AWS;
 using BMS.BooksLibrary.BusinessLayer.Models;
 using BMS.BusinessLayer.Library.Models;
@@ -18,6 +17,7 @@ namespace BMS.BooksLibrary.BusinessLayer
         private const string LibraryBookFolder = @"books";
         private const string CategoryFileName = "BooksCategory.json";
         private const string BooksList = "BooksLisits.json";
+        private const string ArchiverLentOutFile = "ArchiverLentOut.json";
         private const string BookLentFile = "BookLent.json";
 
         private const string BookCategoryCacheKey = "BooksCategories";
@@ -79,7 +79,7 @@ namespace BMS.BooksLibrary.BusinessLayer
             var jsonString = JsonSerializer.Serialize(allBooks.OrderBy(o => o.BookCategory.CategoryId));
             try
             {
-                _cacheManager.Set(BooksCacheKey, allBooks.OrderBy(o => o.BookCategory.CategoryId));
+                _cacheManager.Set(BooksCacheKey, allBooks);
                 return await _s3Bucket.SaveFileAsync($"{LibraryCategoryFolder}/{LibraryBookFolder}/{BooksList}", jsonString);
             }
             catch (Exception e)
@@ -140,10 +140,20 @@ namespace BMS.BooksLibrary.BusinessLayer
 
         public async Task<bool> BookLendingOut(LendingRequestModel requestModel)
         {
+            
+
             var getAllNewLendingRequest = await GetNewLendingRequests();
 
             getAllNewLendingRequest = getAllNewLendingRequest.Where(r => r.LendingRequestId != requestModel.LendingRequestId).ToList();
-            getAllNewLendingRequest.Add(requestModel);
+
+            if (requestModel.ReturnedOn != null)
+            {
+                await AddToLendOutArchiver(requestModel);
+            }
+            else
+            {
+                getAllNewLendingRequest.Add(requestModel);
+            }
 
             var jsonString = JsonSerializer.Serialize(getAllNewLendingRequest.OrderBy(o => o.RequestedDate));
             try
@@ -158,6 +168,8 @@ namespace BMS.BooksLibrary.BusinessLayer
             }
         }
 
+        
+
         public async Task<List<LendingRequestModel>> BooksOnLoan(string email)
         {
             var getAllLentBooks = await GetAllLentBooks();
@@ -171,14 +183,31 @@ namespace BMS.BooksLibrary.BusinessLayer
           return allLentBooks;
         }
 
+        private async Task AddToLendOutArchiver(LendingRequestModel requestModel)
+        {
+            var lentBooksFileFromS3Json = await _s3Bucket.GetFileFromS3($"{LibraryCategoryFolder}/{LibraryBookFolder}/{ArchiverLentOutFile}");
+
+            var lentBooksFromS3 = new List<LendingRequestModel>();
+            if (!string.IsNullOrEmpty(lentBooksFileFromS3Json))
+            {
+                lentBooksFromS3 = DeserializeObject<List<LendingRequestModel>>(lentBooksFileFromS3Json);
+            }
+            lentBooksFromS3.Add(requestModel);
+
+            var jsonString = JsonSerializer.Serialize(lentBooksFromS3.OrderBy(o => o.RequestedDate));
+            await _s3Bucket.SaveFileAsync($"{LibraryCategoryFolder}/{LibraryBookFolder}/{ArchiverLentOutFile}", jsonString);
+
+        }
+
         private async Task<List<BookModel>> GetAllTheBooks()
         {
             var cachedBooks = _cacheManager.Get<List<BookModel>>(BooksCacheKey);
 
             if (cachedBooks != null && cachedBooks.Any()) return cachedBooks;
 
-            var booksFileFromS3Json = "[{\"BookCategory\":{\"CategoryId\":\"3945\",\"Name\":\"Fantasy\",\"Comment\":null},\"Barcode\":\"2525252\",\"Title\":\"Fantasy- world\",\"Publisher\":null,\"MainImageFileName\":\"fl5.png\",\"NumberOfCopies\":10,\"Description\":\"asdfsdaf\",\"Comments\":null},{\"BookCategory\":{\"CategoryId\":\"3945\",\"Name\":\"Fantasy\",\"Comment\":null},\"Barcode\":\"25252365\",\"Title\":\"test book\",\"Publisher\":\"sdgdsfgs\",\"MainImageFileName\":\"image (1).png\",\"NumberOfCopies\":10,\"Description\":\"tes\",\"Comments\":null},{\"BookCategory\":{\"CategoryId\":\"5160\",\"Name\":\"Action and Adventure\",\"Comment\":null},\"Barcode\":\"12300000\",\"Title\":\"Action-1\",\"Publisher\":null,\"MainImageFileName\":\"image (1).png\",\"NumberOfCopies\":10,\"Description\":\"Action-1\",\"Comments\":null},{\"BookCategory\":{\"CategoryId\":\"5160\",\"Name\":\"Action and Adventure\",\"Comment\":null},\"Barcode\":\"002020200\",\"Title\":\"Action-2\",\"Publisher\":\"asdf\",\"MainImageFileName\":\"fl3.jpg\",\"NumberOfCopies\":5,\"Description\":null,\"Comments\":null}]";
-            // await _s3Bucket.GetFileFromS3($"{LibraryCategoryFolder}/{LibraryBookFolder}/{BooksList}");
+            var booksFileFromS3Json =  await _s3Bucket.GetFileFromS3($"{LibraryCategoryFolder}/{LibraryBookFolder}/{BooksList}");
+
+            //"[{\"BookCategory\":{\"CategoryId\":\"3945\",\"Name\":\"Fantasy\",\"Comment\":null},\"Barcode\":\"2525252\",\"Title\":\"Fantasy- world\",\"Publisher\":null,\"MainImageFileName\":\"fl5.png\",\"NumberOfCopies\":10,\"Description\":\"asdfsdaf\",\"Comments\":null},{\"BookCategory\":{\"CategoryId\":\"3945\",\"Name\":\"Fantasy\",\"Comment\":null},\"Barcode\":\"25252365\",\"Title\":\"test book\",\"Publisher\":\"sdgdsfgs\",\"MainImageFileName\":\"image (1).png\",\"NumberOfCopies\":10,\"Description\":\"tes\",\"Comments\":null},{\"BookCategory\":{\"CategoryId\":\"5160\",\"Name\":\"Action and Adventure\",\"Comment\":null},\"Barcode\":\"12300000\",\"Title\":\"Action-1\",\"Publisher\":null,\"MainImageFileName\":\"image (1).png\",\"NumberOfCopies\":10,\"Description\":\"Action-1\",\"Comments\":null},{\"BookCategory\":{\"CategoryId\":\"5160\",\"Name\":\"Action and Adventure\",\"Comment\":null},\"Barcode\":\"002020200\",\"Title\":\"Action-2\",\"Publisher\":\"asdf\",\"MainImageFileName\":\"fl3.jpg\",\"NumberOfCopies\":5,\"Description\":null,\"Comments\":null}]";
 
             if (string.IsNullOrEmpty(booksFileFromS3Json))
                 return new List<BookModel>();
@@ -192,99 +221,99 @@ namespace BMS.BooksLibrary.BusinessLayer
         private async Task<List<LendingRequestModel>> GetAllLentBooks()
         {
 
-            return new List<LendingRequestModel>
-            {
-                new LendingRequestModel
-                {
-                    RequestedBy = "Rushdy Najath",
-                    RequestedDate = DateTime.Today.AddDays(-2),
-                    RequestedEmail = "rushdy@yahoo.co.uk",
-                    LentOn = DateTime.Today.AddDays(-5),
-                    Note = "All the books were collected",
-                    BooksLent = new AutoConstructedList<BookModel>
-                    {
-                        new BookModel
-                        {
-                            Barcode = "123456",
-                            Title = "test-123",
-                            MainImageFileName = "thumbnail.jfif"
-                        },
-                        new BookModel
-                        {
-                            Barcode = "120000",
-                            Title = "test-000",
-                            MainImageFileName = "thumbnail.jfif"
-                        }
-                    }
-                },
-                new LendingRequestModel
-                {
-                    RequestedBy = "Rushdy Najath",
-                    RequestedDate = DateTime.Today.AddDays(-5),
-                    RequestedEmail = "rushdy@yahoo.co.uk",
-                    LentOn = DateTime.Today.AddDays(-2),
-                    Note = "Book second-123 was collected from branch-1 and the rest from branch-2 ",
-                    BooksLent = new AutoConstructedList<BookModel>
-                    {
-                        new BookModel
-                        {
-                            Barcode = "8888",
-                            Title = "second-123",
-                            MainImageFileName = "thumbnail.jfif"
-                        },
-                        new BookModel
-                        {
-                            Barcode = "9990000",
-                            Title = "second-000",
-                            MainImageFileName = "thumbnail.jfif"
-                        }
-                    }
-                },
-                new LendingRequestModel
-                {
-                    LendingRequestId = 1258,
-                    RequestedBy = "Rushdy Najath",
-                    RequestedDate = DateTime.Today.AddDays(-5),
-                    RequestedEmail = "rushdy@yahoo.co.uk",
-                    BooksLent = new AutoConstructedList<BookModel>
-                    {
-                        new BookModel
-                        {
-                            Barcode = "8888",
-                            Title = "second-123",
-                            MainImageFileName = "thumbnail.jfif"
-                        },
-                        new BookModel
-                        {
-                            Barcode = "9990000",
-                            Title = "second-000",
-                            MainImageFileName = "thumbnail.jfif"
-                        }
-                    }
-                },
-                new LendingRequestModel
-                {
-                    LendingRequestId = 9528,
-                    RequestedBy = "Yameena Rushdy",
-                    RequestedDate = DateTime.Today.AddDays(-5),
-                    RequestedEmail = "NAJATH@yahoo.co.uk",
-                    BooksLent = new AutoConstructedList<BookModel>
-                    {
-                        new BookModel
-                        {
-                            Barcode = "8888",
-                            Title = "second-123",
-                            MainImageFileName = "thumbnail.jfif"
-                        },
-                        new BookModel
-                        {
-                            Barcode = "9990000",
-                            Title = "second-000",
-                            MainImageFileName = "thumbnail.jfif"
-                        }
-                    }
-                }
-            };
+            //return new List<LendingRequestModel>
+            //{
+            //    new LendingRequestModel
+            //    {
+            //        RequestedBy = "Rushdy Najath",
+            //        RequestedDate = DateTime.Today.AddDays(-2),
+            //        RequestedEmail = "rushdy@yahoo.co.uk",
+            //        LentOn = DateTime.Today.AddDays(-5),
+            //        Note = "All the books were collected",
+            //        BooksLent = new AutoConstructedList<BookModel>
+            //        {
+            //            new BookModel
+            //            {
+            //                Barcode = "123456",
+            //                Title = "test-123",
+            //                MainImageFileName = "thumbnail.jfif"
+            //            },
+            //            new BookModel
+            //            {
+            //                Barcode = "120000",
+            //                Title = "test-000",
+            //                MainImageFileName = "thumbnail.jfif"
+            //            }
+            //        }
+            //    },
+            //    new LendingRequestModel
+            //    {
+            //        RequestedBy = "Rushdy Najath",
+            //        RequestedDate = DateTime.Today.AddDays(-5),
+            //        RequestedEmail = "rushdy@yahoo.co.uk",
+            //        LentOn = DateTime.Today.AddDays(-2),
+            //        Note = "Book second-123 was collected from branch-1 and the rest from branch-2 ",
+            //        BooksLent = new AutoConstructedList<BookModel>
+            //        {
+            //            new BookModel
+            //            {
+            //                Barcode = "8888",
+            //                Title = "second-123",
+            //                MainImageFileName = "thumbnail.jfif"
+            //            },
+            //            new BookModel
+            //            {
+            //                Barcode = "9990000",
+            //                Title = "second-000",
+            //                MainImageFileName = "thumbnail.jfif"
+            //            }
+            //        }
+            //    },
+            //    new LendingRequestModel
+            //    {
+            //        LendingRequestId = 1258,
+            //        RequestedBy = "Rushdy Najath",
+            //        RequestedDate = DateTime.Today.AddDays(-5),
+            //        RequestedEmail = "rushdy@yahoo.co.uk",
+            //        BooksLent = new AutoConstructedList<BookModel>
+            //        {
+            //            new BookModel
+            //            {
+            //                Barcode = "8888",
+            //                Title = "second-123",
+            //                MainImageFileName = "thumbnail.jfif"
+            //            },
+            //            new BookModel
+            //            {
+            //                Barcode = "9990000",
+            //                Title = "second-000",
+            //                MainImageFileName = "thumbnail.jfif"
+            //            }
+            //        }
+            //    },
+            //    new LendingRequestModel
+            //    {
+            //        LendingRequestId = 9528,
+            //        RequestedBy = "Yameena Rushdy",
+            //        RequestedDate = DateTime.Today.AddDays(-5),
+            //        RequestedEmail = "NAJATH@yahoo.co.uk",
+            //        BooksLent = new AutoConstructedList<BookModel>
+            //        {
+            //            new BookModel
+            //            {
+            //                Barcode = "8888",
+            //                Title = "second-123",
+            //                MainImageFileName = "thumbnail.jfif"
+            //            },
+            //            new BookModel
+            //            {
+            //                Barcode = "9990000",
+            //                Title = "second-000",
+            //                MainImageFileName = "thumbnail.jfif"
+            //            }
+            //        }
+            //    }
+            //};
 
             var cachedLentBooks = _cacheManager.Get<List<LendingRequestModel>>(BooksLentCacheKey);
 

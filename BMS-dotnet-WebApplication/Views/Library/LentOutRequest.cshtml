@@ -1,20 +1,31 @@
 ﻿@model List<BMS.BusinessLayer.Library.Models.LendingRequestModel>
 
 @{
-
+    var isRequest =(bool)ViewBag.isRequest;
     var Id = 0;
-}
+    var DueNow = "";
 
+}
+<h1>Books lent out request</h1>
 <div id="accordion">
     @foreach (var bookRequest in Model)
     {
         Id = Id + 1;
+        DueNow = DateTime.Today > bookRequest.LentOn?.AddDays(14) ? "DueNow" : "";
 
         <div class="card">
             <div class="card-header" id="headingOne">
                 <h5 class="mb-0">
-                    <button class="btn btn-link" data-toggle="collapse" data-target=@($"{"#collapse"}{Id}") aria-expanded="true" aria-controls=@($"{"collapse"}{Id}")>
-                        @bookRequest.RequestedBy has requested for @bookRequest.BooksLent.Count Books
+                    <button class="btn btn-link accordClick " id=@($"{Id}") data-toggle="collapse" data-target=@($"{"#collapse"}{Id}") aria-expanded="true" aria-controls=@($"{"collapse"}{Id}")>
+                       @if (isRequest)
+                       {
+                        <span> @bookRequest.RequestedBy has requested for @bookRequest.BooksLent.Count Books</span>
+                       }
+                       else
+                       {
+                          <span class="@DueNow">  @bookRequest.BooksLent.Count Books have been lent to @bookRequest.RequestedBy</span>
+                       }
+
                     </button>
                 </h5>
             </div>
@@ -26,35 +37,42 @@
                         <div class="form-group row">
                             @foreach (var t in bookRequest.BooksLent)
                             {
-                                
-                            <div class="float-left">
-                                @Html.Partial("_BookCard", t)
-                            </div>
-                               
+
+                                <div class="float-left">
+                                    @Html.Partial("_BookCard", t)
+                                </div>
+
                             }
                         </div>
 
                         <div class="form-group row">
                             <div class="col-md-4">
-                                @Html.Label("LendtOn", "Lent On")
-                                @Html.TextBox("LentOn", GetDate(bookRequest.LentOn), new {@class = "form-control LentOn "})
+                                @Html.Label($"LentOn{Id}", "Lent On")
+                                @Html.TextBox($"LentOn{Id}", GetDate(bookRequest.LentOn), new { @class = $"form-control LentOn", autocomplete = "off" })
 
                             </div>
                             <div class="col-md-4">
-                                @Html.Label("ReturnedOn", "Returned On")
-                                @Html.TextBox("ReturnedOn","", new { @class = "form-control ReturnedOn " })
+                                @Html.Label($"ReturnedOn{Id}", "Returned On")
+                                @Html.TextBox($"ReturnedOn{Id}", "", new { @class = $"form-control ReturnedOn", autocomplete = "off" })
 
                             </div>
                         </div>
-
+                        <div class="form-check">
+                            @Html.CheckBox("IsReadyToCollect",@bookRequest.IsReadyToCollect, new { @class = "form-check-input" })
+                           <label class="form-check-label" for="IsReadyToCollect">Ready to Collect</label>
+                        </div>
                         <div class="form-group">
-                            @Html.TextArea("Note", @bookRequest.Note, new { @class = "form-control" })
+                            @Html.Label("Note", "Note")
+                            @Html.TextArea("Note", @bookRequest.Note, new {@class = "form-control"})
                         </div>
                         @Html.Hidden("RequestedBy", bookRequest.RequestedBy)
                         @Html.Hidden("RequestedBy", bookRequest.RequestedBy)
                         @Html.Hidden("RequestedEmail", bookRequest.RequestedEmail)
                         @Html.Hidden("LendingRequestId", bookRequest.LendingRequestId)
-                        <button type="submit" class="btn btn-primary">Register</button>
+                        @Html.Hidden("LentOn", "")
+                        @Html.Hidden("ReturnedOn", "")
+
+                        <button type="submit" class="btn btn-primary submit">Register</button>
                     }
                 </div>
             </div>
@@ -64,29 +82,44 @@
 
 @section Scripts
 {
-    <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial"/>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
-        $(function () {
-            $(".LentOn").datepicker({
-                dateFormat: 'dd-MM-yy'
+       
+
+        $('.accordClick').click(function() {
+           
+            var id = $(this).attr("id");
+
+            $("#LentOn" + id).datepicker({
+                dateFormat: 'dd-M-yy'
             });
-            $(".ReturnedOn").datepicker({
-                dateFormat: 'dd-MM-yy'
+
+            $("#ReturnedOn" + id).datepicker({
+                dateFormat: 'dd-M-yy'
             });
+
+        });
+
+        $('.submit').click(function() {
+            $(this).parent().find("#LentOn").val($(this).parent().find('.LentOn').val());
+            $(this).parent().find("#ReturnedOn").val($(this).parent().find('.ReturnedOn').val());
         });
     </script>
 }
 
 @functions{
-    public string GetDate(DateTime? date)
+
+    private string GetDate(DateTime? date)
     {
         if (date == null)
-            return DateTime.Today.ToString("dd-MM-yy");
-        else
-           
-            return date.Value.ToString("dd-MM-yy");
+            return null;
+
+        var date1 = (DateTime) date;
+        return date1.ToString("dd-M-yy");
+
+        
     }
 }

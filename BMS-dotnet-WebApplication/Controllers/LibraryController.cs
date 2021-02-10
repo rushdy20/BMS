@@ -12,6 +12,7 @@ using BMS_dotnet_WebApplication.Models.UserVM;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using static Newtonsoft.Json.JsonConvert;
 
 namespace BMS_dotnet_WebApplication.Controllers
@@ -168,6 +169,12 @@ namespace BMS_dotnet_WebApplication.Controllers
             var books = DeserializeObject<List<BookModel>>(basket);
 
             await _booksLibraryManager.BookLendingRequest(BuildLendingRequest(books));
+
+            var getFromSession = GetUserProfile();
+            getFromSession?.BookLendingRequests?.Add(BuildLendingRequest(books));
+            var str = JsonConvert.SerializeObject(getFromSession);
+            HttpContext.Session.SetString("userProfile", str);
+
             return RedirectToAction("Index", "User");
         }
 
@@ -189,6 +196,8 @@ namespace BMS_dotnet_WebApplication.Controllers
 
             model = isRequest ? model.Where(r => r.LentOn == null).ToList() : model.Where(r => r.LentOn != null).ToList();
 
+            ViewBag.isRequest = isRequest;
+
             return View(model);
         }
 
@@ -205,8 +214,13 @@ namespace BMS_dotnet_WebApplication.Controllers
             lendingOutRequest.LentBy = userPf.Name;
             lendingOutRequest.Note = model.Note;
             lendingOutRequest.ReturnedOn = model.ReturnedOn;
+            lendingOutRequest.IsReadyToCollect = model.IsReadyToCollect;
 
-            userPf.BookLendingRequests = userPf.BookLendingRequests.Where(r => r.LendingRequestId != model.LendingRequestId).ToList();
+            if (model.LentOn != null)
+            {
+                userPf.BookLendingRequests = userPf.BookLendingRequests.Where(r => r.LendingRequestId != model.LendingRequestId).ToList();
+            }
+            
             if (model.ReturnedOn != null)
             {
                 userPf.BookLendingRequests.Add(lendingOutRequest);
@@ -241,7 +255,12 @@ namespace BMS_dotnet_WebApplication.Controllers
 
             var loggedInName = LoggedInName();
 
-            var basket = _cacheManager.Get<List<BookModel>>(loggedInName) ?? new List<BookModel>();
+            var basketJson = HttpContext.Session.GetString(loggedInName);
+            var basket = new List<BookModel>();
+            if (!string.IsNullOrWhiteSpace(basketJson))
+            {
+                basket = DeserializeObject<List<BookModel>>(basketJson);
+            }
 
             basket.Add(model);
 

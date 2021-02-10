@@ -1,0 +1,89 @@
+﻿@model BMS_dotnet_WebApplication.Models.MagazineVM.CurrentEditionVM
+@{
+    ViewData["Title"] = "CurrentEdition";
+    var currentHeading = string.Empty;
+}
+
+
+<h1>@Model.Magazine.Name</h1>
+
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-magazine-menu border-bottom box-shadow mb-3">
+    <div class="container">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".magazie-collapse" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse magazie-collapse">
+            <ul class="navbar-nav flex-grow-1">
+                @foreach (var category in Model.ContentCategories)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="#@category.CategoryId">
+                            @category.Name
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</nav>
+@*<div class="wallpaper">
+    <img src="@Url.Action("GetImage", new {filename = $"{Model.Magazine.FolderName}/{Model.Magazine.Image}", section = "magazine"})" style="width: 80%; margin-left: 20%;" alt="...">
+
+</div>*@
+
+<div class="form-group ">
+    @foreach (var category in Model.ContentCategories)
+    {
+    <div class="row NewNewsFeedSeperator" id="@category.CategoryId">
+        <img src="@Url.Action("GetImage", new {filename =  @category.IconImage, section = "magazinecategoryicon"})" alt=" @category.Name">
+       
+    </div>
+        @*<div class="bg-transparent" style="width: 100%; height: 40px"></div>*@
+        <div class="content-group">
+
+            @foreach (var content in Model.Magazine.Contents.Where(c => c.Category.CategoryId == category.CategoryId))
+            {
+                <div class="row float-left content-card">
+                    @Html.Partial("_MagazineCard", content)
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<div id="fb-root"></div>
+
+<script async defer crossorigin="anonymous"
+        src="https://connect.facebook.net/en_US/sdk.js#xfbml=1
+             &version=1
+             &appId=239242753967982
+             &autoLogAppEvents=1"
+        nonce="FOKrbAYI">
+</script>
+
+@section Scripts
+{
+    @*<script>
+        $(function () {
+            $('.content-group').each(function (div) {
+                debugger;
+                var content = this.children;
+                var t = content.length;
+                var hei = 0;
+                for (var i = 0; i < t; i++) {
+
+                    hei += content[i].offsetHeight;
+                }
+                console.log(hei);
+                $(this).css("height", hei);
+                //this.height(hei);
+            });
+
+            var a = '5';
+
+        });
+    </script>*@
+}
+
+

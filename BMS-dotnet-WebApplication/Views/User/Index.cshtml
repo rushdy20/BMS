@@ -3,87 +3,118 @@
 @{
     ViewData["Title"] = "Index";
     var Id = 0;
+    var DueNow = "";
+    var ReadyToCollect = false;
+    var WaitingForApproval = false;
 }
 
 
-    @if (!Model.IsApproved)
-    {
-        <div class="alert alert-info" role="alert">
-            <strong>Heads up!</strong> Your application is in the process of being approved. Once its approved you will be able to enjoy the full access.
-        </div>
-    }
+@if (!Model.IsApproved)
+{
+    <div class="alert alert-info" role="alert">
+        <strong>Heads up!</strong> Your application is in the process of being approved. Once its approved you will be able to enjoy the full access.
+    </div>
+}
 
 <div class="alert alert-primary name-box " role="alert">
-    <span>@Model.Name</span><br />
+    <span>@Model.Name</span><br/>
     <span>@Model.Email</span><br/>
     <a class="btn btn-link" asp-controller="User" asp-action="LogOut">Logout</a>
 </div>
 
-    
+
 <div class="clearfix" style="height: 100px"></div>
 
-    @if (Model.IsApproved)
-    {
-        <div class="row" style=" margin-top: 30px;">
-            <div class="col-sm-8">
+@if (Model.IsApproved)
+{
+    <div class="row" style="margin-top: 30px;">
+        <div class="col-sm-8">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">My Books</h5>
+                    <a class="btn btn-secondary" asp-controller="Library" asp-action="SearchBook">Search For Book</a>
+                    @*@if (Model.BooksNotReturned.Any(b => b.LentOn != null))
+                    {*@
+                        <div id="accordion" class="div-entity">
+                            @foreach (var bookLent in Model.BooksNotReturned)
+                            {
+                                Id = Id + 1;
+                                DueNow = DateTime.Today > bookLent.LentOn?.AddDays(14) ? "DueNow" : "";
+                                ReadyToCollect = bookLent.IsReadyToCollect && bookLent.LentOn == null;
+                                WaitingForApproval = ((!bookLent.IsReadyToCollect) && bookLent.LentOn == null);
+
+                                <div class="card">
+                                    <div class="card-header" id="headingOne">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link" data-toggle="collapse" data-target=@($"{"#collapse"}{Id}") aria-expanded="true" aria-controls=@($"{"collapse"}{Id}")>
+                                                @if (ReadyToCollect)
+                                                {
+                                                    <b class="readyToCollect">You book request now ready to collect</b>
+                                                }
+                                                else if (WaitingForApproval)
+                                                {
+                                                    <b>Waiting Approval</b>
+                                                }
+                                                else
+                                                {
+                                                    <b class="@DueNow">Return due on @bookLent.LentOn.GetValueOrDefault().AddDays(15).ToString("dd-MM-yy")</b>
+                                                }
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id=@($"{"collapse"}{Id}") class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                                        <div class="card-body">
+                                            <p>@bookLent.Note</p>
+                                            @foreach (var book in bookLent.BooksLent)
+                                            {
+                                                <div class="float-left">
+                                                    @Html.Partial("_BookCard", book)
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    @*}*@
+                </div>
+            </div>
+        </div>
+        @if (Model.AccessArea.Contains(UserLevel.AccessArea.LibraryAdmin))
+        {
+            <div class="col-sm-4">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">My Books</h5>
-                        <a class="btn btn-secondary" asp-controller="Library" asp-action="SearchBook">Search For Book</a>
-                        @if (Model.BooksNotReturned.Any(b => b.LentOn !=null))
+                        <h5 class="card-title">Library and User Management</h5>
+                        <p class="card-text">Approve news yours &....</p>
+                        @if (Model.RegistrationWaitingToBeApproved.Count > 0)
                         {
-                            <div id="accordion" class="div-entity">
-                                @foreach (var bookLent in Model.BooksNotReturned.Where(b => b.LentOn !=null))
-                                {
-                                    Id = Id + 1;
-
-                                    <div class="card">
-                                        <div class="card-header" id="headingOne">
-                                            <h5 class="mb-0">
-                                                <button class="btn btn-link" data-toggle="collapse" data-target=@($"{"#collapse"}{Id}") aria-expanded="true" aria-controls=@($"{"collapse"}{Id}")>
-                                                    <b>Return due on  @bookLent.LentOn.GetValueOrDefault().AddDays(15).ToString("dd-MM-yy")</b>
-                                                </button>
-                                            </h5>
-                                        </div>
-                                        <div id=@($"{"collapse"}{Id}") class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-                                            <div class="card-body">
-                                                @foreach (var book in bookLent.BooksLent)
-                                                {
-                                                    <div class="float-left">
-                                                        @Html.Partial("_BookCard", book)
-                                                    </div>
-                                                }
-                                            </div>
-                                        </div>
-                                        </div>
-                                }
-                            </div>
+                            <a class="btn btn-info" asp-controller="User" asp-action="RegistrationWaitingToBeApproved">Applications Waiting to be approve <span class="badge badge-secondary">@Model.RegistrationWaitingToBeApproved.Count</span></a>
+                            <br/><br/>
                         }
+                        @if (Model.BookLendingRequests.Count(b => b.LentOn == null) > 0)
+                        {
+                            <a class="btn btn-info" asp-controller="Library" asp-action="LentOutRequest" asp-route-isRequest="false">Book Return Due <span class="badge badge-secondary">@Model.BookLendingRequests.Count(b => b.LentOn <= DateTime.Today.AddDays(-14))</span></a>
+                            <br/>
+                            <br/>
+                        }
+                        <a class="btn btn-info" asp-controller="Library" asp-action="LentOutRequest" asp-route-isRequest="true">New Book Lending Request <span class="badge badge-secondary">@Model.BookLendingRequests.Count(b => b.LentOn == null)</span></a> <br/><br/>
+
+                        <div class="form-group row container custom-box">
+                            @Html.ActionLink("Book Genre", "BooksCategory", "Library", null, new {@class = "btn btn-secondary"})
+                        </div>
+                        <div class="form-group row container custom-box">
+                            @Html.ActionLink("Register Books", "RegisterBook", "Library", null, new {@class = "btn btn-secondary"})
+                        </div>
+                        
+                        <div class="form-group row container custom-box">
+                            @Html.ActionLink("Magazine Manager", "Index", "Magazine", null, new {@class = "btn btn-secondary"})
+                        </div>
+
                     </div>
                 </div>
             </div>
-            @if (Model.AccessArea.Contains(UserLevel.AccessArea.LibraryAdmin))
-            {
-                <div class="col-sm-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Library and User Management</h5>
-                            <p class="card-text">Approve news yours &....</p>
+        }
 
-                            <a class="btn btn-info" asp-controller="User" asp-action="RegistrationWaitingToBeApproved">Applications Waiting to be approve <span class="badge badge-secondary">@Model.RegistrationWaitingToBeApproved.Count</span></a> <br /><br />
-                            <a class="btn btn-info" asp-controller="Library" asp-action="LentOutRequest" asp-route-isRequest="true">New Book Lending Request <span class="badge badge-secondary">@Model.BookLendingRequests.Count(b => b.LentOn == null)</span></a> <br /><br />
-                            <a class="btn btn-info" asp-controller="Library" asp-action="LentOutRequest" asp-route-isRequest="false">Book Return Due<span class="badge badge-secondary">@Model.BookLendingRequests.Count(b => b.LentOn <= DateTime.Today.AddDays(-14))</span></a> <br/> <br/>
-                            
-                            <div class="form-group row container custom-box">
-                                @Html.ActionLink("Book Genre", "BooksCategory", "Library", null, new { @class = "btn btn-secondary" })
-                            </div>
-                            <div class="form-group row container custom-box">
-                                @Html.ActionLink("Register Books", "RegisterBook", "Library", null, new { @class = "btn btn-secondary" })
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-
-        </div>
-    }
+    </div>
+}

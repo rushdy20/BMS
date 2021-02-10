@@ -1,0 +1,103 @@
+﻿@model BMS_dotnet_WebApplication.Models.MagazineVM.MagazineContentVM
+@{
+    ViewData["Title"] = "CreateContent";
+}
+
+<h1>CreateContent</h1>
+
+@using (Html.BeginForm("CreateContent", "Magazine", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div>
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    </div>
+
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.Magazine.MagazineId)
+    <div class="form-group">
+        @Html.LabelFor(m => m.CategoryId)
+        @Html.DropDownListFor(m => m.CategoryId, Model.NewsCategories, "Select Category")
+        @Html.ValidationMessageFor(m => m.CategoryId)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Heading)
+        @Html.TextBoxFor(m => m.Heading, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <div id="quillEditor"></div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.MainImage)
+        @Html.TextBoxFor(m => m.MainImage, new { Type = "file" })
+
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.SubImage1)
+        @Html.TextBoxFor(m => m.SubImage1, new { Type = "file" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.SubImage2)
+        @Html.TextBoxFor(m => m.SubImage2, new { Type = "file" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.SubImage3)
+        @Html.TextBoxFor(m => m.SubImage3, new { Type = "file" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.YouTubLink)
+        @Html.TextBoxFor(m => m.YouTubLink, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Index)
+        @Html.TextBoxFor(m => m.Index, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Author)
+        @Html.TextBoxFor(m => m.Author, new { @class = "form-control" })
+    </div>
+
+    @Html.HiddenFor(m => m.NewsBody);
+
+
+    <button type="submit" id="btnSubmit" class="btn btn-primary">Submit</button>
+    <div class="form-group bg-white">
+        <small id="emailHelp" class="form-text text-muted">Created By :   @Model.EnteredBy   Created On :  @Model.CreatedDate </small>
+    </div>
+
+
+}
+<div id="editor-container">
+</div>
+
+@section Scripts
+{
+
+    <partial name="_ValidationScriptsPartial"/>
+    <partial name="_quilljsTextEditor"/>
+    <script>
+        var quill = new Quill('#quillEditor',
+            {
+                modules: {
+                    toolbar: [
+                        [{ header: [1, 2, false] }],
+                        ['bold', 'italic', 'underline'],
+                        ['image', 'code-block', 'strike'],
+                        [{ 'color': [] }, { 'background': [] }],
+                        [{ 'font': [] }],
+                        [{ 'align': [] }]
+                    ]
+                },
+                theme: 'snow'
+            });
+
+        $('#btnSubmit').click(function () {
+            var myEditor = document.querySelector('#quillEditor');
+            var html = myEditor.children[0].innerHTML;
+            $("#NewsBody").val(html);
+            // $("#NewsBody").val($("#quillEditor").html());
+
+        });
+    </script>
+
+}

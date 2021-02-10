@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using BMS.BooksLibrary.BusinessLayer;
+using BMS.BusinessLayer;
 using BMS.BusinessLayer.Constant;
 using BMS.BusinessLayer.Users;
 using BMS.BusinessLayer.Users.Models;
@@ -23,20 +25,21 @@ namespace BMS_dotnet_WebApplication.Controllers
         private readonly IMapper _mapper;
         private readonly ICacheManager _cacheManager;
         private readonly IBooksLibraryManager _booksLibraryManager;
+        private readonly IEmailManager _emailManager;
 
-        public UserController(IUserManager userManager, IMapper mapper, ICacheManager cacheManager, IBooksLibraryManager booksLibraryManager)
+        public UserController(IUserManager userManager, IMapper mapper, ICacheManager cacheManager, IBooksLibraryManager booksLibraryManager, IEmailManager emailManager)
         {
             _userManager = userManager;
             _mapper = mapper;
             _cacheManager = cacheManager;
             _booksLibraryManager = booksLibraryManager;
+            _emailManager = emailManager;
         }
         public async Task<IActionResult> Index()
         {
 
             if (string.IsNullOrEmpty(LoggedInName()))
                 return RedirectToAction("Login", "User");
-
             var model = await BuildUserProfile(LoggedInName());
             return View(model);
         }
@@ -81,8 +84,8 @@ namespace BMS_dotnet_WebApplication.Controllers
 
         public async Task<IActionResult> Logout()
         {
-            HttpContext.Session.Remove("Name");
-            HttpContext.Session.Remove("userProfile");
+            HttpContext.Session.SetString("userProfile", "");
+            HttpContext.Session.SetString("Name", "");
             return RedirectToAction("Login");
         }
         [HttpPost]
@@ -116,7 +119,8 @@ namespace BMS_dotnet_WebApplication.Controllers
             var accessAreas = new List<SelectListItem>
             {
                 new SelectListItem(UserLevel.AccessArea.LibraryUser,UserLevel.AccessArea.LibraryUser),
-                new SelectListItem(UserLevel.AccessArea.LibraryAdmin,UserLevel.AccessArea.LibraryAdmin)
+                new SelectListItem(UserLevel.AccessArea.LibraryAdmin,UserLevel.AccessArea.LibraryAdmin),
+                new SelectListItem(UserLevel.AccessArea.MagazineAdmin,UserLevel.AccessArea.MagazineAdmin)
             };
             
             ViewBag.AccessAreas = accessAreas;
@@ -144,6 +148,7 @@ namespace BMS_dotnet_WebApplication.Controllers
           if (!updateUser)
               return RedirectToAction("Index");
 
+          await _emailManager.SendEmail(model.EmailAddress, WelcomeToBicRegistrationApprovedEmail(model.FullName), "BIC Registration");
           var userPf = GetUserProfile();
           userPf.RegistrationWaitingToBeApproved = userPf.RegistrationWaitingToBeApproved.Where(u => u.EmailAddress != model.EmailAddress).ToList();
           var str = SerializeObject(userPf);
@@ -153,8 +158,23 @@ namespace BMS_dotnet_WebApplication.Controllers
 
         }
 
+        public async Task<string> RecoverPassword (string email)
+        {
+            if (!await IsEmailExists(email))
+            {
+                return "emailNotExits";
+            }
+            return await GetPasswordRecoveryQuestion(email);
+        }
+        public async Task<string> PasswordHint(string email, string hint)
+        {
+            if (!await IsEmailExists(email))
+            {
+                return "emailNotExits";
+            }
 
-
+            return await ValidatePasswordRecovery(email, hint);
+        }
         private async Task<string> IsValidUser(LoginViewModel model)
         {
             var user = await _userManager.GetUser(model.EmailAddress);
@@ -175,6 +195,23 @@ namespace BMS_dotnet_WebApplication.Controllers
             var user = await _userManager.GetUser(email);
             return user != null;
 
+        }
+
+        private async Task<string> GetPasswordRecoveryQuestion(string email)
+        {
+            var user = await _userManager.GetUser(email);
+            return user.PasswordHintQuestion;
+        }
+
+        private async Task<string> ValidatePasswordRecovery(string email, string hint)
+        {
+            var user = await _userManager.GetUser(email);
+            if (user == null)
+            {
+                return "Invalid-Answer";
+            }
+
+            return string.Equals(user.PasswordHintAnswer, hint, StringComparison.CurrentCultureIgnoreCase) ? user.Password : "Invalid-Answer";
         }
 
         private async Task<UserProfileVM> BuildUserProfile(string email)
@@ -204,6 +241,13 @@ namespace BMS_dotnet_WebApplication.Controllers
             var str = JsonConvert.SerializeObject(userProfile);
             HttpContext.Session.SetString("userProfile", str);
             return userProfile;
+        }
+
+        private string WelcomeToBicRegistrationApprovedEmail(string name)
+        {
+            var stringBuilder = new StringBuilder($"Assalamu Alikum {name}");
+            stringBuilder.AppendLine("Welcome to BIC you account has been approved Please login to get access to Library");
+            return stringBuilder.ToString();
         }
     }
 }

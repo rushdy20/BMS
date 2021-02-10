@@ -5,6 +5,7 @@ namespace BMS.BooksLibrary.BusinessLayer
 {
     public class CacheManager : ICacheManager
     {
+        private const string EmptyKey = "EmptyKey";
         private readonly IMemoryCache _cache;
 
         public CacheManager(IMemoryCache cache)
@@ -28,7 +29,17 @@ namespace BMS.BooksLibrary.BusinessLayer
 
         public T Get<T>(string cacheKey)
         {
-            return _cache.Get<T>(cacheKey);
+            try
+            {
+                return _cache.Get<T>(cacheKey);
+            }
+            catch (Exception e)
+            {
+                Console.Write(e);
+                return _cache.Get<T>(EmptyKey);
+            }
+            
+            
         }
     }
 }

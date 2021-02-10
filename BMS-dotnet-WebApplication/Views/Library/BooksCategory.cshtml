@@ -8,7 +8,7 @@
 
 @using (Html.BeginForm("AddCategory", "Library", FormMethod.Post, new { @id = "partialform" }))
 {
-    
+   
         <div class="form-group">
             @Html.LabelFor(m => m.BooksCategory.Name)
             @Html.TextBoxFor(m => m.BooksCategory.Name, new { @class = "form-control" })

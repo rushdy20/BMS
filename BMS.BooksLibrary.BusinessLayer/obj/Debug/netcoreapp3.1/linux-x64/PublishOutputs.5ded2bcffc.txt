@@ -1,0 +1,17 @@
+C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\BMS.BusinessLayer.dll
+C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\BMS.BusinessLayer.deps.json
+C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\BMS.BusinessLayer.pdb
+C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\AWSSDK.Core.dll
+C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\AWSSDK.S3.dll
+C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\Microsoft.Extensions.Caching.Memory.dll
+C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\Microsoft.Extensions.Configuration.dll
+C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\Microsoft.Extensions.DependencyInjection.dll
+C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\Microsoft.Extensions.Options.dll
+C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\Microsoft.Extensions.Primitives.dll
+C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\Newtonsoft.Json.dll
+C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\BMS.AWS.dll
+C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\BMS.AWS.pdb

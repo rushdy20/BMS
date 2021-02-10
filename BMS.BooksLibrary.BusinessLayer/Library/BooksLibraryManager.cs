@@ -43,13 +43,13 @@ namespace BMS.BooksLibrary.BusinessLayer
             if (cachedBooksCategories != null && cachedBooksCategories.Any()) return cachedBooksCategories;
 
             var bookCategoryJson = await _s3Bucket.GetFileFromS3($"{LibraryCategoryFolder}/{CategoryFileName}");
-            
-            _cacheManager.Set(BookCategoryCacheKey, bookCategoryJson);
 
             if (string.IsNullOrEmpty(bookCategoryJson))
                 return new List<BooksCategoryModel>();
 
             var categoriesFromS3 = DeserializeObject<List<BooksCategoryModel>>(bookCategoryJson);
+
+            _cacheManager.Set(BookCategoryCacheKey, categoriesFromS3);
 
             return categoriesFromS3 ?? new List<BooksCategoryModel>();
         }
@@ -140,8 +140,6 @@ namespace BMS.BooksLibrary.BusinessLayer
 
         public async Task<bool> BookLendingOut(LendingRequestModel requestModel)
         {
-            
-
             var getAllNewLendingRequest = await GetNewLendingRequests();
 
             getAllNewLendingRequest = getAllNewLendingRequest.Where(r => r.LendingRequestId != requestModel.LendingRequestId).ToList();
@@ -193,7 +191,6 @@ namespace BMS.BooksLibrary.BusinessLayer
                 lentBooksFromS3 = DeserializeObject<List<LendingRequestModel>>(lentBooksFileFromS3Json);
             }
             lentBooksFromS3.Add(requestModel);
-
             var jsonString = JsonSerializer.Serialize(lentBooksFromS3.OrderBy(o => o.RequestedDate));
             await _s3Bucket.SaveFileAsync($"{LibraryCategoryFolder}/{LibraryBookFolder}/{ArchiverLentOutFile}", jsonString);
 
@@ -314,6 +311,7 @@ namespace BMS.BooksLibrary.BusinessLayer
             //        }
             //    }
             //};
+            
 
             var cachedLentBooks = _cacheManager.Get<List<LendingRequestModel>>(BooksLentCacheKey);
 

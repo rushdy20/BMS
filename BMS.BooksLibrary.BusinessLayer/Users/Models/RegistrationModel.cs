@@ -7,6 +7,8 @@ namespace BMS.BusinessLayer.Users.Models
     {
         public string EmailAddress { get; set; }
         public string Password { get; set; }
+        public string PasswordHintQuestion { get; set; }
+        public string PasswordHintAnswer { get; set; }
         public string FirstName { get; set; }
         public string Surname { get; set; }
         public DateTime DateOfBirth { get; set; }

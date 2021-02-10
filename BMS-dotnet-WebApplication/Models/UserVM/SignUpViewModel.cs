@@ -19,10 +19,18 @@ namespace BMS_dotnet_WebApplication.Models.UserVM
         [Required(ErrorMessage = "Please Enter a password")]
         public string Password { get; set; }
 
-        [Display(Name = "Password")]
+        [Display(Name = "Confirm Password")]
         [Required(ErrorMessage = "Please Enter a password")]
         [Compare("Password", ErrorMessage = "Password and Confirm Password are not equal.")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "Password Hint Question")]
+        [Required(ErrorMessage = "Please Enter a password hint Question")]
+        public string PasswordHintQuestion { get; set; }
+
+        [Display(Name = "Password Hint Answer")]
+        [Required(ErrorMessage = "Please Enter a password hint Answer")]
+         public string PasswordHintAnswer { get; set; }
 
         [Display(Name = "First Name")]
         [Required(ErrorMessage = "Please Enter Firstname")]
@@ -59,6 +67,12 @@ namespace BMS_dotnet_WebApplication.Models.UserVM
 
         public List<string> AllAccessAreas { get; set; }
         public List<string> AllowedAccessAreas { get; set; }
+
+        public string FullName
+        {
+            get => $"{this.FirstName} {this.Surname}";
+            private set { }
+        }
         
     }
 }

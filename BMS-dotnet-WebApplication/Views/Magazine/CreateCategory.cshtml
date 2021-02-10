@@ -1,0 +1,34 @@
+﻿@model BMS_dotnet_WebApplication.Models.MagazineVM.MagazineCategoriesVM
+@{
+    ViewData["Title"] = "CreateCategory";
+}
+
+<h1>Create Magazine Category</h1>
+@Html.Partial("_AddCategory",Model.AddMagazineCategory)
+<div class="form-group row container">
+    <div class="col-sm-12">
+        <ul>
+            <li>
+                Magazine Categories
+                <ul>
+                    @foreach (var category in Model.ExistingCategories)
+                    {
+                        <li>
+                            @category.Name
+                        </li>
+                    }
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="col-sm-4 marginT32">
+        @Html.ActionLink("Save", "SaveCategories", "Magazine", null, new { @class = "btn btn-success" })
+    </div>
+</div>
+
+
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -15,6 +15,7 @@
         {
             public const string LibraryUser = "LibraryUser";
             public const string LibraryAdmin = "LibraryAdmin";
+            public const string MagazineAdmin = "MagazineAdmin";
         }
         
         

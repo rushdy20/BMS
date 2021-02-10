@@ -1,0 +1,52 @@
+﻿@model BMS_dotnet_WebApplication.Models.MagazineVM.MagazineIndexVM
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Magazine Manager</h1>
+
+<div class="form-group row container custom-box">
+    @Html.ActionLink("Magazine Category", "CreateCategory", "Magazine", null, new {@class = "btn btn-secondary"})
+</div>
+
+<div class="form-group row container custom-box">
+    @Html.ActionLink("Create Magazine", "CreateMagazine", "Magazine", null, new {@class = "btn btn-secondary"})
+</div>
+
+<div class="card" style="width: 18rem; margin: 20px;">
+    
+    <div class="card-center">
+        <a href='@Url.Action("CurrentEdition","Magazine")'>
+            <img src="@Url.Action("GetImage", new {filename = Model.CurrentEditionImage, section = "magazine"})" alt="...">
+        </a>
+    </div>
+    
+    <div class="card-body">
+        <h5 class="card-title"> @Model.CurrentEditionName</h5>
+        @*@if (Model.ContentCategories != null)
+        {
+            foreach (var category in Model.ContentCategories)
+            {
+                @Html.ActionLink(category.Name, "CreateContent", "Magazine", null, new {@class = "btn btn-link"})
+            }
+        }*@
+        
+        
+
+        @Html.ActionLink("Add Content", "CreateContent", "Magazine", null, new { @class = "btn btn-primary" })
+        
+        @Html.ActionLink("Remove Content", "RemoveContent", "Magazine", null, new { @class = "btn btn-danger" })
+
+
+        @if (Model.IsLive)
+        {
+            @Html.ActionLink("Off Live", "StatusUpdate", "Magazine", new{status = false, Id= @Model.MagazineId}, new { @class = "btn btn-danger" })
+        }
+        else
+        {
+            @Html.ActionLink("Go Live", "StatusUpdate", "Magazine", new{status = true, Id = @Model.MagazineId }, new { @class = "btn btn-primary" })
+        }
+        
+
+    </div>
+</div>

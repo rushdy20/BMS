@@ -1,0 +1,26 @@
+﻿@model BMS_dotnet_WebApplication.Models.MagazineVM.MagazineCategoryVM
+
+@using (Html.BeginForm("CreateCategory", "Magazine", FormMethod.Post, new {enctype = "multipart/form-data"}))
+{
+
+    <div class="form-group row container custom-box">
+        <div class="col-sm-8">
+            @Html.Label("Enter Category Name")
+            @Html.TextBoxFor(m => m.Name, new {@class = "form-control"})
+            @Html.ValidationMessageFor(m => m.Name)
+        </div>
+        <div class="col-sm-8">
+            @Html.Label("Enter Category Order")
+            @Html.TextBoxFor(m => m.Order, new {@class = "form-control"})
+        </div>
+        <div class="col-sm-8">
+            @Html.LabelFor(m => m.IconImage)
+            @Html.TextBoxFor(m => m.IconImage, new {Type = "file"})
+
+        </div>
+        <div class="col-sm-4 marginT32">
+            <button type="submit" class="btn btn-primary">Add</button>
+        </div>
+
+    </div>
+}

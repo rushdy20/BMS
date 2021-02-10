@@ -1,0 +1,38 @@
+﻿@model BMS_dotnet_WebApplication.Models.MagazineVM.MagazineVM
+@{
+    ViewData["Title"] = "CreateMagazine";
+}
+
+<h1>Create Magazine</h1>
+
+@using (Html.BeginForm("CreateMagazine", "Magazine", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div>
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    </div>
+
+    @Html.HiddenFor(m => m.MagazineId)
+    <div class="form-group">
+        @Html.LabelFor(m => m.MagazineName)
+        @Html.TextBoxFor(m => m.MagazineName, new { @class = "form-control" })
+
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.MainImage)
+        @Html.TextBoxFor(m => m.MainImage, new { Type = "file" })
+
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <div class="form-group">
+        <small id="emailHelp" class="form-text text-muted">Created By :   @Model.CreatedBy   Created On :  @Model.CreatedDate </small>
+    </div>
+
+
+}
+
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

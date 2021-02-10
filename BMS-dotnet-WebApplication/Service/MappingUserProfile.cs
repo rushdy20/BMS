@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BMS.BooksLibrary.BusinessLayer;
 using BMS.BooksLibrary.BusinessLayer.Models;
+using BMS.BusinessLayer.Magazine.Models;
 using BMS.BusinessLayer.Users.Models;
 using BMS_dotnet_WebApplication.Models.LibraryVM;
+using BMS_dotnet_WebApplication.Models.MagazineVM;
 using BMS_dotnet_WebApplication.Models.UserVM;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -32,6 +34,11 @@ namespace BMS_dotnet_WebApplication.Service
 
             CreateMap<RegistrationModel, SignUpViewModel>()
                 .ReverseMap();
+
+            CreateMap<MagazineCategoriesVM, MagazineCategory>()
+                .ReverseMap();
+
+            CreateMap<Magazine, RemoveMagazineVM>();
         }
     }
 }

@@ -1,8 +1,11 @@
 ﻿@model BMS.BooksLibrary.BusinessLayer.Models.BookModel
 
-<div class="card" style="width: 18rem; margin: 20px; height: 375px;">
-    <img src="@Url.Action("GetImage", new {filename = "booksimg/" + Model.MainImageFileName})" style="height: 125px;" alt="...">
-    <div class="card-body">
+<div class="card card-book">
+    <div class="book-card-img">
+        <img src="@Url.Action("GetImage", new {filename = "booksimg/" + Model.MainImageFileName})" style="height: 125px;" alt="...">
+    </div>
+   
+    <div class="card-body" id="@Model.Barcode">
         <h5 class="card-title"> @Model.Title</h5>
         @if (Model.BookCategory != null)
         {
@@ -24,23 +27,23 @@
 
         @if (Model.IsAvailable)
         {
-            <a href="#" class="btn btn-primary" onclick="addToBucket()">Add to Basket</a>
+            <a href="#" class="btn btn-primary" onclick="addToBucket(@Model.Barcode)">Add to Basket</a>
 
-            <input type="hidden" id="_BookTitle" name="_BookTitle" value="@Model.Title"/>
-            <input type="hidden" id="_BookBarcode" name="_BookBarcode" value="@Model.Barcode"/>
-            <input type="hidden" id="_BookImage" name="_BookImage" value="@Model.MainImageFileName"/>
+            <input type="hidden" id="_BookTitle_@Model.Barcode" name="_BookTitle_@Model.Barcode" value="@Model.Title"/>
+            <input type="hidden" id="_BookBarcode_@Model.Barcode" name="_BookBarcode_@Model.Barcode" value="@Model.Barcode"/>
+            <input type="hidden" id="_BookImage_@Model.Barcode" name="_BookImage_@Model.Barcode" value="@Model.MainImageFileName"/>
         }
 
     </div>
 </div>
 
 <script>
-    function addToBucket() {
+    function addToBucket(barcode) {
         $.post("/Library/AddBooksToCart",
             {
-                Title: $("#_BookTitle").val(),
-                Barcode: $("#_BookBarcode").val(),
-                MainImageFileName: $("#_BookImage").val()
+                Title: $('#_BookTitle_' + barcode).val(),
+                Barcode: $('#_BookBarcode_' + barcode).val(),
+                MainImageFileName: $('#_BookImage_' + barcode).val()
             },
             function(data) {
 

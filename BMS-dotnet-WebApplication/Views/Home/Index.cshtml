@@ -1,7 +1,15 @@
-﻿@{
+﻿@model BMS_dotnet_WebApplication.Models.MagazineVM.MagazineIndexVM
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>  
+    <h1 class="display-4">Welcome</h1>
+</div>
+
+<div class="card-" >
+
+    <a href='@Url.Action("CurrentEdition","Magazine")'>
+        <img src="@Url.Action("GetImage", new {filename = Model.CurrentEditionImage, section = "magazine"})" alt="...">
+    </a>
 </div>

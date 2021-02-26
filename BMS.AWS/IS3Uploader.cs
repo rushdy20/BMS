@@ -12,5 +12,7 @@ namespace BMS.AWS
 
         string ReadFile(string fullName);
         string SaveToFile(string fullName, string content);
+
+        Task<string> DownloadFile(string path);
     }
 }

@@ -4,9 +4,18 @@
 }
 
 <div class="card-Magazine-mini" >
-    <a href='@Url.Action("Details","Magazine",new { Id = Model.Id })' >
-        <img  style=" max-height: 60px;" src="@Url.Action("GetImage", new {filename = $"{Model.FolderName}/{Model.Image}", section = "magazine"})" alt="..." >
-        <br/><span style=" font-size: 10px;">@Html.DisplayFor(m => m.Heading)</span>
+    <a href='@Url.Action("Details","Magazine",new { Id = Model.Id })'>
+        <img style=" max-height: 60px;" src="@Url.Action("GetImage", new {filename = $"{Model.FolderName}/{Model.Image}", section = "magazine"})" alt="...">
+        <br />
+        @if (Model.Heading.Length > 21)
+        {
+            <span style=" font-size: 10px;">@Model.Heading.Substring(0, 20) ...</span>
+        }
+        else
+        {
+            <span style=" font-size: 10px;">@Model.Heading ...</span>
+        }
+
     </a>
    
 </div>

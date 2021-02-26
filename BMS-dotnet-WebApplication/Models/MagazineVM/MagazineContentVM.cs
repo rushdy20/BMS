@@ -21,11 +21,15 @@ namespace BMS_dotnet_WebApplication.Models.MagazineVM
 
         [Display(Name = "Main Image")] public IFormFile MainImage { get; set; }
 
-        [Display(Name = "Supporting Image-1")] public IFormFile SubImage1 { get; set; }
+        [Display(Name = "Download-File1")] public IFormFile SubImage1 { get; set; }
 
-        [Display(Name = "Supporting Image-2")] public IFormFile SubImage2 { get; set; }
+        [Display(Name = "Download-File2")] public IFormFile SubImage2 { get; set; }
 
-        [Display(Name = "Supporting Image-3")] public IFormFile SubImage3 { get; set; }
+        [Display(Name = "Download-File3")] public IFormFile SubImage3 { get; set; }
+
+        [Display(Name = "Download-File4")] public IFormFile SubImage4 { get; set; }
+
+        [Display(Name = "Download-File5")] public IFormFile SubImage5 { get; set; }
 
         [Required(ErrorMessage = "Content is required")]
         [Display(Name = "Content Body")] public string NewsBody { get; set; }

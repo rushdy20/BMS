@@ -12,6 +12,7 @@ namespace BMS.BusinessLayer
         private const int Port = 465;
         private const string userName = "info@britanniaislamiccentre.org";
         private const string key = "cbk7362m1t%@";
+        private const string MagazineEditor = "editor-magazine@britanniaislamiccentre.org";
 
         public async Task<bool> SendEmail(string to, string message, string subject)
         {
@@ -43,6 +44,18 @@ namespace BMS.BusinessLayer
                 Credentials = new NetworkCredential(userName, key)
             };
             var mailMessage = new MailMessage(from, to, subject, message);
+
+            smtpClient.Send(mailMessage);
+            return true;
+        }
+
+        public async Task<bool> MagazineFeedBackEmail(string message)
+        {
+            var smtpClient = new SmtpClient(SMPServer)
+            {
+                Credentials = new NetworkCredential(userName, key)
+            };
+            var mailMessage = new MailMessage(MagazineEditor, "editormagazine.bic@gmail.com", "Feedback for The Soul Journal", message);
 
             smtpClient.Send(mailMessage);
             return true;

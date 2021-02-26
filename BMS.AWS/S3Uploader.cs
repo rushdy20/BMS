@@ -1,10 +1,14 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using Amazon;
 using Amazon.S3;
 using Amazon.S3.Model;
+using Amazon.S3.Transfer;
+using Syroot.Windows.IO;
 
 namespace BMS.AWS
 {
@@ -112,6 +116,45 @@ namespace BMS.AWS
             var path = Path.Combine("wwwroot", "supportFiles", fullName);
             File.WriteAllText(path, content);
             return string.Empty;
+        }
+
+        public async Task<string> DownloadFile(string path)
+        {
+            using var client =  new AmazonS3Client(_bucketRegion);
+            try
+            {
+                GetObjectRequest request = new GetObjectRequest();
+                request.BucketName = _bucketName;
+                request.Key = path;
+
+                var fileTransferUtility = new TransferUtility(client);
+
+                var fileName = path.Split('/').Last();
+
+                string pathUser = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+                string pathDownload = Path.Combine(pathUser, "TheSoulJournal");
+
+                if(! Directory.Exists(pathDownload))
+
+                   Directory.CreateDirectory(pathDownload);
+
+                // var downloadsPath = new KnownFolder(KnownFolderType.Downloads).Path;
+
+                var fs = File.Create($"{pathDownload}/{fileName}");
+                fs.Close();
+
+                fileTransferUtility.Download($"{pathDownload}/{fileName}", _bucketName, path);
+
+              //  WebClient webClient = new WebClient();
+              //  await webClient.DownloadFileAsync(pathDownload, fileName);
+
+                return pathDownload;
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
         }
     }
 }

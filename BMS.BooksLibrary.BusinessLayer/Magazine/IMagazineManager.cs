@@ -24,5 +24,7 @@ namespace BMS.BusinessLayer.Magazine
         Task<bool> AddMagazineContent(MagazineContent content);
 
         Task<bool> UpdateMagazineStatus(bool status, string magazineId);
+
+        Task<string> DownloadFile(string path);
     }
 }

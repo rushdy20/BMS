@@ -150,3 +150,5 @@ C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\linux-x64\wwwr
 C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\linux-x64\package-lock.json
 C:\Learning\BMS\BMS-dotnet-WebApplication\obj\Debug\netcoreapp3.1\linux-x64\Razor\Views\Shared\_quilljsTextEditor.cshtml.g.cs
 C:\Learning\BMS\BMS-dotnet-WebApplication\obj\Debug\netcoreapp3.1\linux-x64\Razor\Views\Magazine\_AddCategory.cshtml.g.cs
+C:\Learning\BMS\BMS-dotnet-WebApplication\obj\Debug\netcoreapp3.1\linux-x64\Razor\Views\Magazine\RemoveContent.cshtml.g.cs
+C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\linux-x64\Syroot.KnownFolders.dll

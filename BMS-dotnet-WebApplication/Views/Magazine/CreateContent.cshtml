@@ -44,6 +44,16 @@
     </div>
 
     <div class="form-group">
+        @Html.LabelFor(m => m.SubImage4)
+        @Html.TextBoxFor(m => m.SubImage4, new { Type = "file" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.SubImage5)
+        @Html.TextBoxFor(m => m.SubImage5, new { Type = "file" })
+    </div>
+
+    <div class="form-group">
         @Html.LabelFor(m => m.YouTubLink)
         @Html.TextBoxFor(m => m.YouTubLink, new { @class = "form-control" })
     </div>

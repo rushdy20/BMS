@@ -226,5 +226,10 @@ namespace BMS.BusinessLayer.Magazine
             var jsonStringMagazines = JsonSerializer.Serialize(currentMagazine);
             return await _s3Bucket.SaveFileAsync($"{MagazineFolder}/{MagazineContents}", jsonStringMagazines);
         }
+
+        public async Task<string> DownloadFile(string path)
+        {
+          return await _s3Bucket.DownloadFile($"{MagazineFolder}/{path}");
+        }
     }
 }

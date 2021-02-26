@@ -9,6 +9,7 @@ namespace BMS_dotnet_WebApplication.Models.MagazineVM
     public class ContentDetailsVM
     {
      public  MagazineContent Content { get; set; }
+     public string MagazineCoverImage { get; set; }
 
      public List<OtherContent> OtherContents { get; set; }
 

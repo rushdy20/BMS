@@ -1,14 +1,15 @@
-﻿@model BMS_dotnet_WebApplication.Models.MagazineVM.CurrentEditionVM
+﻿@using BMS_dotnet_WebApplication.Models.Shared
+@model BMS_dotnet_WebApplication.Models.MagazineVM.CurrentEditionVM
 @{
     ViewData["Title"] = "CurrentEdition";
     var currentHeading = string.Empty;
 }
 
 
-<h1>@Model.Magazine.Name</h1>
+<h1 style="font-family: fangsong">@Model.Magazine.Name</h1>
 
-<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-magazine-menu border-bottom box-shadow mb-3">
-    <div class="container">
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-magazine-menu  mb-3" style="padding-left: 0px">
+    <div class="container" style="padding-left: 0px">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".magazie-collapse" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -17,12 +18,17 @@
             <ul class="navbar-nav flex-grow-1">
                 @foreach (var category in Model.ContentCategories)
                 {
-                    <li class="nav-item">
+                    <li class="nav-item magazine-nav-item">
                         <a class="nav-link" href="#@category.CategoryId">
                             @category.Name
                         </a>
                     </li>
                 }
+                <li class="nav-item magazine-nav-item">
+                    <a class="nav-link" href="#feedback">
+                        Leave a feedback
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
@@ -35,10 +41,10 @@
 <div class="form-group ">
     @foreach (var category in Model.ContentCategories)
     {
-    <div class="row NewNewsFeedSeperator" id="@category.CategoryId">
-        <img src="@Url.Action("GetImage", new {filename =  @category.IconImage, section = "magazinecategoryicon"})" alt=" @category.Name">
+        <div class="row NewNewsFeedSeperator" id="@category.CategoryId">
+            <img src="@Url.Action("GetImage", new {filename =  @category.IconImage, section = "magazinecategoryicon"})" alt=" @category.Name">
        
-    </div>
+        </div>
         @*<div class="bg-transparent" style="width: 100%; height: 40px"></div>*@
         <div class="content-group">
 
@@ -52,7 +58,18 @@
     }
 </div>
 
+<div class="row NewNewsFeedSeperator" id="feedback">
+    <img src="~/imgs/feedback.png"/>
+       
+</div>
+<div  class="form-group ">
+    @Html.Partial("_Feedback", new FeedbackModel{FeedbackOn = @Model.Magazine.Name })
+
+</div>
+
 <div id="fb-root"></div>
+
+
 
 <script async defer crossorigin="anonymous"
         src="https://connect.facebook.net/en_US/sdk.js#xfbml=1

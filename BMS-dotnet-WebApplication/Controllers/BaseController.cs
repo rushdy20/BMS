@@ -1,4 +1,5 @@
-﻿using BMS_dotnet_WebApplication.Models.UserVM;
+﻿using System;
+using BMS_dotnet_WebApplication.Models.UserVM;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using static Newtonsoft.Json.JsonConvert;
@@ -29,6 +30,11 @@ namespace BMS_dotnet_WebApplication.Controllers
             return Redirect(fileName.EndsWith("thumbnail.jfif") ? $"{CloudFront1}/News/thumbnail.jfif" : $"{CloudFront}/{sectionFolder}/{fileName}");
         }
 
+        public string DownloadUrl(string fileName)
+        {
+            return $"{CloudFront}/{magazineFolder}/{fileName}";
+        }
+
         internal string LoggedInName()
         {
             return HttpContext.Session.GetString("Name");
@@ -49,5 +55,7 @@ namespace BMS_dotnet_WebApplication.Controllers
             var userProfile = GetUserProfile();
             return userProfile.AccessArea.Contains(accessArea);
         }
+
+        protected string CurrentMagazinePath => $"{CloudFront}/{magazineFolder}/";
     }
 }

@@ -4,23 +4,13 @@
 }
 
 <div class="card-Magazine" >
-
-    <img class="center" style=" max-height: 175px;" src="@Url.Action("GetImage", new {filename = $"{Model.FolderName}/{Model.MainImage}", section = "magazine"})" alt="...">
-    <div class="card-body magazin-card-body">
-        <h5 class="card-title">@Html.DisplayFor(m => m.Heading)</h5>
-        <p class="card-text">
-            @if (Model.Body != null && Model.Body.Length > 99)
-            {
-                @Html.Raw(Model.Body.Substring(0, 99))
-            }
-            else
-            {
-                @Html.Raw(Model.Body)
-            }
-
-
-        </p>
-    </div>
-    @Html.ActionLink("Read ...", "Details", "Magazine", new { Id = Model.ContentId }, new { @class = "btn btn-link" })
-
+    <a href='@Url.Action("Details", "Magazine", new {Id = Model.ContentId})' class="magazin-card-link">
+        <div class="card-img">
+            <img class="center" style="max-height: 175px;" src="@Url.Action("GetImage", new {filename = $"{Model.FolderName}/{Model.MainImage}", section = "magazine"})" alt="...">
+        </div>
+        <div class="card-body magazin-card-body">
+            <h5 class="card-title">@Html.DisplayFor(m => m.Heading)</h5>
+            <div class="magazin-card-author">By: @Model.AuthoredBy </div>
+            </div>
+    </a>
 </div>

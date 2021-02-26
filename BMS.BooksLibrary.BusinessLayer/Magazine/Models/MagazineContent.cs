@@ -14,6 +14,8 @@ namespace BMS.BusinessLayer.Magazine.Models
         public string SubImage1 { get; set; }
         public string SubImage2 { get; set; }
         public string SubImage3 { get; set; }
+        public string SubImage4 { get; set; }
+        public string SubImage5 { get; set; }
         public string YouTubLink { get; set; }
         public string EnteredBy { get; set; }
         public string AuthoredBy { get; set; } 

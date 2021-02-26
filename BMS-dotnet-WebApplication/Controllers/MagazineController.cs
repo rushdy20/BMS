@@ -1,19 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Mime;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using AutoMapper;
 using BMS.BooksLibrary.BusinessLayer;
+using BMS.BusinessLayer;
 using BMS.BusinessLayer.Constant;
 using BMS.BusinessLayer.Magazine;
 using BMS.BusinessLayer.Magazine.Models;
 using BMS_dotnet_WebApplication.Models.MagazineVM;
+using BMS_dotnet_WebApplication.Models.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
-
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace BMS_dotnet_WebApplication.Controllers
@@ -24,17 +29,19 @@ namespace BMS_dotnet_WebApplication.Controllers
         private readonly IMagazineManager _magazineManager;
         private readonly ICacheManager _cacheManager;
         private readonly IMapper _mapper;
+        private readonly IEmailManager _emailManager;
         private readonly Random _rnd;
 
         private const string CategoryCacheKey = "MagazineCategories";
         private const string BaseUrl = "www.bic.org";
         private const string CategoryIconFolder = "magazinecategoryicon";
 
-        public MagazineController(IMagazineManager magazineManager, ICacheManager cacheManager, IMapper mapper)
+        public MagazineController(IMagazineManager magazineManager, ICacheManager cacheManager, IMapper mapper, IEmailManager emailManager)
         {
             _mapper = mapper;
             _magazineManager = magazineManager;
             _cacheManager = cacheManager;
+            _emailManager = emailManager;
             _rnd = new Random();
         }
 
@@ -204,6 +211,18 @@ namespace BMS_dotnet_WebApplication.Controllers
                 await SaveMagazineImage(model.SubImage3, currentEdition.FolderName);
             }
 
+            if (model.SubImage4 != null)
+            {
+                magazineContentModel.SubImage4 = model.SubImage4.FileName;
+                await SaveMagazineImage(model.SubImage4, currentEdition.FolderName);
+            }
+
+            if (model.SubImage5 != null)
+            {
+                magazineContentModel.SubImage5 = model.SubImage5.FileName;
+                await SaveMagazineImage(model.SubImage5, currentEdition.FolderName);
+            }
+
             magazineContentModel.YouTubLink = model.YouTubLink;
 
             await _magazineManager.AddMagazineContent(magazineContentModel);
@@ -255,12 +274,62 @@ namespace BMS_dotnet_WebApplication.Controllers
 
             return  RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public async Task<ActionResult> Feedback(FeedbackModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("CurrentEdition");
+            }
+
+            var emailStringBuilder = new StringBuilder();
+            emailStringBuilder.AppendLine(DateTime.Today.ToShortDateString());
+            emailStringBuilder.AppendLine(model.FeedbackOn);
+            emailStringBuilder.AppendLine($"From: {model.Name}-{model.EmailAddress}");
+
+            emailStringBuilder.AppendLine(model.FeedBack);
+
+           await  _emailManager.MagazineFeedBackEmail( emailStringBuilder.ToString());
+
+            return RedirectToAction("CurrentEdition");
+        }
+
+        public async Task<string> Download(string key)
+        {
+            if (!string.IsNullOrEmpty(key))
+            {
+                try
+                {
+                    string pathDownload = "c:\\TheSoulJournal";
+                    var fileName = key.Split('/').Last();
+
+                    if (!Directory.Exists(pathDownload))
+                        Directory.CreateDirectory(pathDownload);
+
+                    var myStringWebResource = $"{CurrentMagazinePath}{key}";
+                    WebClient webClient = new WebClient();
+                    webClient.DownloadFile(myStringWebResource, $"{pathDownload}\\{fileName}");
+
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+
+
+                return "True"; // await _magazineManager.DownloadFile(key);
+            }
+
+            return "False";
+        }
         private async Task<ContentDetailsVM> GetMagazineContent(string contentId)
         {
             var magazine = await _magazineManager.GetCurrentEdition();
             var content = magazine.Contents.FirstOrDefault(c => c.ContentId == contentId);
             var contentVM = new ContentDetailsVM
             {
+                MagazineCoverImage = magazine.Image,
                 Content = content,
                 OtherContents = magazine.Contents.Where(c => c.Category.CategoryId == content?.Category.CategoryId && c.ContentId != content?.ContentId).Select(s => new OtherContent {Heading = s.Heading, Id = s.ContentId, Image = s.MainImage, FolderName = s.FolderName})
                     .ToList()

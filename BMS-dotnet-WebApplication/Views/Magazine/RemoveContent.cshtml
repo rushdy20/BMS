@@ -13,10 +13,10 @@
     <div class="form-group">
         @foreach (var content in Model.Contents.OrderByDescending(m => m.ContentId))
         {
-            <div class="form-group">
-                Category: @content.Category.Name
-                Content Heading: @content.Heading
-                Delete <input type="checkbox" name="@content.ContentId" />
+             <div class="form-group">
+                Category: <b> @content.Category.Name</b>
+                Content Heading: <b> @content.Heading </b>
+                <input type="checkbox" name="@content.ContentId"/>
 
             </div>
         }

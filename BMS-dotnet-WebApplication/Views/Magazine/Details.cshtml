@@ -1,11 +1,14 @@
-﻿@model BMS_dotnet_WebApplication.Models.MagazineVM.ContentDetailsVM
+﻿@using BMS_dotnet_WebApplication.Models.MagazineVM
+@model BMS_dotnet_WebApplication.Models.MagazineVM.ContentDetailsVM
 
 
 @{
+    var baseurl = "http://d2nxbo7tljjo4u.cloudfront.net/magazine/";
     var url = $"http://www.Beruwala-Mirror.com/Magazine/Details/{Model.Content.ContentId}";
     var parentFolder = "magazine";
     var image = $"{"http://d1j1ye7fpazrcq.cloudfront.net/News/"}{parentFolder}/{Model.Content.FolderName}/{Model.Content.MainImage}";
     var contentBody = Model.Content.Body.Length > 99 ? Model.Content.Body.Substring(0, 99) : Model.Content.Body;
+    var downloadFilePath = "";
 }
 
 @section Meta
@@ -35,15 +38,22 @@
 </script>
 
 
-<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-magazine mb-3">
     <div class="container">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".content-collapse" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse content-collapse">
+        <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse content-collapse overflow-auto">
             <ul class="navbar-nav flex-grow-1">
-                <li class="nav-item">   @Html.ActionLink("Back to Magazine", "CurrentEdition", "Magazine", new { Id = Model.Content.ContentId }, new { @class = "btn btn-link margin-Top-10" })</liclass="nav-item">
+                <li class="nav-item">
+
+                    <a href='@Url.Action("CurrentEdition", "Magazine")'>
+                        <div class="card-Magazine-mini">
+                            <img style="max-height: 70px" src="@Url.Action("GetImage", new {filename = $"{Model.Content.FolderName}/{Model.MagazineCoverImage}", section = "magazine"})" alt="Back to Magazine">
+                        </div>
+                    </a>
+                </li>
                 @foreach (var content in Model.OtherContents)
                 {
                     <li class="nav-item">
@@ -56,8 +66,9 @@
 </nav>
 
 <div class="content-group row">
-    <div class="card">
-        <div class="margin-Top-10" >
+
+    <div class="card no-border">
+        <div class="margin-Top-10">
             <img class="center" src="@Url.Action("GetImage", new {filename = $"{Model.Content.FolderName}/{Model.Content.MainImage}", section = "magazine"})" alt="...">
         </div>
         <div class="card-body">
@@ -68,47 +79,53 @@
             @if (Model.Content.YouTubLink?.Trim().Length > 1)
             {
                 <div class="margin-15">
-                    <iframe width="560" height="315" src=@Model.Content.YouTubLink sandbox="allow-forms allow-scripts allow-pointer-lock allow-same-origin allow-top-navigation"></iframe>
+                    <iframe width="100%" src=@Model.Content.YouTubLink class="youtubIframe" sandbox="allow-forms allow-scripts allow-pointer-lock allow-same-origin allow-top-navigation"></iframe>
 
                 </div>
             }
-
-            @if (Model.Content.SubImage1 != null)
-            {
-                <div class="row float-left margin-15">
-
-                    <img src="@Url.Action("GetImage", new {filename = $"{Model.Content.FolderName}/{Model.Content.SubImage1}", section = "magazine"})" alt="...">
-                </div>
-            }
-
-            @if (Model.Content.SubImage2 != null)
-            {
-                <div class="row float-left margin-15">
-
-                    <img src="@Url.Action("GetImage", new {filename = $"{Model.Content.FolderName}/{Model.Content.SubImage2}", section = "magazine"})" alt="...">
-                </div>
-            }
-
-            @if (Model.Content.SubImage3 != null)
-            {
-                <div class="row float-left margin-15">
-
-                    <img src="@Url.Action("GetImage", new {filename = $"{Model.Content.FolderName}/{Model.Content.SubImage3}", section = "magazine"})" alt="...">
-                </div>
-            }
-
-        </div>
-        <div class="form-group">
-            <small id="emailHelp" class="form-text text-muted">Edited By : @Model.Content.AuthoredBy On : @Model.Content.EnteredDate </small>
+            
+           
+            @Html.HiddenFor(m => m.Content.FolderName)
         </div>
 
-
-        @*@if (ViewBag.LoggedIn)
+        <div>
+            @if (!string.IsNullOrWhiteSpace(Model.Content.SubImage1))
             {
-                <div class="form-group">
-                    @Html.ActionLink("Edit", "CreateContent", "Magazine", new { id = Model.ContentId }, new { @class = "btn btn-primary" })
-                </div>
-            }*@
+                downloadFilePath = $"{baseurl}{Model.Content.FolderName}/{Model.Content.SubImage1}";
+                <a href="@downloadFilePath" download="download" target="_blank"> Download-1</a> <br />
+            }
+
+            @if (!string.IsNullOrWhiteSpace(Model.Content.SubImage2))
+            {
+                downloadFilePath = $"{baseurl}{Model.Content.FolderName}/{Model.Content.SubImage2}";
+                <a href="@downloadFilePath" download="download" target="_blank"> Download-2</a> <br />
+            }
+
+            @if (!string.IsNullOrWhiteSpace(Model.Content.SubImage3))
+            {
+                downloadFilePath = $"{baseurl}{Model.Content.FolderName}/{Model.Content.SubImage3}";
+                <a href="@downloadFilePath" download="download" target="_blank"> Download-3</a> <br />
+            }
+
+            @if (!string.IsNullOrWhiteSpace(Model.Content.SubImage4))
+            {
+                downloadFilePath = $"{baseurl}{Model.Content.FolderName}/{Model.Content.SubImage4}";
+                <a href="@downloadFilePath" download="download" target="_blank"> Download-4</a> <br />
+            }
+            
+            @if (!string.IsNullOrWhiteSpace(Model.Content.SubImage5))
+            {
+                downloadFilePath = $"{baseurl}{Model.Content.FolderName}/{Model.Content.SubImage5}";
+                <a href="@downloadFilePath" download="download" target="_blank"> Download-5</a> <br />
+            }
+
+            @*@Html.ActionLink("Download", "Download", "Magazine", new {key = $"{Model.Content.FolderName}/{Model.Content.MainImage}"}, new {@class = "btn btn-link download-link"})*@
+
+        </div>
+
+       
+
+
     </div>
 </div>
 
@@ -121,3 +138,12 @@
      data-size="small"
      data-share="true">
 </div>
+
+@section Scripts
+{
+    <script>
+
+        $('.youtubIframe').css('height', ($(window).height() * 0.8) + 'px');
+
+    </script>
+}

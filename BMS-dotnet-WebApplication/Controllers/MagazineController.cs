@@ -30,23 +30,29 @@ namespace BMS_dotnet_WebApplication.Controllers
         private readonly ICacheManager _cacheManager;
         private readonly IMapper _mapper;
         private readonly IEmailManager _emailManager;
+        private readonly IFeedBack _feedBack;
         private readonly Random _rnd;
 
         private const string CategoryCacheKey = "MagazineCategories";
-        private const string BaseUrl = "www.bic.org";
+        private const string BaseUrl = "http://www.magazine.britanniaislamiccentre.org/";
         private const string CategoryIconFolder = "magazinecategoryicon";
+        
 
-        public MagazineController(IMagazineManager magazineManager, ICacheManager cacheManager, IMapper mapper, IEmailManager emailManager)
+        public MagazineController(IMagazineManager magazineManager, ICacheManager cacheManager, IMapper mapper, IEmailManager emailManager, IFeedBack feedbak)
         {
             _mapper = mapper;
             _magazineManager = magazineManager;
             _cacheManager = cacheManager;
             _emailManager = emailManager;
+            _feedBack = feedbak;
             _rnd = new Random();
         }
 
         public async Task<IActionResult> Index()
         {
+            if (string.IsNullOrEmpty(LoggedInName()) || !IsAllowed(UserLevel.AccessArea.MagazineAdmin))
+                return RedirectToAction("Login", "User");
+
             var model = await BuildIndexVM();
            
             return View(model);
@@ -54,9 +60,8 @@ namespace BMS_dotnet_WebApplication.Controllers
 
         public async Task<IActionResult> CreateCategory()
         {
-            //if (string.IsNullOrEmpty(LoggedInName()) || !IsAllowed(UserLevel.AccessArea.MagazineAdmin))
-            //    return RedirectToAction("Login", "User");
-
+            if (string.IsNullOrEmpty(LoggedInName()) || !IsAllowed(UserLevel.AccessArea.MagazineAdmin))
+               return RedirectToAction("Login", "User");
             
             var model = new MagazineCategoriesVM
             {
@@ -67,17 +72,17 @@ namespace BMS_dotnet_WebApplication.Controllers
             return View(model); 
         }
 
-        public async Task<IActionResult> CurrentEdition()
+        public async Task<IActionResult> CurrentEdition(string Id ="CurrentEdition")
         {
-            var model = await GetCurrentMagazine();
+            var model = await GetCurrentMagazine(Id);
             return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateCategory(MagazineCategoryVM model)
         {
-            //if (string.IsNullOrEmpty(LoggedInName()) || !IsAllowed(UserLevel.AccessArea.MagazineAdmin))
-            //    return RedirectToAction("Login", "User");
+            if (string.IsNullOrEmpty(LoggedInName()) || !IsAllowed(UserLevel.AccessArea.MagazineAdmin))
+               return RedirectToAction("Login", "User");
 
             if (!ModelState.IsValid)
                 return RedirectToAction("CreateCategory");
@@ -124,7 +129,8 @@ namespace BMS_dotnet_WebApplication.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateMagazine(MagazineVM model)
         {
-            //todo add authorisation
+            if (string.IsNullOrEmpty(LoggedInName()) || !IsAllowed(UserLevel.AccessArea.MagazineAdmin))
+                return RedirectToAction("Login", "User");
 
             if (!ModelState.IsValid)
                 return View(model);
@@ -149,15 +155,18 @@ namespace BMS_dotnet_WebApplication.Controllers
 
         }
 
-        public async Task<ActionResult> CreateContent()
+        public async Task<ActionResult> CreateContent(string Id)
         {
+            if (string.IsNullOrEmpty(LoggedInName()) || !IsAllowed(UserLevel.AccessArea.MagazineAdmin))
+                return RedirectToAction("Login", "User");
+
             var categories = await GetListOfCategories();
             var model = new MagazineContentVM
             {
                 NewsCategories = categories.Select(c => new SelectListItem {Text = c.Name, Value = c.CategoryId.ToString()}).ToList(),
                 CreatedDate = DateTime.Today.ToString("d"),
                 EnteredBy = HttpContext.Session.GetString("Name"),
-                Magazine = new MagazineVM()
+                Magazine = new MagazineVM { MagazineId = Id}
             };
             return View(model);
         }
@@ -165,7 +174,10 @@ namespace BMS_dotnet_WebApplication.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateContent(MagazineContentVM model)
         {
-            var currentEdition = await _magazineManager.GetCurrentEdition();
+            if (string.IsNullOrEmpty(LoggedInName()) || !IsAllowed(UserLevel.AccessArea.MagazineAdmin))
+                return RedirectToAction("Login", "User");
+
+            var currentEdition = await _magazineManager.GetMagazine(model.Magazine.MagazineId);
             //  var folderPath = CreateFolder(newsId);
             var magazineContentModel = new MagazineContent
             {
@@ -231,9 +243,9 @@ namespace BMS_dotnet_WebApplication.Controllers
 
         }
 
-        public async Task<ActionResult> Details(string id)
+        public async Task<ActionResult> Details(string id, string mid)
         {
-            var model = await GetMagazineContent(id);
+            var model = await GetMagazineContent(id,mid);
 
             //ViewBag.LoggedIn = false;
             //if (HttpContext.Session.GetString("Name") != null)
@@ -256,9 +268,9 @@ namespace BMS_dotnet_WebApplication.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<ActionResult> RemoveContent()
+        public async Task<ActionResult> RemoveContent(string Id)
         {
-            var magazine = await _magazineManager.GetCurrentEdition();
+            var magazine = await _magazineManager.GetMagazine(Id);
             var model = _mapper.Map<RemoveMagazineVM>(magazine);
             model.RemoveContentId = new List<string>();
 
@@ -266,10 +278,10 @@ namespace BMS_dotnet_WebApplication.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> RemoveContent(string RemoveContentId)
+        public async Task<ActionResult> RemoveContent(string MagazineId, string RemoveContentId)
         {
             var contentIdsToRemove = RemoveContentId.Split(",");
-            var magazine = await _magazineManager.RemoveContentsFromCurrentEdition(contentIdsToRemove);
+            var magazine = await _magazineManager.RemoveContentsFromCurrentEdition(MagazineId,contentIdsToRemove);
             
 
             return  RedirectToAction("Index");
@@ -290,7 +302,11 @@ namespace BMS_dotnet_WebApplication.Controllers
 
             emailStringBuilder.AppendLine(model.FeedBack);
 
-           await  _emailManager.MagazineFeedBackEmail( emailStringBuilder.ToString());
+            var feedback = _mapper.Map<BMS.BusinessLayer.Models.FeedbackModel>(model);
+
+           await  _feedBack.CreateFeedBack(feedback);
+
+         //  await  _emailManager.MagazineFeedBackEmail( emailStringBuilder.ToString());
 
             return RedirectToAction("CurrentEdition");
         }
@@ -323,15 +339,15 @@ namespace BMS_dotnet_WebApplication.Controllers
 
             return "False";
         }
-        private async Task<ContentDetailsVM> GetMagazineContent(string contentId)
+        private async Task<ContentDetailsVM> GetMagazineContent(string contentId, string magazineId)
         {
-            var magazine = await _magazineManager.GetCurrentEdition();
+            var magazine = await _magazineManager.GetMagazine(magazineId);
             var content = magazine.Contents.FirstOrDefault(c => c.ContentId == contentId);
             var contentVM = new ContentDetailsVM
             {
                 MagazineCoverImage = magazine.Image,
                 Content = content,
-                OtherContents = magazine.Contents.Where(c => c.Category.CategoryId == content?.Category.CategoryId && c.ContentId != content?.ContentId).Select(s => new OtherContent {Heading = s.Heading, Id = s.ContentId, Image = s.MainImage, FolderName = s.FolderName})
+                OtherContents = magazine.Contents.Where(c => c.Category.CategoryId == content?.Category.CategoryId && c.ContentId != content?.ContentId).Select(s => new OtherContent {Heading = s.Heading, Id = s.ContentId, Image = s.MainImage, FolderName = s.FolderName, MagazineId = s.MagazineId})
                     .ToList()
             };
 
@@ -373,31 +389,33 @@ namespace BMS_dotnet_WebApplication.Controllers
             }
         }
 
-        private async Task<MagazineIndexVM> BuildIndexVM()
+        private async Task<List<MagazineIndexVM>> BuildIndexVM()
         {
-            var currentEdition = await _magazineManager.GetCurrentEdition();
-            return new MagazineIndexVM
-            {
-                ContentCategories = currentEdition?.Contents?.Select(c => c.Category).GroupBy(g => g.Name).Select(c => c.FirstOrDefault()).ToList(),
-                CurrentEditionName = currentEdition?.Name,
-                CreatedDate = currentEdition?.DateCreated.ToString("D"),
-                CreatedBy = currentEdition?.CreatedBy,
-                MagazineId = currentEdition?.MagazineId,
-                CurrentEditionImage = $"{currentEdition?.FolderName}/{currentEdition?.Image}",
-                IsLive = currentEdition?.IsLive?? false
-            };
+            var allMagazines = await _magazineManager.GetAllMagazines();
 
+            var magazineVMs = allMagazines.Select(m => new MagazineIndexVM
+            {
+                ContentCategories = m.Contents?.Select(c => c.Category).GroupBy(g => g.Name).Select(c => c.FirstOrDefault()).ToList(),
+                CurrentEditionName = m.Name,
+                CreatedDate = m.DateCreated.ToString("D"),
+                MagazineId = m.MagazineId,
+                IsLive = m.IsLive,
+                CurrentEditionImage = $"{m.FolderName}/{m.Image}"
+            }).ToList();
+
+            return magazineVMs;
         }
         
         
-        private async Task<CurrentEditionVM> GetCurrentMagazine()
+        private async Task<CurrentEditionVM> GetCurrentMagazine(string Id)
         {
-            var magazine = await _magazineManager.GetCurrentEdition();
-            magazine.Contents = magazine.Contents.OrderBy(d => d.Category.Order).ThenBy(c => c.Index).ToList();
+            var magazine = Id== "CurrentEdition"? await _magazineManager.GetCurrentEdition() : await _magazineManager.GetMagazine(Id);
+            magazine.Contents = magazine.Contents !=null ? magazine.Contents.OrderBy(d => d.Category.Order).ThenBy(c => c.Index).ToList() : new List<MagazineContent>();
             return new CurrentEditionVM
             {
                 Magazine = magazine,
-                ContentCategories = magazine?.Contents?.Select(c => c.Category).GroupBy(g => g.Name).Select(c => c.FirstOrDefault()).ToList()
+                ContentCategories = magazine?.Contents?.Select(c => c.Category).GroupBy(g => g.Name).Select(c => c.FirstOrDefault()).ToList(),
+                IsAdmin = (!string.IsNullOrEmpty(LoggedInName()) && IsAllowed(UserLevel.AccessArea.MagazineAdmin))
             };
         }
 

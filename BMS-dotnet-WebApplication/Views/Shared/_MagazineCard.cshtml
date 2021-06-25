@@ -4,7 +4,7 @@
 }
 
 <div class="card-Magazine" >
-    <a href='@Url.Action("Details", "Magazine", new {Id = Model.ContentId})' class="magazin-card-link">
+    <a href='@Url.Action("Details", "Magazine", new {Id = Model.ContentId, mid= Model.MagazineId})' class="magazin-card-link">
         <div class="card-img">
             <img class="center" style="max-height: 175px;" src="@Url.Action("GetImage", new {filename = $"{Model.FolderName}/{Model.MainImage}", section = "magazine"})" alt="...">
         </div>

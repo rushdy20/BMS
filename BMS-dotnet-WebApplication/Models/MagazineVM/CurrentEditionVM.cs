@@ -7,5 +7,6 @@ namespace BMS_dotnet_WebApplication.Models.MagazineVM
     {
         public List<MagazineCategory> ContentCategories { get; set; }
         public Magazine Magazine { get; set; }
+        public bool IsAdmin { get; set; }
     }
 }

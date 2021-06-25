@@ -11,16 +11,40 @@
         Magazine Name: @Model.Name
     </div>
     <div class="form-group">
-        @foreach (var content in Model.Contents.OrderByDescending(m => m.ContentId))
-        {
-             <div class="form-group">
-                Category: <b> @content.Category.Name</b>
-                Content Heading: <b> @content.Heading </b>
-                <input type="checkbox" name="@content.ContentId"/>
+        <table>
+            <thead>
+                <tr>
+                    <th>Category Name</th>
+                    <th>Heading</th>
+                    <th>Order</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var content in Model.Contents.OrderByDescending(m => m.Category.Order))
+                {
+                    <tr>
+                        <td>
+                            @content.Category.Name
+                        </td>
+                        <td>
+                            @content.Heading
+                        </td>
+                        <td>
+                            @content.Index
+                        </td>
+                        <td>
+                            <input type="checkbox" name="@content.ContentId" />
+                        </td>
+                    </tr>
+                }
 
-            </div>
-        }
+            </tbody>
+        </table>
+
+
         @Html.HiddenFor(m => m.RemoveContentId)
+        @Html.HiddenFor(m => m.MagazineId)
     </div>
     <button type="submit" id="btnSubmit" class="btn btn-primary">Remove Selected</button>
 }

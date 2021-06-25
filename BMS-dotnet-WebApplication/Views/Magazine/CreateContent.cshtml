@@ -23,6 +23,9 @@
         @Html.TextBoxFor(m => m.Heading, new { @class = "form-control" })
     </div>
     <div class="form-group">
+        <div id="toolbar-container">
+            <button id="custom-button">C</button>
+        </div>
         <div id="quillEditor"></div>
     </div>
     <div class="form-group">
@@ -86,7 +89,7 @@
     <partial name="_ValidationScriptsPartial"/>
     <partial name="_quilljsTextEditor"/>
     <script>
-        var quill = new Quill('#quillEditor',
+         var quill = new Quill('#quillEditor',
             {
                 modules: {
                     toolbar: [
@@ -95,11 +98,41 @@
                         ['image', 'code-block', 'strike'],
                         [{ 'color': [] }, { 'background': [] }],
                         [{ 'font': [] }],
-                        [{ 'align': [] }]
+                        [{ 'align': [] }],
+                        ['custom1', 'custom2', 'custom3']
                     ]
                 },
+                placeholder: 'Compose an epic...',
                 theme: 'snow'
             });
+        
+        //var Parchment = Quill.import("parchment");
+
+        //var CustomClass = new Parchment.Attributor.Class('custom', 'ql-custom', {
+        //    scope: Parchment.Scope.INLINE
+        //});
+
+        //Quill.register(CustomClass, true);
+
+        //var customButton = document.querySelector('#custom-button');
+        ////customButton.addEventListener
+        //$('#custom-button').click(function (event) {
+        //    event.preventDefault();
+        //    var format = quill.getFormat();
+        //    if(format.custom) {
+        //        quill.format('custom', '');
+        //    } else {
+        //        quill.format('custom', 'test');
+        //    }
+        //});
+
+        //quill.on('editor-change', function(eventName, ...args) {
+        //    if(quill.getFormat().custom) {
+        //        customButton.classList.add('ql-active');
+        //    } else {
+        //        customButton.classList.remove('ql-active');
+        //    }
+        //});
 
         $('#btnSubmit').click(function () {
             var myEditor = document.querySelector('#quillEditor');

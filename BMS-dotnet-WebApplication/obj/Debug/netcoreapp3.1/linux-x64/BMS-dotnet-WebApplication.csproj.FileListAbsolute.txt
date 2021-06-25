@@ -146,9 +146,13 @@ C:\Learning\BMS\BMS-dotnet-WebApplication\obj\Debug\netcoreapp3.1\linux-x64\Razo
 C:\Learning\BMS\BMS-dotnet-WebApplication\obj\Debug\netcoreapp3.1\linux-x64\Razor\Views\Magazine\Index.cshtml.g.cs
 C:\Learning\BMS\BMS-dotnet-WebApplication\obj\Debug\netcoreapp3.1\linux-x64\Razor\Views\Shared\_MagazineCard.cshtml.g.cs
 C:\Learning\BMS\BMS-dotnet-WebApplication\obj\Debug\netcoreapp3.1\linux-x64\Razor\Views\Shared\_miniContentCart.cshtml.g.cs
-C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\linux-x64\wwwroot\css\site.css
 C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\linux-x64\package-lock.json
 C:\Learning\BMS\BMS-dotnet-WebApplication\obj\Debug\netcoreapp3.1\linux-x64\Razor\Views\Shared\_quilljsTextEditor.cshtml.g.cs
 C:\Learning\BMS\BMS-dotnet-WebApplication\obj\Debug\netcoreapp3.1\linux-x64\Razor\Views\Magazine\_AddCategory.cshtml.g.cs
 C:\Learning\BMS\BMS-dotnet-WebApplication\obj\Debug\netcoreapp3.1\linux-x64\Razor\Views\Magazine\RemoveContent.cshtml.g.cs
 C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\linux-x64\Syroot.KnownFolders.dll
+C:\Learning\BMS\BMS-dotnet-WebApplication\obj\Debug\netcoreapp3.1\linux-x64\Razor\Views\Shared\_Feedback.cshtml.g.cs
+C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\linux-x64\MimeKit.dll
+C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\linux-x64\BouncyCastle.Crypto.dll
+C:\Learning\BMS\BMS-dotnet-WebApplication\obj\Debug\netcoreapp3.1\linux-x64\Razor\Views\FeedBack\Index.cshtml.g.cs
+C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\linux-x64\wwwroot\css\magazine.css

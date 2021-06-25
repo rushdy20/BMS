@@ -156,5 +156,23 @@ namespace BMS.AWS
                 return e.Message;
             }
         }
+
+        public async Task<bool> RemoveFilesFromS3(string key, string bucketName)
+        {
+            try
+            {
+                var delete = await _s3Client.DeleteObjectAsync(bucketName, key);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public Task<string> ErrorLog(string errorMsg)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

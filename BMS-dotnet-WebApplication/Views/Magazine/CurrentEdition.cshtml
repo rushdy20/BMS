@@ -26,24 +26,32 @@
                 }
                 <li class="nav-item magazine-nav-item">
                     <a class="nav-link" href="#feedback">
-                        Leave a feedback
+                        Leave feedback
                     </a>
                 </li>
+                
+                @if (Model.IsAdmin)
+                {
+                    <li class="nav-item magazine-nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Magazine" asp-action="Index">Magazine Manager</a>
+                    </li>
+                }
+                
             </ul>
         </div>
     </div>
 </nav>
 @*<div class="wallpaper">
-    <img src="@Url.Action("GetImage", new {filename = $"{Model.Magazine.FolderName}/{Model.Magazine.Image}", section = "magazine"})" style="width: 80%; margin-left: 20%;" alt="...">
+        <img src="@Url.Action("GetImage", new {filename = $"{Model.Magazine.FolderName}/{Model.Magazine.Image}", section = "magazine"})" style="width: 80%; margin-left: 20%;" alt="...">
 
-</div>*@
+    </div>*@
 
 <div class="form-group ">
     @foreach (var category in Model.ContentCategories)
     {
         <div class="row NewNewsFeedSeperator" id="@category.CategoryId">
             <img src="@Url.Action("GetImage", new {filename =  @category.IconImage, section = "magazinecategoryicon"})" alt=" @category.Name">
-       
+
         </div>
         @*<div class="bg-transparent" style="width: 100%; height: 40px"></div>*@
         <div class="content-group">
@@ -58,12 +66,13 @@
     }
 </div>
 
+
 <div class="row NewNewsFeedSeperator" id="feedback">
-    <img src="~/imgs/feedback.png"/>
-       
+    <img src="~/imgs/feedback.png" />
+
 </div>
-<div  class="form-group ">
-    @Html.Partial("_Feedback", new FeedbackModel{FeedbackOn = @Model.Magazine.Name })
+<div class="form-group ">
+    @Html.Partial("_Feedback", new FeedbackModel { FeedbackOn = @Model.Magazine.Name })
 
 </div>
 
@@ -71,36 +80,9 @@
 
 
 
-<script async defer crossorigin="anonymous"
-        src="https://connect.facebook.net/en_US/sdk.js#xfbml=1
-             &version=1
-             &appId=239242753967982
-             &autoLogAppEvents=1"
-        nonce="FOKrbAYI">
-</script>
 
 @section Scripts
 {
-    @*<script>
-        $(function () {
-            $('.content-group').each(function (div) {
-                debugger;
-                var content = this.children;
-                var t = content.length;
-                var hei = 0;
-                for (var i = 0; i < t; i++) {
-
-                    hei += content[i].offsetHeight;
-                }
-                console.log(hei);
-                $(this).css("height", hei);
-                //this.height(hei);
-            });
-
-            var a = '5';
-
-        });
-    </script>*@
+    <partial name="_ValidationScriptsPartial" />
 }
-
 

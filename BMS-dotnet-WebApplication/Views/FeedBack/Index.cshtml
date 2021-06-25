@@ -1,0 +1,24 @@
+﻿@model List<BMS.BusinessLayer.Models.FeedbackModel>
+@{
+}
+
+@foreach (var feedback in Model)
+{
+    <div class="form-group row">
+        <div class="feedback">
+            <p>
+                <span>Name: </span><b>@feedback.Name</b>
+            </p>
+            <p>
+                <span>Email: </span><b>@feedback.EmailAddress</b>
+            </p>
+            <p>
+                <span>Feedback: </span><b>@feedback.FeedBack</b>
+            </p>
+            <p>
+                <span>FeedbackOn: </span><b>@feedback.FeedbackOn</b>
+            </p>
+        </div>
+    </div>
+    
+}

@@ -19,12 +19,14 @@ namespace BMS.BusinessLayer.Magazine
 
         Task<Models.Magazine> GetMagazine(string magazineId);
 
-        Task<bool> RemoveContentsFromCurrentEdition(string[] contentIds);
+        Task<bool> RemoveContentsFromCurrentEdition(string magazineId, string[] contentIds);
 
         Task<bool> AddMagazineContent(MagazineContent content);
 
         Task<bool> UpdateMagazineStatus(bool status, string magazineId);
 
         Task<string> DownloadFile(string path);
+
+        Task<List<Models.Magazine>> GetAllMagazines();
     }
 }

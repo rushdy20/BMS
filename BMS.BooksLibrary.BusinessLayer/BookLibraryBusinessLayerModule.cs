@@ -14,6 +14,8 @@ namespace BMS.BooksLibrary.BusinessLayer
             services.AddScoped<IUserManager, UserManager>();
             services.AddScoped<IMagazineManager, MagazineManager>();
             services.AddScoped<IEmailManager, EmailManager>();
+            services.AddScoped<IErrorLog, ErrorLog>();
+            services.AddScoped<IFeedBack, FeedBackManager>();
             return services;
         }
     }

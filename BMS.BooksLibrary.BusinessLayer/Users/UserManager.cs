@@ -48,7 +48,7 @@ namespace BMS.BusinessLayer.Users
         {
             var allUsers = await GetAllUsers();
 
-            return allUsers.FirstOrDefault(u => u.EmailAddress == email);
+            return allUsers.FirstOrDefault(u => string.Equals(u.EmailAddress,email, StringComparison.CurrentCultureIgnoreCase));
 
         }
 

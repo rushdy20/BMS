@@ -19,10 +19,21 @@ namespace BMS_dotnet_WebApplication.Controllers
         {
             _logger = logger;
             _magazineManager = magazineManager;
+
+           
         }
 
         public async Task<IActionResult> Index()
         {
+            var isItLibrary = IsItLibrary();
+
+            ViewBag.IsItLibrary = isItLibrary;
+
+            if (isItLibrary)
+            {
+              return  RedirectToAction("Index", "User");
+            }
+
             var model = await BuildIndexVM();
 
             return View(model);

@@ -1,40 +1,83 @@
-﻿<!DOCTYPE html>
+﻿
+@{
+    // var isLibrary = ViewBag.IsItLibrary;
+    var isLibrary = Context.Request.Host.ToString().Contains("localhost",StringComparison.OrdinalIgnoreCase) ||
+     Context.Request.Host.ToString().Contains("bic-library", StringComparison.OrdinalIgnoreCase) ;
+   
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     @RenderSection("Meta", required: false)
-<title>The Soul Journal - @ViewData["Title"] </title>
+
+    @if (isLibrary)
+    {
+        <title>Bic Library - @ViewData["Title"] </title>
+    }
+    else
+    {
+        <title>The Soul Journal - @ViewData["Title"] </title>
+    }
+
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/quill.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    @if (isLibrary)
+    {
+        <link rel="stylesheet" href="~/css/bicLibrary.css" />
+    }
+    else
+    {
+        <link rel="stylesheet" href="~/css/magazine.css" />
+    }
+
     <link rel="SHORTCUT ICON" href="~/imgs/TabIcone1.png" type="image/x-icon" />
     <link rel="ICON" href="~/imgs/TabIcone1.png" type="image/ico" />
 
 </head>
-<body class="bg-magazine">
+<body class="bg-site">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-magazine border-bottom box-shadow mb-3">
             <div class="container container-bg">
-                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/imgs/logo.png"/></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Magazine" asp-action="CurrentEdition">Magazine</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Magazine" asp-action="Index">MagazineManager</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">My Account</a>
-                        </li>
-                    </ul>
+                    @if (isLibrary)
+                    {
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/imgs/bic-Library.png" /></a>
+                            </li>
+                            @*<li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Magazine" asp-action="CurrentEdition">Magazine</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">My Account</a>
+                                </li>*@
+                        </ul>
+
+
+                    }
+                    else
+                    {
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/imgs/logo.png" /></a>
+                            </li>
+                            @*<li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Magazine" asp-action="CurrentEdition">Magazine</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">My Account</a>
+                                </li>*@
+                        </ul>
+
+                    }
+
                 </div>
             </div>
         </nav>
@@ -44,10 +87,10 @@
             @RenderBody()
         </main>
     </div>
-   
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
- <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
- <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

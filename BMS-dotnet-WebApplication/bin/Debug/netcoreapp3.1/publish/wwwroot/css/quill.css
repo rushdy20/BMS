@@ -8,7 +8,6 @@
     box-sizing: border-box;
     font-family: Helvetica, Arial, sans-serif;
     font-size: 13px;
-    height: 100%;
     margin: 0px;
     position: relative;
 }
@@ -67,7 +66,6 @@
         padding: 0;
         counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
     }
-
     .ql-editor ol,
     .ql-editor ul {
         padding-left: 1.5em;
@@ -506,3 +504,23 @@
         position: absolute;
         right: 15px;
     }
+pre.ql-syntax {
+    white-space: pre-wrap;
+    background-color: rgb(226 222 222);
+    padding: 27px;
+    margin: 18px;
+    border-left: 12px solid #148073;
+    font-family: initial;
+    font-size: 19px;
+    font-style: italic;
+    border-radius: 25px;
+}
+
+ql-snow .ql-editor pre.ql-syntax {
+    white-space: pre-wrap;
+    background-color: rgb(249 249 249);
+    padding: 27px;
+    margin: 18px;
+    border-left: 12px solid #818483;
+    font-family: fangsong;
+}

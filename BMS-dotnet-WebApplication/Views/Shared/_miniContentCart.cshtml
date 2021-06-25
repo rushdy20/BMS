@@ -4,7 +4,7 @@
 }
 
 <div class="card-Magazine-mini" >
-    <a href='@Url.Action("Details","Magazine",new { Id = Model.Id })'>
+    <a href='@Url.Action("Details","Magazine",new { Id = Model.Id,mid= Model.MagazineId })'>
         <img style=" max-height: 60px;" src="@Url.Action("GetImage", new {filename = $"{Model.FolderName}/{Model.Image}", section = "magazine"})" alt="...">
         <br />
         @if (Model.Heading.Length > 21)

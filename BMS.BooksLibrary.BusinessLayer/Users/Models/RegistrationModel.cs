@@ -7,8 +7,6 @@ namespace BMS.BusinessLayer.Users.Models
     {
         public string EmailAddress { get; set; }
         public string Password { get; set; }
-        public string PasswordHintQuestion { get; set; }
-        public string PasswordHintAnswer { get; set; }
         public string FirstName { get; set; }
         public string Surname { get; set; }
         public DateTime DateOfBirth { get; set; }
@@ -18,6 +16,7 @@ namespace BMS.BusinessLayer.Users.Models
         public string AddressLine3 { get; set; }
         public string PostCode { get; set; }
         public string PhoneNumber { get; set; }
+        public string MothersMaidenName { get; set; }
         public bool IsApproved { get; set; }
         public List<string> AllowedAccessAreas { get; set; }
     }

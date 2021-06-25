@@ -1,0 +1,354 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px; /* Vertically center the text there */
+}
+
+/* validation
+    -----------------------------------------------
+*/
+.field-validation-error {
+    color: #E80C4D;
+    font-weight: bold;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #E80C4D;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #E80C4D;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+.book-card {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+.panel {
+    border: 2px solid;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+.panel-heading {
+    padding-left: 10px;
+    background-color: #bee5eb;
+    padding-right: 16px;
+    font-weight: bold;
+}
+.panel-body {
+    margin: 5px;
+    padding: 5px;
+}
+
+.name-box {
+    text-align: right;
+    width: 25%;
+    float: right;
+}
+
+.title-bg {
+    background-color: #cce5ff;
+    padding: 10px;
+}
+.div-entity {
+    
+    padding: 5px;
+    overflow: overlay;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    /* position: absolute; */
+}
+p.entity-heading {
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 3px solid gray;
+
+}
+.NewNewsFeedSeperator {
+    clear: both;
+    padding-left: 10px;
+}
+
+.NewNewsFeedSeperator img {
+    border-radius: 7px;
+}
+
+.multiline {
+    white-space: pre-wrap;
+}
+.magazin-card-body {
+    max-height: 200px;
+    overflow: auto;
+}
+.margin-15 {
+margin:15px;
+clear:both;
+}
+
+.margin-Top-10 { margin-top: 10px; }
+.wallpaper {
+    margin: 5%;
+    z-index: -1;
+    position: fixed;
+    top: 225px;
+    margin-left: 3%;
+    width: 62%;
+}
+.content-card {
+    margin-right: 26px;
+    border-radius: 20px;
+    margin-top: 20px;
+    height: 373px;
+    border: 4px solid #7f7a7a;
+    margin-bottom: 20px;
+    margin-left: 8px;
+    background-color: hsl(0deg 0% 70%);
+}
+.content-group {
+    background-color: white
+}
+.card-Magazine {
+    width: 18rem;
+    margin: 20px;
+    height: 320px;
+    background-color: white;
+    padding-top: 17px;
+    border-radius: 20px;
+}
+.card-book {
+    width: 18rem;
+    margin: 20px;
+    height: 400px;
+}
+
+.book-card-img {
+    margin: 10px;
+    margin-left: 90px;
+}
+
+.card-Magazine-mini {
+    margin-left: 53px;
+    margin-bottom: 5px;
+}
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    max-height: 375px;
+}
+.card-center{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 10px;
+}
+
+.content-heading {
+    background-color: antiquewhite;
+    padding-top: 10px;
+    margin-bottom: 20px;
+}
+
+.DueNow {
+    color: red;
+}
+
+.readyToCollect {
+    color: green;
+}
+
+#quillEditor {
+    height: 375px;
+}
+
+.bg-site {
+    background-color: hsl(173deg 73% 29%) !important
+}
+
+.bg-magazine-menu {
+    background-color: hsl(173deg 73% 29%);
+    font-size: x-large;
+    font-family: emoji;
+    border-radius: 20px;
+}
+
+.magazine-nav-item {
+    border: 1px solid;
+    border-radius: 20px;
+    margin-right: 13px;
+    background-color: #e5e7e4;
+    text-align: center
+}
+.container-bg {
+  padding-left: 0px !important
+}
+
+.card-title {
+    text-align: center;
+}
+
+.author {
+    FONT-FAMILY: cursive;
+    FONT-SIZE: larger;
+    padding-left: 10px;
+}
+
+.fb-like {
+    padding-top: 10px
+}
+
+a.magazin-card-link:hover {
+    text-decoration: none;
+}
+
+a.magazin-card-link {
+    color: black;
+}
+
+
+.card-Magazine:hover {
+    transform: scale(1.3);
+    border: 3px solid white;
+    background-color: hsl(0deg 0% 70%);
+}
+
+.card-Magazine-mini img:hover {
+    transform: scale3d(1.5, 1.5, 1.5);
+}
+
+.magazin-card-author {
+    text-align: center;
+    font-family: initial;
+}
+.card-img img {
+    border-radius: 20px;
+}
+
+.card-Magazine-mini a {
+    color: white;
+}
+
+.no-border {
+    border: 0px;
+}
+
+.feedback {
+    color: #ffffff
+}
+.feedback-info {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+::-webkit-scrollbar {
+    width: 20px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #13d4c247;
+    ;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #13d4c247;
+    }
+
+h5, h5 {
+    font-size: 1.15rem;
+}
+
+.right-Hint {
+    background-color: hsl(0deg 0% 70%);
+    font-size: medium
+}

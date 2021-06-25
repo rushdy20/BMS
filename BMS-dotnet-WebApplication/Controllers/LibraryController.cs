@@ -34,6 +34,8 @@ namespace BMS_dotnet_WebApplication.Controllers
             _cacheManager = cacheManager;
             _mapper = mapper;
             _rnd = new Random();
+
+            ViewBag.IsItLibrary = true;
         }
 
         public IActionResult Index()

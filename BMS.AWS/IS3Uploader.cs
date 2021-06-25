@@ -14,5 +14,8 @@ namespace BMS.AWS
         string SaveToFile(string fullName, string content);
 
         Task<string> DownloadFile(string path);
+
+        Task<bool> RemoveFilesFromS3(string fileName, string bucketName);
+
     }
 }

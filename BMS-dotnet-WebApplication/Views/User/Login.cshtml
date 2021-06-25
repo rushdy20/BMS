@@ -55,8 +55,8 @@
                         <span id="right-Hint"> </span>
                     </div>
                     <div class="form-group row col-md-10">
-                        <label id="passwordHintQuestion"></label>
-                        @Html.TextBox("passwordHintAnswer", "", new {@class = "form-control"})
+                        <label> Enter Mother's Maiden Name</label>
+                        <input type="text" id="mothersMaidenName" class="form-control"/>
                     </div>
                     <div class="form-group row col-md-10">
                         <button type="button" id="passwordWordHint" class="btn btn-secondary">Recover</button>
@@ -99,7 +99,8 @@
         $('#passwordWordHint').click(function(){
             $.post("/User/PasswordHint",
                 {
-                    hint: $('.passwordHintAnswer').val()
+                    email: $('.email-recover').val(),
+                    hint: $("input[type=text][id=mothersMaidenName").val()
                 },
                 function (data) {
                     if (data == 'incorrect-Answer') {

@@ -5,7 +5,7 @@
     "region"  : "us-east-2",
     "application" : "BMSdotnetWebApplication",
     "environment" : "BMSdotnetWebApplication-prod",
-    "solution-stack" : "64bit Amazon Linux 2 v2.1.2 running .NET Core",
+    "solution-stack" : "64bit Amazon Linux 2 v2.1.4 running .NET Core",
     "iis-website"    : "Default Web Site",
     "app-path"       : "/",
     "enable-xray"    : false,
@@ -15,10 +15,10 @@
     "enhanced-health-type" : "basic",
     "additional-options"   : "",
     "environment-type"     : "SingleInstance",
-    "cname"                : "bmsdotnetwebapplication-prod",
+    "cname"                : "bmsdotnetwebapplication-dev",
     "instance-type"        : "t2.micro",
     "key-pair"             : "ec2 tutorial",
-    "instance-profile"     : "aws-elasticbeanstalk-BMSdotnetWebApplication-prod-8",
+    "instance-profile"     : "aws-elasticbeanstalk-BMSdotnetWebApplication-dev-0",
     "service-role"         : "aws-elasticbeanstalk-service-role",
     "proxy-server"         : "nginx"
 }

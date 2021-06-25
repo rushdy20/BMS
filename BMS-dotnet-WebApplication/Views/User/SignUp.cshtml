@@ -28,16 +28,10 @@
     </div>
 
     <div class="form-group row col-md-4">
-        @Html.LabelFor(m => m.PasswordHintQuestion)
-        @Html.TextBoxFor(m => m.PasswordHintQuestion, new { @class = "form-control" })
+        @Html.LabelFor(m => m.MothersMaidenName)
+        @Html.TextBoxFor(m => m.MothersMaidenName, new { @class = "form-control" })
 
     </div>
-    <div class="form-group row col-md-4">
-        @Html.LabelFor(m => m.PasswordHintAnswer)
-        @Html.TextBoxFor(m => m.PasswordHintAnswer, new { @class = "form-control" })
-
-    </div>
-
     <div class="form-group row col-md-4">
         @Html.LabelFor(m => m.FirstName)
         @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
@@ -59,7 +53,7 @@
 
     <div class="form-group row col-md-4 ">
         @Html.LabelFor(m => m.DateOfBirth)
-        @Html.TextBoxFor(m => m.DateOfBirth, new { @class = "form-control", value = DateTime.Now.ToString("dd-MM-yyyy") })
+        @Html.TextBoxFor(m => m.DateOfBirth, GetDate(DateTime.Today),new { @class = "form-control" })
 
     </div>
 
@@ -110,4 +104,17 @@
             });
         });
     </script>
+}
+@functions{
+
+    private string GetDate(DateTime? date)
+    {
+        if (date == null)
+            return null;
+
+        var date1 = (DateTime)date;
+        return date1.ToString("dd-MM-yyyy");
+
+
+    }
 }

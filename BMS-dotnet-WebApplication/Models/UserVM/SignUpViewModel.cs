@@ -24,14 +24,9 @@ namespace BMS_dotnet_WebApplication.Models.UserVM
         [Compare("Password", ErrorMessage = "Password and Confirm Password are not equal.")]
         public string ConfirmPassword { get; set; }
 
-        [Display(Name = "Password Hint Question")]
-        [Required(ErrorMessage = "Please Enter a password hint Question")]
-        public string PasswordHintQuestion { get; set; }
-
-        [Display(Name = "Password Hint Answer")]
-        [Required(ErrorMessage = "Please Enter a password hint Answer")]
-         public string PasswordHintAnswer { get; set; }
-
+        [Display(Name = "Mother's Maiden Name")]
+        [Required(ErrorMessage = "Please Enter Mother's Maiden Name")]
+        public string MothersMaidenName { get; set; }
         [Display(Name = "First Name")]
         [Required(ErrorMessage = "Please Enter Firstname")]
         public string FirstName { get; set; }

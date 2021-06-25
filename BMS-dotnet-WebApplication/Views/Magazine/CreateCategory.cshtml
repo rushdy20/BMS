@@ -7,19 +7,25 @@
 @Html.Partial("_AddCategory",Model.AddMagazineCategory)
 <div class="form-group row container">
     <div class="col-sm-12">
-        <ul>
-            <li>
-                Magazine Categories
-                <ul>
-                    @foreach (var category in Model.ExistingCategories)
-                    {
-                        <li>
-                            @category.Name
-                        </li>
-                    }
-                </ul>
-            </li>
-        </ul>
+        <table class="table table-responsive table-info">
+            <thead>
+            <tr>
+                <th>Category Name</th>
+                <th>Index</th>
+            </tr>
+            </thead>
+                
+            <tbody>
+            @foreach (var category in Model.ExistingCategories)
+            {
+                <tr>
+                    <td> @category.Name</td>
+                    <td> @category.Order</td>
+                </tr>
+            }
+            </tbody>
+                
+        </table>
     </div>
     <div class="col-sm-4 marginT32">
         @Html.ActionLink("Save", "SaveCategories", "Magazine", null, new { @class = "btn btn-success" })

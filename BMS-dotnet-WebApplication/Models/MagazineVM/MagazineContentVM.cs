@@ -37,7 +37,7 @@ namespace BMS_dotnet_WebApplication.Models.MagazineVM
         [Display(Name = "Created Date")] public string CreatedDate { get; set; }
         public string EnteredBy { get; set; }
 
-        [Required(ErrorMessage = "Heading is Author")]
+        [Required(ErrorMessage = "Author is Required")]
         [Display(Name = "Author")] public string Author { get; set; }
 
         [Display(Name = "YouTub Link")] public string YouTubLink { get; set; }

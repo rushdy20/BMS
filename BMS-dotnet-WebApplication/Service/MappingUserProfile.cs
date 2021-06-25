@@ -6,6 +6,7 @@ using AutoMapper;
 using BMS.BooksLibrary.BusinessLayer;
 using BMS.BooksLibrary.BusinessLayer.Models;
 using BMS.BusinessLayer.Magazine.Models;
+using BMS.BusinessLayer.Models;
 using BMS.BusinessLayer.Users.Models;
 using BMS_dotnet_WebApplication.Models.LibraryVM;
 using BMS_dotnet_WebApplication.Models.MagazineVM;
@@ -39,6 +40,9 @@ namespace BMS_dotnet_WebApplication.Service
                 .ReverseMap();
 
             CreateMap<Magazine, RemoveMagazineVM>();
+
+            CreateMap<Models.Shared.FeedbackModel, FeedbackModel>()
+                .ReverseMap();
         }
     }
 }

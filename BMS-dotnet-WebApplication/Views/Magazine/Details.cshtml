@@ -1,38 +1,37 @@
-﻿@using BMS_dotnet_WebApplication.Models.MagazineVM
-@model BMS_dotnet_WebApplication.Models.MagazineVM.ContentDetailsVM
+﻿@model BMS_dotnet_WebApplication.Models.MagazineVM.ContentDetailsVM
 
 
 @{
     var baseurl = "http://d2nxbo7tljjo4u.cloudfront.net/magazine/";
-    var url = $"http://www.Beruwala-Mirror.com/Magazine/Details/{Model.Content.ContentId}";
+    var url = $"http://www.magazine.britanniaislamiccentre.org/Magazine/Details/{Model.Content.ContentId}?mid={Model.Content.MagazineId}";
     var parentFolder = "magazine";
-    var image = $"{"http://d1j1ye7fpazrcq.cloudfront.net/News/"}{parentFolder}/{Model.Content.FolderName}/{Model.Content.MainImage}";
+    var image = $"{"http://d2nxbo7tljjo4u.cloudfront.net/"}{parentFolder}/{Model.Content.FolderName}/{Model.Content.MainImage}";
     var contentBody = Model.Content.Body.Length > 99 ? Model.Content.Body.Substring(0, 99) : Model.Content.Body;
     var downloadFilePath = "";
 }
 
 @section Meta
 {
-    <meta property="og:type" content="article"/>
-    <meta property="og:title" name="title" content="@Model.Content.Heading"/>
-    <meta property="og:description" name="description" content="@contentBody"/>
-    <meta property="og:image" name="image" content=" @image"/>
+    <meta property="og:type" content="article" />
+    <meta property="og:title" name="title" content="@Model.Content.Heading" />
+    <meta property="og:description" name="description" content="@Model.ShortBody" />
+    <meta property="og:image" name="image" content="@image" />
 
 }
 
 <script>
     @*$(document).ready(function () {
-        $('meta[name=title]').attr('content','@Model.Heading ');
+        $('meta[name=title]').attr('content','@Model.Content.Heading ');
         $('meta[name=url]').attr('content',' @url');
         $('meta[name=description]').attr('content', '@Model.ShortBody');
-        $('meta[name=image]').attr('content', '@imarge');$
+        $('meta[name=image]').attr('content', '@image');$
     });*@
     (function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) return;
         js = d.createElement(s);
         js.id = id;
-        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=1427888847418235";
+        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=239242753967982";
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
 </script>
@@ -48,7 +47,7 @@
             <ul class="navbar-nav flex-grow-1">
                 <li class="nav-item">
 
-                    <a href='@Url.Action("CurrentEdition", "Magazine")'>
+                    <a href='@Url.Action("CurrentEdition", "Magazine",new{Id = Model.Content.MagazineId})'>
                         <div class="card-Magazine-mini">
                             <img style="max-height: 70px" src="@Url.Action("GetImage", new {filename = $"{Model.Content.FolderName}/{Model.MagazineCoverImage}", section = "magazine"})" alt="Back to Magazine">
                         </div>
@@ -73,9 +72,11 @@
         </div>
         <div class="card-body">
             <h5 class="card-title">@Html.DisplayFor(m => m.Content.Heading)</h5>
-            <p class="card-text multiline">
-                @Html.Raw(Model.Content.Body)
-            </p>
+            <div class="ql-container">
+                <div class="card-text multiline ql-editor">
+                    @Html.Raw(Model.Content.Body)
+                </div>
+            </div>
             @if (Model.Content.YouTubLink?.Trim().Length > 1)
             {
                 <div class="margin-15">
@@ -83,8 +84,7 @@
 
                 </div>
             }
-            
-           
+
             @Html.HiddenFor(m => m.Content.FolderName)
         </div>
 
@@ -112,18 +112,16 @@
                 downloadFilePath = $"{baseurl}{Model.Content.FolderName}/{Model.Content.SubImage4}";
                 <a href="@downloadFilePath" download="download" target="_blank"> Download-4</a> <br />
             }
-            
+
             @if (!string.IsNullOrWhiteSpace(Model.Content.SubImage5))
             {
                 downloadFilePath = $"{baseurl}{Model.Content.FolderName}/{Model.Content.SubImage5}";
                 <a href="@downloadFilePath" download="download" target="_blank"> Download-5</a> <br />
             }
-
-            @*@Html.ActionLink("Download", "Download", "Magazine", new {key = $"{Model.Content.FolderName}/{Model.Content.MainImage}"}, new {@class = "btn btn-link download-link"})*@
-
+        
         </div>
 
-       
+
 
 
     </div>
@@ -141,6 +139,7 @@
 
 @section Scripts
 {
+    <partial name="_ValidationScriptsPartial" />
     <script>
 
         $('.youtubIframe').css('height', ($(window).height() * 0.8) + 'px');

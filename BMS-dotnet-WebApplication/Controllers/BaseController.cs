@@ -13,6 +13,11 @@ namespace BMS_dotnet_WebApplication.Controllers
         private const string LibraryFolder = "library";
         private const string magazineFolder = "magazine";
 
+        public BaseController()
+        {
+          //  ViewBag.IsItLibrary = this.Request.Host.ToString().Contains("bic-library");
+        }
+
         public ActionResult GetImage(string fileName, string section = "default")
         {
             var sectionFolder = LibraryFolder;
@@ -57,5 +62,12 @@ namespace BMS_dotnet_WebApplication.Controllers
         }
 
         protected string CurrentMagazinePath => $"{CloudFront}/{magazineFolder}/";
+
+        internal bool IsItLibrary()
+        {
+            var isLibrary = this.Request.Host.ToString().Contains("localhost", StringComparison.OrdinalIgnoreCase) || this.Request.Host.ToString().Contains("bic-library", StringComparison.OrdinalIgnoreCase);
+           // HttpContext.Session.SetString("bic", isLibrary?"1":"0");
+            return isLibrary;
+        }
     }
 }

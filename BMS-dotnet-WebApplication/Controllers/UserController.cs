@@ -34,12 +34,14 @@ namespace BMS_dotnet_WebApplication.Controllers
             _cacheManager = cacheManager;
             _booksLibraryManager = booksLibraryManager;
             _emailManager = emailManager;
+            ViewBag.IsItLibrary = true;
         }
         public async Task<IActionResult> Index()
         {
 
             if (string.IsNullOrEmpty(LoggedInName()))
                 return RedirectToAction("Login", "User");
+
             var model = await BuildUserProfile(LoggedInName());
             return View(model);
         }
@@ -107,6 +109,7 @@ namespace BMS_dotnet_WebApplication.Controllers
                 return View(model);
 
             HttpContext.Session.SetString("Name", model.EmailAddress);
+            
 
             return RedirectToAction("Index");
         }
@@ -200,7 +203,7 @@ namespace BMS_dotnet_WebApplication.Controllers
         private async Task<string> GetPasswordRecoveryQuestion(string email)
         {
             var user = await _userManager.GetUser(email);
-            return user.PasswordHintQuestion;
+            return user.MothersMaidenName;
         }
 
         private async Task<string> ValidatePasswordRecovery(string email, string hint)
@@ -211,7 +214,7 @@ namespace BMS_dotnet_WebApplication.Controllers
                 return "Invalid-Answer";
             }
 
-            return string.Equals(user.PasswordHintAnswer, hint, StringComparison.CurrentCultureIgnoreCase) ? user.Password : "Invalid-Answer";
+            return string.Equals(user.MothersMaidenName, hint, StringComparison.CurrentCultureIgnoreCase) ? user.Password : "Invalid-Answer";
         }
 
         private async Task<UserProfileVM> BuildUserProfile(string email)

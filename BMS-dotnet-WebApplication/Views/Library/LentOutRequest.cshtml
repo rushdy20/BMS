@@ -58,12 +58,12 @@
                             </div>
                         </div>
                         <div class="form-check">
-                            @Html.CheckBox("IsReadyToCollect",@bookRequest.IsReadyToCollect, new { @class = "form-check-input" })
-                           <label class="form-check-label" for="IsReadyToCollect">Ready to Collect</label>
+                            @Html.CheckBox("IsReadyToCollect", @bookRequest.IsReadyToCollect, new { @class = "form-check-input" })
+                            <label class="form-check-label" for="IsReadyToCollect">Ready to Collect</label>
                         </div>
                         <div class="form-group">
                             @Html.Label("Note", "Note")
-                            @Html.TextArea("Note", @bookRequest.Note, new {@class = "form-control"})
+                            @Html.TextArea("Note", @bookRequest.Note, new { @class = "form-control" })
                         </div>
                         @Html.Hidden("RequestedBy", bookRequest.RequestedBy)
                         @Html.Hidden("RequestedBy", bookRequest.RequestedBy)
@@ -73,6 +73,10 @@
                         @Html.Hidden("ReturnedOn", "")
 
                         <button type="submit" class="btn btn-primary submit">Register</button>
+                        @Html.ActionLink("Send Email Reminder", "SendEmailRemainder", "Library", new { Id = bookRequest.LendingRequestId, email= bookRequest.RequestedEmail }, new { @class = "btn btn-danger" })
+
+
+
                     }
                 </div>
             </div>

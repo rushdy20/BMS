@@ -34,6 +34,8 @@ namespace BMS_dotnet_WebApplication.Models.LibraryVM
 
         [Display(Name = "Comment")] public string Comments { get; set; }
 
+        [Display(Name = "Location")] public string Location { get; set; }
+
         public List<BookModel> NewsBooks { get; set; }
     }
 }

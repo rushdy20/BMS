@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "dgSpecHash": "/ibmv/bBK2Gcz52a/M3BMcgPZqSS9f+gzGdbMxuxj8Njnynbag5AMlNK6j4GReUheTtfGkm9QNjwWFZ4S0jKSA==",
+  "success": true,
+  "projectFilePath": "C:\\Learning\\BMS\\BMS.AWS\\BMS.AWS.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\C62738A\\.nuget\\packages\\awssdk.core\\3.5.1.7\\awssdk.core.3.5.1.7.nupkg.sha512",
+    "C:\\Users\\C62738A\\.nuget\\packages\\awssdk.s3\\3.5.0.9\\awssdk.s3.3.5.0.9.nupkg.sha512",
+    "C:\\Users\\C62738A\\.nuget\\packages\\microsoft.extensions.configuration\\3.1.7\\microsoft.extensions.configuration.3.1.7.nupkg.sha512",
+    "C:\\Users\\C62738A\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\3.1.7\\microsoft.extensions.configuration.abstractions.3.1.7.nupkg.sha512",
+    "C:\\Users\\C62738A\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\3.1.7\\microsoft.extensions.dependencyinjection.3.1.7.nupkg.sha512",
+    "C:\\Users\\C62738A\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\3.1.7\\microsoft.extensions.dependencyinjection.abstractions.3.1.7.nupkg.sha512",
+    "C:\\Users\\C62738A\\.nuget\\packages\\microsoft.extensions.primitives\\3.1.7\\microsoft.extensions.primitives.3.1.7.nupkg.sha512",
+    "C:\\Users\\C62738A\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
+    "C:\\Users\\C62738A\\.nuget\\packages\\syroot.windows.io.knownfolders\\1.2.3\\syroot.windows.io.knownfolders.1.2.3.nupkg.sha512",
+    "C:\\Users\\C62738A\\.nuget\\packages\\system.security.principal.windows\\4.7.0\\system.security.principal.windows.4.7.0.nupkg.sha512"
+  ],
+  "logs": []
+}

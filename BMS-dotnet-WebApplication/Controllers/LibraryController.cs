@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using BMS.BooksLibrary.BusinessLayer;
 using BMS.BooksLibrary.BusinessLayer.Models;
+using BMS.BusinessLayer;
 using BMS.BusinessLayer.Constant;
 using BMS.BusinessLayer.Library.Models;
 using BMS_dotnet_WebApplication.Models.LibraryVM;
@@ -26,14 +28,16 @@ namespace BMS_dotnet_WebApplication.Controllers
         private readonly ICacheManager _cacheManager;
         private readonly IMapper _mapper;
         private readonly Random _rnd;
+        private readonly IEmailManager _emailManager;
 
-        public LibraryController(IBooksLibraryManager booksLibraryManager, ICacheManager cacheManager, IMapper mapper)
+        public LibraryController(IBooksLibraryManager booksLibraryManager, ICacheManager cacheManager, IMapper mapper, IEmailManager emailManager)
         {
             _random = new Random();
             _booksLibraryManager = booksLibraryManager;
             _cacheManager = cacheManager;
             _mapper = mapper;
             _rnd = new Random();
+            _emailManager = emailManager;
 
             ViewBag.IsItLibrary = true;
         }
@@ -106,12 +110,15 @@ namespace BMS_dotnet_WebApplication.Controllers
                 Name = model.SelectedCategoryText,
                 CategoryId = model.SelectedCategory
             };
-            bookModel.MainImageFileName = model.MainImageFileName.FileName;
+          
 
             var cachedBooks = await GetBooks();
             cachedBooks.Add(bookModel);
-
-            await SaveBookImage(model.MainImageFileName);
+            if (!string.IsNullOrEmpty(model.MainImageFileName?.FileName))
+            {
+                bookModel.MainImageFileName = model.MainImageFileName.FileName;
+                await SaveBookImage(model.MainImageFileName);
+            }
 
             _cacheManager.Set("LibraryBooks", cachedBooks);
 
@@ -228,10 +235,17 @@ namespace BMS_dotnet_WebApplication.Controllers
                 userPf.BookLendingRequests.Add(lendingOutRequest);
             }
 
-            await _booksLibraryManager.BookLendingOut(lendingOutRequest);
+            try
+            {
+                await _booksLibraryManager.BookLendingOut(lendingOutRequest);
 
-            var str = SerializeObject(userPf);
-            HttpContext.Session.SetString("userProfile", str);
+                var str = SerializeObject(userPf);
+                HttpContext.Session.SetString("userProfile", str);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
             return RedirectToAction("Index", "User");
         }
@@ -302,6 +316,34 @@ namespace BMS_dotnet_WebApplication.Controllers
 
             return null;
         }
+
+        public async Task<ActionResult> SendEmailRemainder(int id, string email)
+        {
+
+            var lendingRequest   = await _booksLibraryManager.GeLendingRequest(id);
+
+            var booksLent = lendingRequest.BooksLent.Select(s => s.Title).ToList();
+
+            var emailBody = new StringBuilder();
+            emailBody.AppendLine($"Dear {lendingRequest.RequestedBy},");
+            emailBody.AppendLine("Please note following books you lent are due return");
+            emailBody.AppendLine(string.Join(", ", booksLent));
+            emailBody.AppendLine("Bic-Library");
+            try
+            {
+                await _emailManager.SendEmail(email, "noreply@bic-library.org", emailBody.ToString(), "Books Return over due");
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+            }
+
+           
+            return  RedirectToAction("LentOutRequest",false);
+        }
+
+
+
 
         private async Task<bool> UpdateCategoryInS3(List<BooksCategoryModel> model)
         {

@@ -35,9 +35,9 @@
 
                         <div class="form-group row col-md-4">
                             @Html.LabelFor(m => m[0].EmailAddress)
-                            @Html.Label( registration.EmailAddress)
+                            <p class="form-control"> @registration.EmailAddress</p>
                             @Html.Hidden("EmailAddress", registration.EmailAddress)
-                            
+
                         </div>
                         <div class="form-group row col-md-4">
                             @Html.LabelFor(m => m[0].FirstName)

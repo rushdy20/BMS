@@ -8,4 +8,5 @@ C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\Micros
 C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\Microsoft.Extensions.DependencyInjection.dll
 C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\Microsoft.Extensions.Primitives.dll
+C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\Newtonsoft.Json.dll
 C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\Syroot.KnownFolders.dll

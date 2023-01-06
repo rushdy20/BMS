@@ -214,7 +214,10 @@ namespace BMS_dotnet_WebApplication.Controllers
                 return "Invalid-Answer";
             }
 
-            return string.Equals(user.MothersMaidenName, hint, StringComparison.CurrentCultureIgnoreCase) ? user.Password : "Invalid-Answer";
+            var hash = string.Empty.PadRight(user.Password.Length - 2).Replace(' ', '#');
+            var passwordWithFirstAndLastCharacter = $"Password : {user.Password.First()}{hash}{user.Password.Last()}";
+
+            return string.Equals(user.MothersMaidenName, hint, StringComparison.CurrentCultureIgnoreCase) ? passwordWithFirstAndLastCharacter : "Invalid-Answer";
         }
 
         private async Task<UserProfileVM> BuildUserProfile(string email)
@@ -249,7 +252,7 @@ namespace BMS_dotnet_WebApplication.Controllers
         private string WelcomeToBicRegistrationApprovedEmail(string name)
         {
             var stringBuilder = new StringBuilder($"Assalamu Alikum {name}");
-            stringBuilder.AppendLine("Welcome to BIC you account has been approved Please login to get access to Library");
+            stringBuilder.AppendLine("Welcome to BIC-Library, your account has been approved Please login to access to Library");
             return stringBuilder.ToString();
         }
     }

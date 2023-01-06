@@ -20,5 +20,8 @@ namespace BMS.BooksLibrary.BusinessLayer
 
         Task<List<LendingRequestModel>> BooksOnLoan(string email);
         Task<List<LendingRequestModel>> GetNewLendingRequests();
+
+        Task<LendingRequestModel> GeLendingRequest(int id);
+
     }
 }

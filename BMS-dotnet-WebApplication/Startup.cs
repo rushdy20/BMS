@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Amazon;
+using Amazon.SecretsManager;
 using AutoMapper;
 using BMS_dotnet_WebApplication.Service;
 using Microsoft.AspNetCore.Builder;
@@ -32,6 +34,8 @@ namespace BMS_dotnet_WebApplication
                 options.IdleTimeout = TimeSpan.FromMinutes(60);//Session Timeout.  
             });
             services.AddSingleton<_ICacheManager, CacheManager>();
+
+            services.AddSingleton(GetAmazonSecretsManagerSettings);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,6 +66,13 @@ namespace BMS_dotnet_WebApplication
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+        }
+
+        private static IAmazonSecretsManager GetAmazonSecretsManagerSettings(IServiceProvider sp)
+        {
+            string region = "us-east-2";
+
+            return new AmazonSecretsManagerClient(RegionEndpoint.GetBySystemName(region));
         }
     }
 }

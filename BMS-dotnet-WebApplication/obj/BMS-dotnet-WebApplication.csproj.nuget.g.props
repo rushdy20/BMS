@@ -25,7 +25,8 @@
     <PkgMicrosoft_VisualStudio_Azure_Containers_Tools_Targets Condition=" '$(PkgMicrosoft_VisualStudio_Azure_Containers_Tools_Targets)' == '' ">C:\Users\C62738A\.nuget\packages\microsoft.visualstudio.azure.containers.tools.targets\1.10.9</PkgMicrosoft_VisualStudio_Azure_Containers_Tools_Targets>
     <PkgjQuery Condition=" '$(PkgjQuery)' == '' ">C:\Users\C62738A\.nuget\packages\jquery\1.12.4</PkgjQuery>
     <PkgjQuery_UI_Combined Condition=" '$(PkgjQuery_UI_Combined)' == '' ">C:\Users\C62738A\.nuget\packages\jquery.ui.combined\1.12.1</PkgjQuery_UI_Combined>
-    <PkgAWSSDK_Core Condition=" '$(PkgAWSSDK_Core)' == '' ">C:\Users\C62738A\.nuget\packages\awssdk.core\3.5.1.7</PkgAWSSDK_Core>
+    <PkgAWSSDK_Core Condition=" '$(PkgAWSSDK_Core)' == '' ">C:\Users\C62738A\.nuget\packages\awssdk.core\3.7.1</PkgAWSSDK_Core>
     <PkgAWSSDK_S3 Condition=" '$(PkgAWSSDK_S3)' == '' ">C:\Users\C62738A\.nuget\packages\awssdk.s3\3.5.0.9</PkgAWSSDK_S3>
+    <PkgAWSSDK_SecretsManager Condition=" '$(PkgAWSSDK_SecretsManager)' == '' ">C:\Users\C62738A\.nuget\packages\awssdk.secretsmanager\3.7.0.44</PkgAWSSDK_SecretsManager>
   </PropertyGroup>
 </Project>

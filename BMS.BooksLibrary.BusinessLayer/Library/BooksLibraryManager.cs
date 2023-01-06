@@ -181,6 +181,26 @@ namespace BMS.BooksLibrary.BusinessLayer
           return allLentBooks;
         }
 
+        public async Task<LendingRequestModel> GeLendingRequest(int id)
+        {
+            var cachedLentBooks = _cacheManager.Get<List<LendingRequestModel>>(BooksLentCacheKey);
+
+            if (cachedLentBooks != null && cachedLentBooks.Any(a => a.LendingRequestId == id))
+            {
+                return cachedLentBooks.First(s => s.LendingRequestId == id);
+            }
+
+            var lentBooksFileFromS3Json = await _s3Bucket.GetFileFromS3($"{LibraryCategoryFolder}/{LibraryBookFolder}/{BookLentFile}");
+
+            if (string.IsNullOrEmpty(lentBooksFileFromS3Json))
+                return new LendingRequestModel();
+
+            var lentBooksFromS3 = DeserializeObject<List<LendingRequestModel>>(lentBooksFileFromS3Json);
+            _cacheManager.Set(BooksLentCacheKey, lentBooksFromS3);
+
+            return lentBooksFromS3.First(s => s.LendingRequestId == id) ?? new LendingRequestModel();
+        }
+
         private async Task AddToLendOutArchiver(LendingRequestModel requestModel)
         {
             var lentBooksFileFromS3Json = await _s3Bucket.GetFileFromS3($"{LibraryCategoryFolder}/{LibraryBookFolder}/{ArchiverLentOutFile}");

@@ -31,7 +31,7 @@ namespace BMS_dotnet_WebApplication.Controllers
 
             if (isItLibrary)
             {
-              return  RedirectToAction("Index", "User");
+                return RedirectToAction("Index", "User");
             }
 
             var model = await BuildIndexVM();
@@ -50,19 +50,21 @@ namespace BMS_dotnet_WebApplication.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        private async Task<MagazineIndexVM> BuildIndexVM()
+        private async Task<List<MagazineIndexVM>> BuildIndexVM()
         {
-            var currentEdition = await _magazineManager.GetCurrentEdition();
-            return new MagazineIndexVM
-            {
-                ContentCategories = currentEdition?.Contents?.Select(c => c.Category).GroupBy(g => g.Name).Select(c => c.FirstOrDefault()).ToList(),
-                CurrentEditionName = currentEdition?.Name,
-                CreatedDate = currentEdition?.DateCreated.ToString("D"),
-                CreatedBy = currentEdition?.CreatedBy,
-                MagazineId = currentEdition?.MagazineId,
-                CurrentEditionImage = $"{currentEdition?.FolderName}/{currentEdition?.Image}"
-            };
+            var allLiveMagazine = await _magazineManager.GetAllMagazines();
 
+            var magazineVMs = allLiveMagazine.Where(m => m.IsLive).Select(m => new MagazineIndexVM
+            {
+                ContentCategories = m?.Contents?.Select(c => c.Category).GroupBy(g => g.Name).Select(c => c.FirstOrDefault()).ToList(),
+                CurrentEditionName = m?.Name,
+                CreatedDate = m?.DateCreated.ToString("D"),
+                CreatedBy = m?.CreatedBy,
+                MagazineId = m?.MagazineId,
+                CurrentEditionImage = $"{m?.FolderName}/{m?.Image}"
+            }).ToList();
+
+            return magazineVMs;
         }
     }
 }

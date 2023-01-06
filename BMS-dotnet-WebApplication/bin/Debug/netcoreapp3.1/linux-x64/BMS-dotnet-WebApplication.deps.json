@@ -31,6 +31,7 @@
     ".NETCoreApp,Version=v3.1": {
       "BMS-dotnet-WebApplication/1.0.0": {
         "dependencies": {
+          "AWSSDK.Core": "3.7.1",
           "AutoMapper": "10.0.0",
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "8.0.1",
           "BMS.AWS": "1.0.0",
@@ -1702,17 +1703,25 @@
           "lib/netstandard2.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll": {}
         }
       },
-      "AWSSDK.Core/3.5.1.7": {
+      "AWSSDK.Core/3.7.1": {
         "compile": {
           "lib/netcoreapp3.1/AWSSDK.Core.dll": {}
         }
       },
       "AWSSDK.S3/3.5.0.9": {
         "dependencies": {
-          "AWSSDK.Core": "3.5.1.7"
+          "AWSSDK.Core": "3.7.1"
         },
         "compile": {
           "lib/netcoreapp3.1/AWSSDK.S3.dll": {}
+        }
+      },
+      "AWSSDK.SecretsManager/3.7.0.44": {
+        "dependencies": {
+          "AWSSDK.Core": "3.7.1"
+        },
+        "compile": {
+          "lib/netcoreapp3.1/AWSSDK.SecretsManager.dll": {}
         }
       },
       "FluentValidation/7.6.0": {
@@ -1729,6 +1738,14 @@
       "jQuery.UI.Combined/1.12.1": {
         "dependencies": {
           "jQuery": "1.12.4"
+        }
+      },
+      "MailKit/2.13.0": {
+        "dependencies": {
+          "MimeKit": "2.13.0"
+        },
+        "compile": {
+          "lib/netstandard2.1/MailKit.dll": {}
         }
       },
       "Microsoft.AspNetCore.Html.Abstractions/2.2.0": {
@@ -1957,7 +1974,7 @@
           "runtime.unix.Microsoft.Win32.Primitives": "4.3.0"
         }
       },
-      "MimeKit/2.11.0": {
+      "MimeKit/2.13.0": {
         "dependencies": {
           "Portable.BouncyCastle": "1.8.10",
           "System.Buffers": "4.5.1",
@@ -2917,6 +2934,7 @@
           "AWSSDK.S3": "3.5.0.9",
           "Microsoft.Extensions.Configuration": "3.1.7",
           "Microsoft.Extensions.DependencyInjection": "3.1.7",
+          "Newtonsoft.Json": "12.0.3",
           "Syroot.Windows.IO.KnownFolders": "1.2.3"
         },
         "compile": {
@@ -2925,10 +2943,12 @@
       },
       "BMS.BusinessLayer/1.0.0": {
         "dependencies": {
+          "AWSSDK.Core": "3.7.1",
+          "AWSSDK.SecretsManager": "3.7.0.44",
           "BMS.AWS": "1.0.0",
+          "MailKit": "2.13.0",
           "Microsoft.Extensions.Caching.Memory": "3.1.8",
           "Microsoft.Extensions.DependencyInjection": "3.1.7",
-          "MimeKit": "2.11.0",
           "Newtonsoft.Json": "12.0.3"
         },
         "compile": {
@@ -2939,6 +2959,7 @@
     ".NETCoreApp,Version=v3.1/linux-x64": {
       "BMS-dotnet-WebApplication/1.0.0": {
         "dependencies": {
+          "AWSSDK.Core": "3.7.1",
           "AutoMapper": "10.0.0",
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "8.0.1",
           "BMS.AWS": "1.0.0",
@@ -3251,22 +3272,33 @@
           }
         }
       },
-      "AWSSDK.Core/3.5.1.7": {
+      "AWSSDK.Core/3.7.1": {
         "runtime": {
           "lib/netcoreapp3.1/AWSSDK.Core.dll": {
             "assemblyVersion": "3.3.0.0",
-            "fileVersion": "3.5.1.7"
+            "fileVersion": "3.7.1.0"
           }
         }
       },
       "AWSSDK.S3/3.5.0.9": {
         "dependencies": {
-          "AWSSDK.Core": "3.5.1.7"
+          "AWSSDK.Core": "3.7.1"
         },
         "runtime": {
           "lib/netcoreapp3.1/AWSSDK.S3.dll": {
             "assemblyVersion": "3.3.0.0",
             "fileVersion": "3.5.0.9"
+          }
+        }
+      },
+      "AWSSDK.SecretsManager/3.7.0.44": {
+        "dependencies": {
+          "AWSSDK.Core": "3.7.1"
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/AWSSDK.SecretsManager.dll": {
+            "assemblyVersion": "3.3.0.0",
+            "fileVersion": "3.7.0.44"
           }
         }
       },
@@ -3287,6 +3319,17 @@
       "jQuery.UI.Combined/1.12.1": {
         "dependencies": {
           "jQuery": "1.12.4"
+        }
+      },
+      "MailKit/2.13.0": {
+        "dependencies": {
+          "MimeKit": "2.13.0"
+        },
+        "runtime": {
+          "lib/netstandard2.1/MailKit.dll": {
+            "assemblyVersion": "2.13.0.0",
+            "fileVersion": "2.13.0.0"
+          }
         }
       },
       "Microsoft.AspNetCore.Html.Abstractions/2.2.0": {
@@ -3748,7 +3791,7 @@
           "runtime.unix.Microsoft.Win32.Primitives": "4.3.0"
         }
       },
-      "MimeKit/2.11.0": {
+      "MimeKit/2.13.0": {
         "dependencies": {
           "Portable.BouncyCastle": "1.8.10",
           "System.Buffers": "4.5.1",
@@ -3758,8 +3801,8 @@
         },
         "runtime": {
           "lib/netstandard2.1/MimeKit.dll": {
-            "assemblyVersion": "2.11.0.0",
-            "fileVersion": "2.11.0.0"
+            "assemblyVersion": "2.13.0.0",
+            "fileVersion": "2.13.0.0"
           }
         }
       },
@@ -4735,6 +4778,7 @@
           "AWSSDK.S3": "3.5.0.9",
           "Microsoft.Extensions.Configuration": "3.1.7",
           "Microsoft.Extensions.DependencyInjection": "3.1.7",
+          "Newtonsoft.Json": "12.0.3",
           "Syroot.Windows.IO.KnownFolders": "1.2.3"
         },
         "runtime": {
@@ -4743,10 +4787,12 @@
       },
       "BMS.BusinessLayer/1.0.0": {
         "dependencies": {
+          "AWSSDK.Core": "3.7.1",
+          "AWSSDK.SecretsManager": "3.7.0.44",
           "BMS.AWS": "1.0.0",
+          "MailKit": "2.13.0",
           "Microsoft.Extensions.Caching.Memory": "3.1.8",
           "Microsoft.Extensions.DependencyInjection": "3.1.7",
-          "MimeKit": "2.11.0",
           "Newtonsoft.Json": "12.0.3"
         },
         "runtime": {
@@ -4775,12 +4821,12 @@
       "path": "automapper.extensions.microsoft.dependencyinjection/8.0.1",
       "hashPath": "automapper.extensions.microsoft.dependencyinjection.8.0.1.nupkg.sha512"
     },
-    "AWSSDK.Core/3.5.1.7": {
+    "AWSSDK.Core/3.7.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-aDoIdSf0ataYWVZunVV98Sa28Ml6DkgFug8Ihkijb0KQEzkOofDw3MLnW+BHXC2W2eFeBIaEgpv2qMVuton6iw==",
-      "path": "awssdk.core/3.5.1.7",
-      "hashPath": "awssdk.core.3.5.1.7.nupkg.sha512"
+      "sha512": "sha512-VWnzRxzrMedMJr6Xkl1/HFzgYfRuT3rkUGhp4rqOkXgutaMoNk8HV+6TfjmAhz99CmTV23RxSMUwGwPfIrxy5w==",
+      "path": "awssdk.core/3.7.1",
+      "hashPath": "awssdk.core.3.7.1.nupkg.sha512"
     },
     "AWSSDK.S3/3.5.0.9": {
       "type": "package",
@@ -4788,6 +4834,13 @@
       "sha512": "sha512-WD7B2+STEe6KKIrix9jaCKwKz54GHdAnOCMsZ04bu/9fc8Vx/lpm0S9eUeea6gOWJHIMrPcF2X13MGD8xh1IoQ==",
       "path": "awssdk.s3/3.5.0.9",
       "hashPath": "awssdk.s3.3.5.0.9.nupkg.sha512"
+    },
+    "AWSSDK.SecretsManager/3.7.0.44": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-d7mVQdvFmIzdUMYK4PJsUHHaKGYxWULGjldSAxHKZTvy4B/777SmwxwseqEQMpbYC8HMMYY0A4cq6m4JSNXGiA==",
+      "path": "awssdk.secretsmanager/3.7.0.44",
+      "hashPath": "awssdk.secretsmanager.3.7.0.44.nupkg.sha512"
     },
     "FluentValidation/7.6.0": {
       "type": "package",
@@ -4809,6 +4862,13 @@
       "sha512": "sha512-5B0LrPZ0TLlwplPRu43h7fgMtDxMMEF31HajUqHSOJ7bC6nyJUJy7AkcuGaJdBrrZAZutnSBgXT01BGiIIC4TQ==",
       "path": "jquery.ui.combined/1.12.1",
       "hashPath": "jquery.ui.combined.1.12.1.nupkg.sha512"
+    },
+    "MailKit/2.13.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-h+2fxPnB/gb+8nniTwetvooM8r9nmbWVF116uXZn8d4+k6V+mf+IOA4Gqb7nwHcZooale0s/v13O7B/6StRHJA==",
+      "path": "mailkit/2.13.0",
+      "hashPath": "mailkit.2.13.0.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Html.Abstractions/2.2.0": {
       "type": "package",
@@ -5034,12 +5094,12 @@
       "path": "microsoft.win32.primitives/4.3.0",
       "hashPath": "microsoft.win32.primitives.4.3.0.nupkg.sha512"
     },
-    "MimeKit/2.11.0": {
+    "MimeKit/2.13.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-xZGy3hLMxbw0ks82N/NjVYsW7Qb4pMEPtoJ+kcoJw566KVF2RJh2+kl0rdmzitghgf7FpxPGJmCNgIh+iciBmg==",
-      "path": "mimekit/2.11.0",
-      "hashPath": "mimekit.2.11.0.nupkg.sha512"
+      "sha512": "sha512-wkHUQzy/sAtWCifZfNDq24DB/xshYoc+QeynSCJPSNeeA51DzZWjVaRslyix/9OEGhdSsUtvisL66dpGp0THjw==",
+      "path": "mimekit/2.13.0",
+      "hashPath": "mimekit.2.13.0.nupkg.sha512"
     },
     "NETStandard.Library/1.6.1": {
       "type": "package",

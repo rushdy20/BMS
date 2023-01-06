@@ -3,6 +3,8 @@ C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\BMS.Bu
 C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\BMS.BusinessLayer.pdb
 C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\AWSSDK.Core.dll
 C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\AWSSDK.S3.dll
+C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\AWSSDK.SecretsManager.dll
+C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\MailKit.dll
 C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\Microsoft.Extensions.Caching.Abstractions.dll
 C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\Microsoft.Extensions.Caching.Memory.dll
 C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\Microsoft.Extensions.Configuration.dll

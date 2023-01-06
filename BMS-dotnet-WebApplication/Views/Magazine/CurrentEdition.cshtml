@@ -1,9 +1,42 @@
 ﻿@using BMS_dotnet_WebApplication.Models.Shared
 @model BMS_dotnet_WebApplication.Models.MagazineVM.CurrentEditionVM
+
+
 @{
     ViewData["Title"] = "CurrentEdition";
     var currentHeading = string.Empty;
+   
+    var parentFolder = "magazine";
+    var image = $"{"http://d2nxbo7tljjo4u.cloudfront.net/"}{parentFolder}/{Model.Magazine.FolderName}/{Model.Magazine.Image}";
+    var contentBody = $"{Model.Magazine.Name}";
+    var downloadFilePath = "";
 }
+
+@section Meta
+{
+    <meta property="og:type" content="article" />
+    <meta property="og:title" name="title" content="@contentBody" />
+    <meta property="og:description" name="description" content="@contentBody" />
+    <meta property="og:image" name="image" content="@image" />
+
+}
+
+<script>
+    @*$(document).ready(function () {
+        $('meta[name=title]').attr('content','@Model.Content.Heading ');
+        $('meta[name=url]').attr('content',' @url');
+        $('meta[name=description]').attr('content', '@Model.ShortBody');
+        $('meta[name=image]').attr('content', '@image');$
+    });*@
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=239242753967982";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
 
 
 <h1 style="font-family: fangsong">@Model.Magazine.Name</h1>
@@ -29,14 +62,14 @@
                         Leave feedback
                     </a>
                 </li>
-                
+
                 @if (Model.IsAdmin)
                 {
                     <li class="nav-item magazine-nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Magazine" asp-action="Index">Magazine Manager</a>
                     </li>
                 }
-                
+
             </ul>
         </div>
     </div>

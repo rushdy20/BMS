@@ -352,3 +352,8 @@ h5, h5 {
     background-color: hsl(0deg 0% 70%);
     font-size: medium
 }
+.card- {
+    margin-right: 26px;
+    margin-bottom: 20px;
+    float: left;
+}

@@ -57,7 +57,9 @@ C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\AutoMa
 C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\AWSSDK.Core.dll
 C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\AWSSDK.S3.dll
+C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\AWSSDK.SecretsManager.dll
 C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\FluentValidation.dll
+C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\MailKit.dll
 C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\Microsoft.AspNetCore.Razor.Language.dll
 C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\Microsoft.CodeAnalysis.dll
 C:\Learning\BMS\BMS-dotnet-WebApplication\bin\Debug\netcoreapp3.1\publish\Microsoft.CodeAnalysis.CSharp.dll

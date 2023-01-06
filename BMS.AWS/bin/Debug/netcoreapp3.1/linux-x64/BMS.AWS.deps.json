@@ -12,6 +12,7 @@
           "AWSSDK.S3": "3.5.0.9",
           "Microsoft.Extensions.Configuration": "3.1.7",
           "Microsoft.Extensions.DependencyInjection": "3.1.7",
+          "Newtonsoft.Json": "12.0.3",
           "Syroot.Windows.IO.KnownFolders": "1.2.3"
         },
         "runtime": {
@@ -86,6 +87,14 @@
           }
         }
       },
+      "Newtonsoft.Json/12.0.3": {
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "12.0.0.0",
+            "fileVersion": "12.0.3.23909"
+          }
+        }
+      },
       "Syroot.Windows.IO.KnownFolders/1.2.3": {
         "dependencies": {
           "System.Security.Principal.Windows": "4.7.0"
@@ -154,6 +163,13 @@
       "sha512": "sha512-sa17s3vDAXTuIVGxuJcK713i0B0iaUoiwY4Sl2SLHhMqM8snznn0YVGiZAVkoKEUFWjvIg1Z/JNmAicBamI4mg==",
       "path": "microsoft.extensions.primitives/3.1.7",
       "hashPath": "microsoft.extensions.primitives.3.1.7.nupkg.sha512"
+    },
+    "Newtonsoft.Json/12.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-6mgjfnRB4jKMlzHSl+VD+oUc1IebOZabkbyWj2RiTgWwYPPuaK1H97G1sHqGwPlS5npiF5Q0OrxN1wni2n5QWg==",
+      "path": "newtonsoft.json/12.0.3",
+      "hashPath": "newtonsoft.json.12.0.3.nupkg.sha512"
     },
     "Syroot.Windows.IO.KnownFolders/1.2.3": {
       "type": "package",

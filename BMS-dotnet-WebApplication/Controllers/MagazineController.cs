@@ -306,8 +306,9 @@ namespace BMS_dotnet_WebApplication.Controllers
 
            await  _feedBack.CreateFeedBack(feedback);
 
-         //  await  _emailManager.MagazineFeedBackEmail( emailStringBuilder.ToString());
+          // await _emailManager.MagazineFeedBackEmail(emailStringBuilder.ToString());
 
+       
             return RedirectToAction("CurrentEdition");
         }
 

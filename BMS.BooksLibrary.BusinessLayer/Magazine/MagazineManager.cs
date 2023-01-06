@@ -252,6 +252,10 @@ namespace BMS.BusinessLayer.Magazine
             nonUpdatedMagazine.Add(magazineToUpdate);
 
             var jsonStringMagazines = JsonSerializer.Serialize(nonUpdatedMagazine);
+
+           // _cacheManager.Set(CurrentEditionMagazineCacheKey, string.Empty);
+            _cacheManager.RemoveCache(CurrentEditionMagazineCacheKey);
+
             return await _s3Bucket.SaveFileAsync($"{MagazineFolder}/{MagazineContents}", jsonStringMagazines);
         }
 

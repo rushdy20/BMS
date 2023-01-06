@@ -1,4 +1,4 @@
-﻿@model BMS_dotnet_WebApplication.Models.MagazineVM.MagazineIndexVM
+﻿@model List<BMS_dotnet_WebApplication.Models.MagazineVM.MagazineIndexVM>
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -7,9 +7,12 @@
     <h1 class="display-4">Welcome</h1>
 </div>
 
-<div class="card-" >
+@foreach (var magazine in Model)
+{
+    <div class="card-" >
 
-    <a href='@Url.Action("CurrentEdition","Magazine")'>
-        <img src="@Url.Action("GetImage", new {filename = Model.CurrentEditionImage, section = "magazine"})" alt="...">
-    </a>
-</div>
+        <a href='@Url.Action("CurrentEdition", "Magazine", new {Id=magazine.MagazineId})'>
+            <img src="@Url.Action("GetImage", new {filename = magazine.CurrentEditionImage, section = "magazine"})" alt="...">
+        </a>
+    </div>
+}

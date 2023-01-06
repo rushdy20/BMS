@@ -1,40 +1,42 @@
 ﻿@model BMS.BooksLibrary.BusinessLayer.Models.BookModel
 
 <div class="card card-book">
-    <div class="book-card-img">
-        <img src="@Url.Action("GetImage", new {filename = "booksimg/" + Model.MainImageFileName})" style="height: 125px;" alt="...">
-    </div>
-   
-    <div class="card-body" id="@Model.Barcode">
-        <h5 class="card-title"> @Model.Title</h5>
-        @if (Model.BookCategory != null)
-        {
-            <p class="card-text">Category : @Model.BookCategory.Name</p>
-        }
-        <p class="card-text">Barcode : @Model.Barcode</p>
-        @if (!string.IsNullOrEmpty(Model.Description))
-        {
-            <p class="card-text">Description : @Model.Description</p>
-        }
-        @if (!string.IsNullOrEmpty(Model.Comments))
-        {
-            <p class="card-text">Comment : @Model.Comments</p>
-        }
-        @if (!string.IsNullOrEmpty(Model.Publisher))
-        {
-            <p class="card-text">Publisher : @Model.Publisher</p>
-        }
+    @if (!string.IsNullOrEmpty(Model.MainImageFileName))
+    {
+        <div class="book-card-img">
+            <img src="@Url.Action("GetImage", new {filename = "booksimg/" + Model.MainImageFileName})" style="height: 125px;" alt="...">
+        </div>
+    }
+<div class="card-body" id="@Model.Barcode">
+    <h5 class="card-title"> @Model.Title</h5>
+    @if (Model.BookCategory != null)
+    {
+        <p class="card-text">Category : @Model.BookCategory.Name</p>
+    }
+    <p class="card-text">Barcode : @Model.Barcode</p>
+    @if (!string.IsNullOrEmpty(Model.Description))
+    {
+        <p class="card-text">Description : @Model.Description</p>
+    }
+    @if (!string.IsNullOrEmpty(Model.Comments))
+    {
+        <p class="card-text">Comment : @Model.Comments</p>
+    }
+    @if (!string.IsNullOrEmpty(Model.Publisher))
+    {
+        <p class="card-text">Publisher : @Model.Publisher</p>
+    }
+    <p class="card-text"> location : @Model.Location</p>
+    @if (Model.IsAvailable)
+    {
+        <a href="#" class="btn btn-primary" onclick="addToBucket(@Model.Barcode)">Add to Basket</a>
 
-        @if (Model.IsAvailable)
-        {
-            <a href="#" class="btn btn-primary" onclick="addToBucket(@Model.Barcode)">Add to Basket</a>
+        <input type="hidden" id="_BookTitle_@Model.Barcode" name="_BookTitle_@Model.Barcode" value="@Model.Title" />
+        <input type="hidden" id="_BookBarcode_@Model.Barcode" name="_BookBarcode_@Model.Barcode" value="@Model.Barcode" />
+        <input type="hidden" id="_BookImage_@Model.Barcode" name="_BookImage_@Model.Barcode" value="@Model.MainImageFileName" />
+    }
 
-            <input type="hidden" id="_BookTitle_@Model.Barcode" name="_BookTitle_@Model.Barcode" value="@Model.Title"/>
-            <input type="hidden" id="_BookBarcode_@Model.Barcode" name="_BookBarcode_@Model.Barcode" value="@Model.Barcode"/>
-            <input type="hidden" id="_BookImage_@Model.Barcode" name="_BookImage_@Model.Barcode" value="@Model.MainImageFileName"/>
-        }
-
-    </div>
+</div>
 </div>
 
 <script>

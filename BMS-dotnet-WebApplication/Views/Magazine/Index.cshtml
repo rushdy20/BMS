@@ -6,11 +6,11 @@
 <h1>Magazine Manager</h1>
 
 <div class="form-group row container custom-box">
-    @Html.ActionLink("Magazine Category", "CreateCategory", "Magazine", null, new {@class = "btn btn-secondary"})
+    @Html.ActionLink("Magazine Category", "CreateCategory", "Magazine", null, new { @class = "btn btn-secondary" })
 </div>
 
 <div class="form-group row container custom-box">
-    @Html.ActionLink("Create Magazine", "CreateMagazine", "Magazine", null, new {@class = "btn btn-secondary"})
+    @Html.ActionLink("Create Magazine", "CreateMagazine", "Magazine", null, new { @class = "btn btn-secondary" })
 </div>
 
 @foreach (var magazine in Model)
@@ -27,28 +27,28 @@
             <div class="card-body">
                 <h5 class="card-title"> @magazine.CurrentEditionName</h5>
                 @*@if (Model.ContentCategories != null)
-        {
-            foreach (var category in Model.ContentCategories)
-            {
-                @Html.ActionLink(category.Name, "CreateContent", "Magazine", null, new {@class = "btn btn-link"})
-            }
-        }*@
+                    {
+                        foreach (var category in Model.ContentCategories)
+                        {
+                            @Html.ActionLink(category.Name, "CreateContent", "Magazine", null, new {@class = "btn btn-link"})
+                        }
+                    }*@
 
                 @if (!magazine.IsLive)
                 {
-                    @Html.ActionLink("Add Content", "CreateContent", "Magazine", new { Id = magazine.MagazineId }, new {@class = "btn btn-primary"})
+                    @Html.ActionLink("Add Content", "CreateContent", "Magazine", new { Id = magazine.MagazineId }, new { @class = "btn btn-primary" })
 
-                    @Html.ActionLink("Remove Content", "RemoveContent", "Magazine", new { Id = magazine.MagazineId }, new {@class = "btn btn-danger"})
+                    @Html.ActionLink("Remove Content", "RemoveContent", "Magazine", new { Id = magazine.MagazineId }, new { @class = "btn btn-danger" })
 
                 }
 
                 @if (magazine.IsLive)
                 {
-                    @Html.ActionLink("Off Live", "StatusUpdate", "Magazine", new {status = false, Id = magazine.MagazineId}, new {@class = "btn btn-danger"})
+                    @Html.ActionLink("Off Live", "StatusUpdate", "Magazine", new { status = false, Id = magazine.MagazineId }, new { @class = "btn btn-danger" })
                 }
                 else
                 {
-                    @Html.ActionLink("Go Live", "StatusUpdate", "Magazine", new {status = true, Id = magazine.MagazineId}, new {@class = "btn btn-primary"})
+                    @Html.ActionLink("Go Live", "StatusUpdate", "Magazine", new { status = true, Id = magazine.MagazineId }, new { @class = "btn btn-primary" })
                 }
 
 

@@ -66,7 +66,7 @@ namespace BMS_dotnet_WebApplication.Controllers
         internal bool IsItLibrary()
         {
             var isLibrary = this.Request.Host.ToString().Contains("localhost", StringComparison.OrdinalIgnoreCase) || this.Request.Host.ToString().Contains("bic-library", StringComparison.OrdinalIgnoreCase);
-           // HttpContext.Session.SetString("bic", isLibrary?"1":"0");
+           
             return isLibrary;
         }
     }

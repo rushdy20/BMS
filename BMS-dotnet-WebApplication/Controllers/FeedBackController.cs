@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BMS.BusinessLayer;
-using BMS_dotnet_WebApplication.Models.Shared;
+
 
 namespace BMS_dotnet_WebApplication.Controllers
 {
